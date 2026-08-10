@@ -5,6 +5,7 @@
 		SELECT *
 		  FROM ACC_DEALER_CD
 		 WHERE IDT_NO = #{username}
+		 ORDER BY STRT_YMD ASC
 	</select>
 	
 	<!--<select id="getTableData" resultType="map">
