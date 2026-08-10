@@ -19,7 +19,7 @@
 	<!-- Root Context: defines shared resources visible to all other web components -->
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
    		<property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
-   		<property name="url" value = "jdbc:sqlserver://112.216.112.28:1433;databaseName=daejierp"></property>
+   		<property name="url" value = "jdbc:sqlserver://61.32.101.234:1433;databaseName=daejierp"></property>
    		<property name="username" value="sa" />
    		<property name="password" value="jang*1976" />
 	</bean>

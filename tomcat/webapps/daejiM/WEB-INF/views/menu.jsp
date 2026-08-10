@@ -65,7 +65,6 @@
                             <button onclick="location.href='/daejiM/main/buyer'"><i class="ri-database-line"></i>거래처조회</button>
                             <button onclick="location.href='/daejiM/main/inoutCome'"><i class="ri-newspaper-line"></i>현장매입출일보</button>
                             <button onclick="location.href='/daejiM/main/priceList'"><i class="ri-grid-fill"></i>단가표</button>
-                            <button onclick="location.href='/exe/atdDaily'"><i class="ri-calendar-2-line"></i>일일계근</button>
                             <!-- <button onclick="location.href='/daejiM/main/priceInput'"><i class="ri-calculator-line"></i>단가입력</button>
                             <button onclick="location.href='/daejiM/main/dailyWeight'"><i class="ri-calendar-2-line"></i>일일계근현황</button> -->
 

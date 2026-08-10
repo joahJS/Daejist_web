@@ -21,26 +21,26 @@
             </div> -->
             
             <ul>
-                <!-- <li class="active" onclick="location.href='mgtRpt'">경영보고</li>
+                <li class="active" onclick="location.href='mgtRpt'">경영보고</li>
                 <li onclick="location.href='prodRpt'">생산보고</li>
-                <li onclick="location.href='busiRpt'">영업보고</li> -->
-                <!-- <li onclick="location.href='fncDaily'">자금일보</li> -->
-                <li >일일계근</li>
-                <!-- <li onclick="location.href='prcInput'">단가입력</li> -->
+                <li onclick="location.href='busiRpt'">영업보고</li>
+                <li onclick="location.href='fncDaily'">자금일보</li>
+                <li onclick="location.href='atdDaily'">일일계근</li>
+                <li onclick="location.href='prcInput'">단가입력</li>
             </ul>
         </nav>
         <section id="textWrapper">
-<!--         	<article class="filter-section"> -->
-<!--                 <div class="ft-item"> -->
-<!--                     <p class="ft-item-name">조회일자</p> -->
-<%-- 			        <input type="date" name="jDate" value = ${jDate }>   <!-- jDate 변경 조회 해도 유지 --> --%>
-<!--                 </div> -->
+        	<article class="filter-section">
+                <div class="ft-item">
+                    <p class="ft-item-name">조회일자</p>
+			        <input type="date" name="jDate" value = ${jDate }>   <!-- jDate 변경 조회 해도 유지 -->
+                </div>
                 
-<!--                 <button class="ar" type="button" onclick="submitForm()"> -->
-<!--                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"><path fill="#fff" d="M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z" fill="rgba(58,78,132,1)"></path></svg> -->
-<!--                     조회 -->
-<!--                 </button> -->
-<!--             </article> -->
+                <button class="ar" type="button" onclick="submitForm()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"><path fill="#fff" d="M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z" fill="rgba(58,78,132,1)"></path></svg>
+                    조회
+                </button>
+            </article>
             <div class="title-compart">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"><path d="M2 20H22V22H2V20ZM4 12H6V19H4V12ZM9 12H11V19H9V12ZM13 12H15V19H13V12ZM18 12H20V19H18V12ZM2 7L12 2L22 7V11H2V7ZM12 8C12.5523 8 13 7.55228 13 7C13 6.44772 12.5523 6 12 6C11.4477 6 11 6.44772 11 7C11 7.55228 11.4477 8 12 8Z" fill="rgba(58,78,132,1)"></path></svg>
                 <h2>재고자산</h2>

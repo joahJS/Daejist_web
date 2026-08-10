@@ -28,12 +28,12 @@
             </div> -->
             
             <ul>
-<!--                 <li onclick="location.href='mgtRpt'">경영보고</li> -->
-<!--                 <li onclick="location.href='prodRpt'">생산보고</li> -->
-<!--                 <li onclick="location.href='busiRpt'">영업보고</li> -->
-<!--                 <li onclick="location.href='fncDaily'">자금일보</li> -->
-                <li > 일일계근</li>
-<!--                 <li onclick="location.href='prcInput'">단가입력</li> -->
+                <li onclick="location.href='mgtRpt'">경영보고</li>
+                <li onclick="location.href='prodRpt'">생산보고</li>
+                <li onclick="location.href='busiRpt'">영업보고</li>
+                <li onclick="location.href='fncDaily'">자금일보</li>
+                <li class="active" onclick="location.href='atdDaily'">일일계근</li>
+                <li onclick="location.href='prcInput'">단가입력</li>
             </ul>
         </nav>
         <section id="textWrapper">
