@@ -1,0 +1,199 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* 컬러 */
+
+$color__dark: rgb(51, 38, 38);
+$color__grey: rgb(114, 107, 107);
+$color__mid: rgb(196, 196, 197);
+$color__light: hsl(240, 8%, 95%);
+$color__subtle: rgb(249, 249, 249);
+$color__white: rgb(255, 255, 255);
+
+$color__pm: rgb(66, 86, 47);
+$color__sub: rgb(58, 126, 142);
+$color__vo: rgb(103, 92, 181);
+$color__yy: rgb(255, 249, 233);
+$color__bp: rgb(255, 240, 246);
+
+:root {
+    font-size: max(13px, 1.3vmin);
+
+    ::-webkit-scrollbar {
+        width: .6rem;
+        height: .6rem;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: rgba($color__pm, .7);
+        border-radius: .5rem;
+        height: 40%;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: transparent
+    }
+}
+
+body {
+    height: 100vh;
+    color: $color__dark;
+    font-size: 1rem;
+}
+
+a {
+    color: $color__dark;
+    text-decoration: none;
+}
+
+button {
+    outline: 0;
+    border: 0;
+    background: rgba($color__pm, .9);
+    color: $color__white;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 .5rem 1rem rgba($color__mid, .6);
+}
+
+select {
+    padding: 0.35rem;
+    outline: none;
+    border-radius: 0.25rem;
+    border: 0.05rem solid hsla(235, 22%, 10%, 0.1);
+    background-color: $color__white;
+}
+
+textarea {
+    padding: 0.35rem;
+    outline: none;
+    border: 0.05rem solid hsla(235, 22%, 10%, 0.1);
+    color: #999;
+    resize: none;
+}
+
+input {
+    padding: 0.35rem;
+    border: 0.05rem solid hsla(235, 22%, 10%, 0.1);
+    border-radius: 0.25rem;
+    background-color: $color__white;
+    outline: none;
+    resize: none;
+    font: inherit;
+    color: $color__pm;
+
+    &[type=radio] {
+        width: inherit;
+    }
+}
+
+h6 {
+    font-size: 1.2rem;
+}
+
+h5 {
+    font-size: 1.4rem;
+}
+
+h4 {
+    font-size: 1.6rem;
+}
+
+h3 {
+    font-size: 1.8rem;
+}
+
+h2 {
+    font-size: 2.5rem;
+}
+
+h1 {
+    font-size: 3rem;
+}
+
+dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 0;
+}
+
+dialog::backdrop {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    content: "";
+    background-color: #0009
+}
+
+/* 모달 기본값 */
+
+.modal-window {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 0;
+
+    &::backdrop {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background-color: #0009
+    }
+}
+
+.modal-insert-frame {
+    padding: 15px;
+}
+
+.modal-insert-title {
+    margin-block-end: 15px;
+    color: $color__pm;
+    font-size: 24px;
+    font-weight: 900;
+
+    > h3 {
+        font: inherit;
+    }
+}
+
+.modal-control-compartment {
+    display: flex;
+    justify-content: center;
+    padding: 15px;
+
+    > button {
+        padding: 8px 24px;
+        font-size: 18px;
+        font-weight: 600;
+    }
+}
+
+/* 모달 기본값 끝 */
+
+[data-device-type="mobile"] {
+    /* Portrait 세로모드일 때 */
+
+    dialog {
+        width: 96%;
+    }
+}
+
+[data-device-type="desktop"] {
+    /* Landscape 가로모드일 때 */
+
+    .list_table {
+        overflow: auto;
+    }
+
+    dialog {
+        width: 50%;
+    }
+}

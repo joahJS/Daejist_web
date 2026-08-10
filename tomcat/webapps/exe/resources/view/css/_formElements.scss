@@ -1,0 +1,847 @@
+/* _formElements.scss */
+
+// [input type="text, number, url, email, tel"] 시작
+
+:root {
+    // 타이포
+
+    --ff-gothic: 'NS-Neo', sans-serif;
+    --ff-sans: 'SUIT', sans-serif;
+    --ff-serif-kr: '';
+    --ff-serif-en: 'Suez One', serif;
+
+    // 인터페이스
+
+    --bdr-form-outer: .9rem;
+    --bdr-form-inner: .65rem;
+    --bdr-form-element-lg: .75rem;
+    --bdr-form-element: .15rem;
+    --bdr-form-full: 25rem;
+
+    --bdr-interface-normal: .5px solid hsl(var(--clr-secondary) / .15);
+    --bdr-interface-fade: .5px solid hsl(var(--clr-secondary / .05));
+
+    --shd-form-element: 0 .15rem .5rem -.1rem hsl(var(--clr-secondary) / .15);
+    --shd-form-outer: 0 .75rem 1.5rem hsl(var(--clr-secondary) / .15);
+    --shd-form-disabled: .05rem .05rem 0 hsl(var(--clr-min));
+
+    
+
+    // 색상
+
+    --shd-back: 225 33% 98%;
+
+    --color-tester: hsl(0, 0%, 12%);
+
+    --clr-min: 0 100% 100%; // 최소 대비 (컬러 스키마에 대해)
+    --clr-max: 0 0% 0%; // 최대 대비 (컬러 스키마에 대해)
+
+    --clr-theme: 227 100% 57%;
+    --clr-background: 210 40% 96%; // 배경
+
+    --clr-primary: 225 94% 67%; // 메인 컬러
+    --clr-secondary: 230 53% 37%;
+    --clr-tertiary: 214 95% 93%;
+    --clr-optional: 220 98% 51%;
+
+    --clr-text-base: 0 0% 12%; // 문자 기초
+    --clr-text-tint: var(--clr-min); // 하이라이트 배경 문자
+    --clr-text-invert: ; // 반전 배경 문자
+    --clr-text-disabled: 0 0% 80% ; // 비활성 문자
+
+    --clr-alert: 4 92% 46%; // 에러
+    --clr-warn: 40 93% 57%; // 경고
+    --clr-info: 138 54% 78%; // 정보
+    --clr-accept: 143 69% 60%; // 안전
+    --clr-unabled: 0 0% 96%; // 비활성
+
+    --clr-if-100: 0 100% 100%; // 인터페이스 표면 100%
+    --clr-if-75: ; // 인터페이스 표면 75%
+    --clr-if-50: ; // 인터페이스 표면 50%
+    --clr-if-25: ; // 인터페이스 표면 25%
+    --clr-if-10: ; // 인터페이스 표면 10%
+    --clr-if-5: ; // 인터페이스 표면 5%
+    --clr-if-disabled: ; // 비활성 인터페이스
+
+    --clr-temp-ebony: #4a5043;
+    --clr-temp-sunglow: #ffcb47;
+    --clr-temp-federalblue: #07004d;
+    --clr-temp-steelblue: #2d82b7;
+    --clr-temp-aquamarine: #42e2b8;
+    --clr-temp-dutchwhite: #f3dfbf;
+    --clr-temp-lightcoral: #eb8a90;
+    --clr-temp-engineeringorange: #ba2d0b;
+    --clr-temp-honeydew: #d5f2e3;
+    --clr-temp-cambridgeblue: #73ba9b;
+    --clr-temp-britishracinggreen: #003e1f;
+    --clr-temp-night: #01110a;
+    --clr-temp-brightpinkcrayola: #ef798a;
+    --clr-temp-melon: #f7a9a8;
+    --clr-temp-finn: #613f75;
+    --clr-temp-fairytale: #e5c3d1;
+    --clr-temp-richblack: #011627;
+    --clr-temp-babypowder: #fdfffc;
+    --clr-temp-lightseagreen: #2ec4b6;
+    --clr-temp-pantonered: #e71d36;
+    --clr-temp-orangepeel: #ff9f1c;
+    --clr-temp-bluecrayola: #0075f2;
+    --clr-temp-oucrimson: #880d1e;
+    --clr-temp-rustyred: #dd2d4a;
+    --clr-temp-antiflashwhite: #efeff0;
+    --clr-temp-navajowhite: #ffe0b5;
+    --clr-temp-rawumber: #8a6552;
+    --clr-temp-caputmortuum: #462521;
+    --clr-temp-mediumslateblue: #6874e8;
+    --clt-temp-aliceblue: #e8f0ff;
+
+    // Input Commons
+    --clr-input-focus: 0 102 255;
+    --clr-input-accept: 51 152 51;
+    --clr-input-warning: ;
+    --clr-input-error: 255, 78, 65;
+    --clr-input-disabled: 245, 245, 245;
+
+    --bdr-input: .5px solid rgba(var(--clr-input-border), .1);
+
+    // Input Borders
+    --clr-input-border: 0, 0, 0;
+
+    // Input Backgrounds
+    --clr-input-background: 255, 255, 255;
+
+    // Input Text Colors
+    --clr-input-text: 0, 0, 0;
+    --input-text-disabled: 1px 1px 0 rgb(255, 255, 255);
+}
+
+.remix {
+    fill: currentColor;
+}
+
+.labeled-input-binder {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 4px;
+    padding-inline: 24px;
+
+    &.align-input-container {
+        .section-control-compartment {
+            padding-inline: 0;
+            height: 40px;
+            // border-bottom: 0.5px solid rgba(var(--clr-input-border), 0.1);
+            margin-bottom: 24px;
+            padding-bottom: 6px;
+        }
+    }
+
+    &.required {
+        > label::after {
+            color: #d32d22;
+            content: '*';
+            opacity: 1;
+        }
+    }
+}
+
+dialog .labeled-input-binder {
+    padding-inline: 0;
+}
+
+.modal-search-compartment {
+    .labeled-input-binder {
+        max-width: 260px;
+    }
+}
+
+.form-input-label {
+    opacity: .75;
+}
+
+.form-input-text {
+    /*
+    <div class="form-input-text">
+        <leading element>
+        <input class="input-element">
+        <trailing element>
+    </div>
+    */
+
+    display: flex;
+    border-radius: var(--bdr-form-element);
+    background-color: hsl(var(--clr-min));
+    color: hsl(var(--clr-text-base));
+    font-size: 14px;
+    overflow: hidden;
+
+    > .input-element {
+        flex: 1 1 auto;
+        padding-inline: 12px;
+        min-width: 0;
+        height: 32px;
+        border-block: var(--bdr-interface-normal);
+        background-color: transparent;
+        outline: 0;
+
+        &::placeholder {
+            color: #3a4e84;
+            opacity: .5;
+        }
+    }
+
+    &:not(:has(.form-input-leading)) {
+        > .input-element {
+            border-inline-start: var(--bdr-interface-normal);
+            border: {
+                top-left-radius: inherit;
+                bottom-left-radius: inherit;
+            };
+        }
+    }
+
+    &:not(:has(.form-input-trailing)) {
+        > .input-element {
+            border-inline-end: var(--bdr-interface-normal);
+            border: {
+                top-right-radius: inherit;
+                bottom-right-radius: inherit;
+            };
+        }
+    }
+
+    &:has(.form-input-leading.icons) {
+        > .input-element {
+            padding-inline-start: 0;
+        }
+    }
+
+    &:has(.form-input-trailing.icons) {
+        > .input-element {
+            padding-inline-end: 0;
+        }
+    }
+
+    &:has(.input-element:focus) {
+        outline: 3px solid hsl(var(--clr-optional) / .15);
+
+        > * {
+            border-color: hsl(var(--clr-optional) / .5);
+        }
+    }
+
+    &:has(.input-element:invalid) {
+        outline: 3px solid hsl(var(--clr-alert) / .1);
+        color: hsl(var(--clr-alert));
+
+        > * {
+            border-color: hsl(var(--clr-alert) / .25);
+        }
+    }
+
+    &:has(.input-element:is([pattern], [type="url"], [type="email"]):valid) {
+        outline: 3px solid hsl(var(--clr-accept) / .1);
+        color: hsl(var(--clr-accept));
+
+        > * {
+            border-color: hsl(var(--clr-accept) / .25);
+        }
+    }
+
+    &:has(.input-element:disabled) {
+        > * {
+            background-color: hsl(var(--clr-unabled));
+            color: hsl(var(--clr-text-disabled));
+            text-shadow: var(--shd-form-disabled);
+        }
+    }
+}
+
+.form-input-leading,
+.form-input-trailing {
+    display: grid;
+    place-items: center;
+    flex: 0 auto;
+    padding-inline: 12px;
+    border-block: var(--bdr-interface-normal);
+    outline: 0;
+
+    &.fixers { // 프리픽스, 서픽스
+        /*
+        <div class="form-input-<position> fixers">
+            <span> https:// </span>
+        </div>
+        */
+
+        border-inline: var(--bdr-interface-normal);
+        background-color: hsl(var(--clr-unabled));
+        color: hsl(var(--clr-text-disabled));
+        text-shadow: var(--shd-form-disabled);
+    }
+
+    &.icons { // 리딩 / 트레일링 아이콘
+        /*
+        <div class="form-input-<position> icons">
+            <i class="ri-lock-line"></i>
+        </div>
+        */
+
+        &:is(.form-input-leading) {
+            border-inline-start: var(--bdr-interface-normal);
+        }
+
+        &:is(.form-input-trailing) {
+            border-inline-end: var(--bdr-interface-normal);
+        }
+    }
+
+    &.shortcuts { // 트레일링 단축키
+        /*
+        <div class="form-input-trailing shortcuts">
+            <kbd> ctrl </kbd>
+            <span> + </span>
+            <kbd> s </kbd>
+        </div>
+        */
+
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        border-inline-end: var(--bdr-interface-normal);
+
+        > kbd {
+            padding: 4px 8px;
+            border: var(--bdr-interface-normal);
+            border-radius: 4px;
+            background-color: hsl(0 0% 92%);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, .1);
+            color: hsl(0 0% 47%);
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+    }
+
+    &.button { // 트레일링 버튼
+        /*
+        <button type="button" class="form-input-trailing button">
+            <span> Submit </span>
+        </button>
+        */
+
+        border: var(--bdr-interface-normal);
+        background-color: hsl(var(--clr-optional) / .5);
+        color: hsl(var(--clr-min));
+
+        &:hover {
+            background-color: hsl(var(--clr-optional));
+        }
+
+        &:disabled {
+            background-color: hsl(var(--clr-unabled));
+            color: hsl(var(--clr-text-disabled));
+            text-shadow: var(--shd-form-disabled);
+        }
+    }
+
+    &.select { // 리딩 / 트레일링 셀렉트
+        /*
+        <select class="form-input-<position> select">
+            <option value=""> Option 1 </option>
+        <select>
+        */
+
+        padding-inline-end: 36px;
+        background: {
+            color: transparent;
+            image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"%3E%3Cpath d="M18 9 12 3 6 9H18ZM18 15 12 21 6 15H18Z"%3E%3C/path%3E%3C/svg%3E');
+            repeat: no-repeat;
+            position: center right 10px;
+            size: 16px 16px;
+        }
+        outline: 0;
+        -webkit-appearance: none;
+           -moz-appearance: none;
+                appearance: none;
+
+        &:disabled {
+            background: {
+                color: hsl(var(--clr-text-disabled));
+                image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"%3E%3Cpath d="M19 10H20C20.5523 10 21 10.4477 21 11V21C21 21.5523 20.5523 22 20 22H4C3.44772 22 3 21.5523 3 21V11C3 10.4477 3.44772 10 4 10H5V9C5 5.13401 8.13401 2 12 2C15.866 2 19 5.13401 19 9V10ZM17 10V9C17 6.23858 14.7614 4 12 4C9.23858 4 7 6.23858 7 9V10H17ZM11 14V18H13V14H11Z"%3E%3C/path%3E%3C/svg%3E');
+            }
+            color: rgb(204, 204, 204);
+            text-shadow: var(--shd-form-disabled);
+        }
+
+        &:is(.form-input-leading) {
+            border-inline-start: var(--bdr-interface-normal);
+
+            &:disabled {
+                border-inline-end: var(--bdr-interface-normal);
+            }
+        }
+
+        &:is(.form-input-trailing) {
+            border-inline-end: var(--bdr-interface-normal);
+
+            &:disabled {
+                border-inline-start: var(--bdr-interface-normal);
+            }
+        }
+    }
+}
+
+.form-input-leading {
+    border: {
+        top-left-radius: inherit;
+        bottom-left-radius: inherit;
+    };
+}
+
+.form-input-trailing {
+    border: {
+        top-right-radius: inherit;
+        bottom-right-radius: inherit;
+    };
+}
+
+// [input type="text, number, url, email, tel"] 끝
+
+// [input type="checkbox, radio"] 시작
+
+.form-input-checker {
+    /*
+    <div class="form-input-checker">
+        <input [type] [id] class="checker-element">
+        <label for="[id]"> Checker Label </label>
+    </div>
+    */
+
+    display: flex;
+    align-items: center;
+    gap: .25rem;
+    height: 1.6rem;
+    position: relative;
+
+    > .checker-element {
+        position: absolute;
+        width: 0;
+        height: 0;
+        opacity: 0;
+
+        & + label {
+            display: block;
+            width: 100%;
+            cursor: pointer;
+        }
+    }
+
+    &::before {
+        flex: 0 0 1rem;
+        display: block;
+        width: 1rem;
+        height: 1rem;
+        border: var(--bdr-interface-normal);
+        background-color: hsl(var(--clr-min));
+        cursor: pointer;
+        content: '';
+    }
+
+    &:has([type="checkbox"]) {
+        &::before {
+            border-radius: var(--bdr-form-element);
+        }
+    }
+
+    &:has([type="radio"]) {
+        &::before {
+            border-radius: var(--bdr-form-full);
+        }
+    }
+
+    &:hover {
+        &::before {
+            background-color: hsl(var(--clr-optional) / .05);
+        }
+    }
+
+    &:has(.checker-element:active, .checker-element:focus) {
+        outline: .1rem dashed hsl(var(--clr-optional) / .15);
+        outline-offset: .25rem;
+
+        &::before {
+            border-color: hsl(var(--clr-optional) / .5);
+            outline: 3px solid hsl(var(--clr-optional) / .15);
+        }
+    }
+
+    &:has(.checker-element:checked) {
+        &::before {
+            border-color: hsl(var(--clr-accept) / .5);
+            background: {
+                image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"%3E%3Cpath stroke="hsl(143 69% 60%)" stroke-width="3px" fill="hsl(143 69% 60%)" d="M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z"%3E%3C/path%3E%3C/svg%3E');
+                repeat: no-repeat;
+                position: center;
+                size: .8rem .8rem;
+            }
+        }
+
+        &:has(.checker-element:hover) {
+            &::before {
+                background-color: hsl(var(--clr-accept) / .15);
+            }
+        }
+
+        label {
+            font-weight: 700;
+        }
+    }
+
+    &:has(:disabled) {
+        &::before {
+            border-color: hsl(var(--clr-max) / .15);
+            background-color: hsl(var(--clr-max) / .15);
+            cursor: no-drop;
+        }
+
+        label {
+            text-shadow: 1px 1px hsl(var(--clr-min));
+            opacity: .5;
+            cursor: no-drop;
+            pointer-events: none;
+        }
+    }
+}
+
+
+.form-input-checker > input[type="checkbox"].checker-element {
+    width: 1rem;
+    height: 1rem;
+    border: 1px solid #000;
+    border-radius: .5rem;
+}
+
+.form-input-checker > input[type="radio"].checker-element {
+    width: 1rem;
+    height: 1rem;
+    opacity: .15;
+    border: 1px solid #000;
+    border-radius: .5rem;
+}
+
+// [input type="checkbox, radio"] 끝
+
+// [select] 시작
+
+.form-input-select {
+    /*
+    <div class="form-input-select">
+        <select class="select-element">
+            <option> Option 1 </option>
+        </select>
+
+        <div class="select-arrow-icon">
+            <i class="ri-arrow-down-s-line"></i>
+        </div>
+    </div>
+    */
+
+    position: relative;
+    border-radius: var(--bdr-form-element);
+    background-color: hsl(var(--clr-min));
+    color: hsl(var(--clr-text-base));
+    font-size: 14px;
+    overflow: hidden;
+
+    > * {
+        cursor: pointer;
+    }
+
+    > .select-element {
+        // padding-inline: 12px;
+        padding: 0 32px 0 12px;
+        min-width: 0;
+        width: 100%;
+        height: 32px;
+        border: var(--bdr-interface-normal);
+        border-radius: inherit;
+        background-color: transparent;
+        outline: 0;
+        appearance: none;
+    }
+
+    > .select-arrow-icon {
+        display: grid;
+        place-items: center;
+        position: absolute;
+        inset: 0;
+        margin-inline-start: auto;
+        height: 100%;
+        aspect-ratio: 1 / 1;
+        border-inline-start: var(--bdr-interface-normal);
+        pointer-events: none;
+    }
+
+    &:has(.select-element:hover) {
+        > .select-arrow-icon {
+            background-color: hsl(var(--clr-optional) / .05);
+        }
+    }
+
+    &:has(.select-element:active, .select-element:focus) {
+        outline: 3px solid hsl(var(--clr-optional) / .15);
+
+        > * {
+            border-color: hsl(var(--clr-optional) / .5);
+        }
+
+        > .select-arrow-icon {
+            background-color: hsl(var(--clr-optional) / .5);
+            color: hsl(var(--clr-min));
+
+            > i {
+                rotate: 180deg;
+            }
+        }
+    }
+
+    &:has(.select-element:disabled) {
+        pointer-events: none;
+
+        > * {
+            color: rgb(204, 204, 204);
+            text-shadow: var(--shd-form-disabled);
+        }
+
+        > .select-element {
+            background-color: hsl(var(--clr-unabled));
+        }
+    }
+}
+
+// [select] 끝
+
+// [input type="date"] 시작
+
+.form-filter-date {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+
+    .form-input-date {
+        flex-shrink: 0;
+    }
+}
+
+.form-input-date {
+    /*
+    <div class="form-input-date">
+        <input type="date" class="date-picker">
+
+        <div class="date-calendar-icon">
+            <i class="ri-calendar-event-line"></i>
+        </div>
+    </div>
+    */
+
+    position: relative;
+    border-radius: var(--bdr-form-element);
+    background-color: hsl(var(--clr-min));
+    color: hsl(var(--clr-text-base));
+    font-size: 14px;
+    overflow: hidden;
+
+    > * {
+        cursor: pointer;
+    }
+
+    > .date-picker {
+        padding-inline: 12px;
+        min-width: 0;
+        width: 100%;
+        height: 32px;
+        border: var(--bdr-interface-normal);
+        border-radius: inherit;
+        background-color: transparent;
+        outline: 0;
+        appearance: none;
+    }
+
+    > .date-calendar-icon {
+        display: grid;
+        place-items: center;
+        position: absolute;
+        inset: 0;
+        margin-inline-start: auto;
+        height: 100%;
+        aspect-ratio: 1 / 1;
+        border-inline-start: var(--bdr-interface-normal);
+        pointer-events: none;
+    }
+
+    &:has(.date-picker:hover) {
+        > .select-arrow-icon {
+            background-color: hsl(var(--clr-optional) / .05);
+        }
+    }
+
+    &:has(.date-picker:active, .date-picker:focus) {
+        outline: 3px solid hsl(var(--clr-optional) / .15);
+
+        > * {
+            border-color: hsl(var(--clr-optional) / .5);
+        }
+
+        > .date-calendar-icon {
+            background-color: hsl(var(--clr-optional) / .5);
+            color: hsl(var(--clr-min));
+        }
+    }
+
+    &:has(.date-picker:disabled) {
+        pointer-events: none;
+
+        > * {
+            color: rgb(204, 204, 204);
+            text-shadow: var(--shd-form-disabled);
+        }
+
+        > .date-picker {
+            background-color: hsl(var(--clr-unabled));
+        }
+    }
+}
+
+// [input type="datetime"] 끝
+
+// 조회 모달 불러오기 기능 인풋 시작
+
+.form-input-search {
+    /*
+    <div class="form-input-search">
+        <input type="text" class="search-result" readonly>
+
+        <div class="search-icon">
+            <i class="ri-search-line"></i>
+        </div>
+    </div>
+    */
+
+    position: relative;
+    border-radius: var(--bdr-form-element);
+    background-color: hsl(var(--clr-min));
+    color: hsl(var(--clr-text-base));
+    font-size: 14px;
+    // overflow: hidden;
+
+    > * {
+        cursor: pointer;
+    }
+
+    > .search-result {
+        // padding-inline: 12px;
+        padding: 0 36px 0 12px;
+        min-width: 0;
+        width: 100%;
+        height: 32px;
+        // border: var(--bdr-interface-normal);
+        border: var(--bdr-interface-normal) !important;
+        border-radius: inherit;
+        background-color: transparent;
+        outline: 0;
+        appearance: none;
+    }
+
+    > .search-icon {
+        display: grid;
+        place-items: center;
+        position: absolute;
+        inset: 0;
+        margin-inline-start: auto;
+        height: 100%;
+        aspect-ratio: 1 / 1;
+        border-inline-start: var(--bdr-interface-normal);
+        pointer-events: none;
+    }
+
+    &:has(.search-result:hover) {
+        > .search-icon {
+            background-color: hsl(var(--clr-optional) / .05);
+        }
+    }
+
+    &:has(.search-result:active, .search-result:focus) {
+        outline: 3px solid hsl(var(--clr-optional) / .15);
+
+        > * {
+            border-color: hsl(var(--clr-optional) / .5);
+        }
+
+        > .search-icon {
+            background-color: hsl(var(--clr-optional) / .5);
+            color: hsl(var(--clr-min));
+        }
+    }
+
+    &:has(.search-result:disabled) {
+        pointer-events: none;
+
+        > * {
+            color: rgb(204, 204, 204);
+            text-shadow: var(--shd-form-disabled);
+        }
+
+        > .search-result {
+            background-color: hsl(var(--clr-unabled));
+        }
+    }
+}
+
+// 조회 모달 불러오기 기능 인풋 끝
+
+//23.11.03 이후 수정
+.nl-block {
+    display: block;
+}
+
+//<p class="double-line-header block-header">예산배분<span class="nl-block">조정결과</span></p>
+
+.readable {
+    .table-cell.row-content, .table-cell.row-content-double {
+        justify-content: flex-start;
+    }
+
+    .table-cell.row-header.row-header-mid {
+        // height: auto;
+        text-align: center;
+        line-height: 1.25;
+    }
+}
+
+.for-cost-unit {
+    &:after {
+        content: '(천)원';
+        display: inline-block;
+        margin-left: .5rem;
+    }
+}
+
+.low-column-table {
+    display: flex;
+}
+
+#uploadInput {
+    display: none;
+}
+
+@media screen and (max-width: 800px) {
+    .common-search-container .form-input-select {
+        width: auto !important;
+    }
+
+    .nl-block {
+        display: inline-block;
+    }
+}
+
+
+
+/* _formElements.scss */

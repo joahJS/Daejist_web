@@ -1,0 +1,160 @@
+@charset "UTF-8";
+/*컬러*/
+#lodingView {
+	display: none !important;
+}
+
+[data-device-type=mobile] {
+	/* Landscape 세로모드일 때 적용할 CSS */
+}
+@media screen and (max-width: 540px) {
+	[data-device-type=mobile] .list_table {
+		width: auto;
+		overflow: auto;
+	}
+	[data-device-type=mobile] .SearchBtn {
+		width: 100%;
+	}
+	[data-device-type=mobile] .closure_in label {
+		display: inline-block;
+		word-break: keep-all;
+	}
+	[data-device-type=mobile] #fDate {
+		width: max(240px, 10vmax);
+	}
+}
+
+[data-device-type=desktop] {
+	/* Landscape 가로모드일 때 적용할 CSS */
+}
+[data-device-type=desktop] #wrap {
+	width: 1900px;
+}
+[data-device-type=desktop] #contentView {
+	width: 1900px;
+}
+[data-device-type=desktop] .list_table {
+	height: 180vh;
+}
+
+#contentView {
+	padding: 0.8rem;
+	width: 100%;
+	margin: 0 auto;
+}
+
+.list_table {
+	height: calc(100vh - 12.5rem);
+	max-width: 1900px;
+	text-align: center;
+	margin: 0 auto;
+	overflow: auto;
+}
+
+/* 서치박스 (검색)*/
+.list_title {
+	background-color: rgba(114, 107, 107, 0.1);
+	padding: 0.3rem 0.5rem;
+}
+.list_title form {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 0.8rem;
+	margin: 0.5rem 0;
+}
+.list_title form .closure {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+.list_title form .closure_in {
+	border-left: 1px solid rgba(114, 107, 107, 0.6);
+	padding-left: 0.5rem;
+}
+.list_title form button {
+	padding: 0.5rem;
+}
+.list_title form input[type=text] {
+	width: max(128px, 16vmax);
+}
+.list_title form select {
+	width: max(73px, 7vmax);
+}
+.list_title form .date_title {
+	padding-bottom: 0.3rem;
+}
+.list_title div + div {
+	border-left: 0.5px solid rgb(196, 196, 197);
+	padding-left: 0.7rem;
+}
+
+/* 서치박스 (검색)*/
+#jb-table {
+	width: 100%;
+}
+#jb-table th,
+#jb-table td {
+	border: 0.5px solid rgb(196, 196, 197);
+	padding: 0.5rem;
+	word-break: keep-all;
+	vertical-align: middle;
+}
+#jb-table th {
+	height: 40px;
+	background-color: rgb(255, 249, 233);
+	word-break: keep-all;
+	text-align: center;
+	position: -webkit-sticky;
+	position: sticky;
+	top: -3px;
+	z-index: 1;
+}
+#jb-table td:nth-child(1) p {
+	width: 40px;
+}
+#jb-table td:nth-child(4) p, #jb-table td:nth-child(10) p {
+	width: 300px;
+}
+#jb-table td:nth-child(1) p, #jb-table td:nth-child(2) p, #jb-table td:nth-child(3) p, #jb-table td:nth-child(11) p {
+	text-align: center;
+}
+#jb-table td:nth-child(4) p, #jb-table td:nth-child(5) p, #jb-table td:nth-child(9) p, #jb-table td:nth-child(10) p {
+	text-align: left;
+}
+#jb-table td p {
+	text-align: right;
+	width: 100px;
+}
+
+tfoot td {
+	background-color: rgb(240, 238, 247);
+}
+tfoot td:nth-child(1) {
+	background-color: rgb(255, 255, 255);
+}
+
+@media screen and (max-width: 1000px) {
+	.list_title form {
+		gap: 0.5rem;
+		align-items: inherit;
+	}
+	.list_title div + div {
+		border-top: 0.5px solid rgb(196, 196, 197);
+		padding: 0.6rem;
+		border-left: 0;
+		padding-left: 0;
+	}
+}
+@media screen and (max-width: 768px) {
+	.list_title form {
+		flex-direction: column;
+	}
+	.list_title form .closure {
+		gap: 0.25rem;
+	}
+	.list_title form .closure p {
+		font-size: 12px;
+		width: 60px;
+	}
+}

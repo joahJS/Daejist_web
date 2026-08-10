@@ -1,0 +1,270 @@
+/* ---------- theme colors ---------- */
+/* set concept color above (as HSL format) */
+/* ---------- gray tones ---------- */
+/* ---------- temporary colors ---------- */
+/* ---------- mixin ---------- */
+/* ---------- %placeholder ----------*/
+/* ---------- whatever else ---------- */
+/* ---------- @keyframes ---------- */
+@-webkit-keyframes popout {
+	30% {
+		transform: scale(0);
+	}
+	60% {
+		transform: scale(0.9);
+	}
+	80% {
+		transform: scale(0.75);
+	}
+	90% {
+		transform: scale(0.95);
+	}
+	95% {
+		transform: scale(0.9);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+@keyframes popout {
+	30% {
+		transform: scale(0);
+	}
+	60% {
+		transform: scale(0.9);
+	}
+	80% {
+		transform: scale(0.75);
+	}
+	90% {
+		transform: scale(0.95);
+	}
+	95% {
+		transform: scale(0.9);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+@-webkit-keyframes kickin-down {
+	0% {
+		transform: translateY(200%);
+	}
+	5% {
+		transform: translateY(0);
+	}
+	90% {
+		transform: translateY(0);
+		opacity: 1;
+	}
+	100% {
+		transform: translateY(0);
+		opacity: 0;
+	}
+}
+@keyframes kickin-down {
+	0% {
+		transform: translateY(200%);
+	}
+	5% {
+		transform: translateY(0);
+	}
+	90% {
+		transform: translateY(0);
+		opacity: 1;
+	}
+	100% {
+		transform: translateY(0);
+		opacity: 0;
+	}
+}
+@-webkit-keyframes clicked {
+	from {
+		transform: rotateZ(-90deg) scale(0.8);
+	}
+	to {
+		transform: rotateZ(-90deg) scale(1);
+	}
+}
+@keyframes clicked {
+	from {
+		transform: rotateZ(-90deg) scale(0.8);
+	}
+	to {
+		transform: rotateZ(-90deg) scale(1);
+	}
+}
+@-webkit-keyframes agree-round {
+	from {
+		stroke-dashoffset: 130;
+	}
+	to {
+		stroke-dashoffset: 0;
+	}
+}
+@keyframes agree-round {
+	from {
+		stroke-dashoffset: 130;
+	}
+	to {
+		stroke-dashoffset: 0;
+	}
+}
+@-webkit-keyframes agree-check {
+	from {
+		stroke-dashoffset: 52;
+	}
+	to {
+		stroke-dashoffset: 0;
+	}
+}
+@keyframes agree-check {
+	from {
+		stroke-dashoffset: 52;
+	}
+	to {
+		stroke-dashoffset: 0;
+	}
+}
+/* print out */
+/* ---------- main ---------- */
+#printOut {
+	margin-inline: auto;
+	padding: 0.15rem;
+	border: 0.05rem solid #333;
+	width: 80%;
+}
+
+table {
+	width: 100%;
+	border-collapse: separate;
+	border-spacing: 0.05rem;
+	background-color: #333;
+	page-break-inside: auto;
+}
+table th,
+table td {
+	padding: 0.25rem 0.5rem;
+	background-color: white;
+	line-height: 1.2;
+}
+table#headTable {
+	-webkit-margin-after: 0.5rem;
+	        margin-block-end: 0.5rem;
+}
+table#mainTable {
+	counter-set: count-car;
+}
+table#mainTable tbody > tr {
+	counter-increment: count-car;
+}
+
+td[colspan="100%"] {
+	padding: 0.1rem;
+}
+
+.head_title {
+	display: inline-block;
+	font-size: 2rem;
+	vertical-align: middle;
+	letter-spacing: 2rem;
+}
+
+.print_page {
+	padding: 0.5rem 1rem;
+	border: 0.05rem solid hsl(234deg, 20%, 73%);
+	border-radius: 0.25rem;
+	background-color: hsl(234deg, 8%, 90%);
+	color: hsl(234deg, 18%, 46%);
+}
+
+[data-hidden-aligner] > th {
+	padding: 0;
+	width: 50%;
+}
+.large_text {
+	font-size: 1.1rem;
+}
+.size__none {
+	width: 5%;
+	-ms-writing-mode: tb-lr;
+	    writing-mode: vertical-lr;
+	font-size: 1.1rem;
+}
+.size__title {
+	width: 10%;
+	font-size: 1.1rem;
+}
+.size__remain {
+	width: 12.5%;
+	font-size: 1.1rem;
+}
+
+[data-row-year],
+[data-row-month],
+[data-row-day],
+[data-row-grade],
+[data-row-carno] {
+	text-align: center;
+}
+
+[data-row-totwgt],
+[data-row-rdcwgt],
+[data-row-single],
+[data-row-suprice],
+[data-row-tax],
+[data-row-totsales],
+[data-sum-totwgt],
+[data-sum-rdcwgt],
+[data-sum-suprice],
+[data-sum-tax],
+[data-sum-totsales] {
+	text-align: end;
+}
+
+[data-sum-car] {
+	text-align: end;
+}
+[data-sum-car]::after {
+	content: attr(data-sum-car);
+}
+
+.closeBtnBox{
+	text-align: end;
+    padding: 10px;
+    width: 80%;
+    margin: 0 auto;
+}
+
+/* ---------- main ---------- */
+/* ---------- media queries ---------- */
+@media print {
+	:root {
+		font-size: 12px;
+	}
+
+	body {
+		width: 210mm;
+		height: 297mm;
+	}
+
+	#printOut {
+		margin-inline: 0;
+		width: 100%;
+	}
+
+	table {
+		border-spacing: 0.3mm;
+	}
+	@page {
+		size: A4;
+	}
+	
+	#btnPrint{
+		display:none;
+	}
+	
+	#btnClose{
+		display:none;
+	}
+}

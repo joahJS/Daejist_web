@@ -1,0 +1,99 @@
+/* login */
+
+@use 'sass:list';
+@use 'sass:math';
+
+@use '../modules/colors' as clr;
+@use '../modules/mixins' as mix;
+@use '../modules/elements' as elm;
+
+/* ---------- main ---------- */
+
+#contentView {
+    min-height: 100vh;
+}
+
+#winLogin {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: fit-content;
+    height: fit-content;
+}
+
+h2 {
+    margin-block-end: .25rem;
+    color: clr.$error;
+
+    > svg {
+        display: inline-block;
+        fill: currentColor;
+        vertical-align: top;
+    }
+
+    &::after {
+        margin-inline-start: .25rem;
+        color: initial;
+        font-size: .6rem;
+        font-weight: normal;
+        opacity: .75;
+        content: '로그인이 필요한 페이지입니다.';
+    }
+}
+
+#frmLogin {
+    padding: 1rem;
+    height: 6rem;
+    outline: .1rem solid clr.$g-mid;
+}
+
+.input_container {
+    float: left;
+    margin-inline-end: 1rem;
+}
+
+.line_protector {
+    & + & {
+        margin-block-start: .5rem;
+    }
+
+    > label {
+        display: inline-block;
+        margin-block: auto;
+        margin-inline-end: .5rem;
+        padding-inline-start: .5rem;
+        width: 5rem;
+        border-inline-start: .25rem solid clr.$activated;
+        vertical-align: middle;
+    }
+
+    input {
+        width: 8rem;
+    }
+}
+
+#btnLogin {
+    float: left;
+    width: 4rem;
+    height: 100%;
+    font-weight: bold;
+}
+
+/* ---------- main ---------- */
+/* ---------- media queries ---------- */
+
+@media (pointer: coarse) and (hover: none) {
+
+}
+
+@media screen and (max-width: 960px) {
+
+} // 960px
+
+@media screen and (max-width: 640px) {
+
+} // 640px
+
+@media screen and (max-width: 540px) {
+
+} // 540px

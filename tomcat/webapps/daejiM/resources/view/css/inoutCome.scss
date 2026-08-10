@@ -1,0 +1,543 @@
+/* 컬러 */
+
+$color__dark: rgb(51, 38, 38);
+$color__grey: rgb(114, 107, 107);
+$color__mid: rgb(196, 196, 197);
+$color__light: hsl(240, 8%, 95%);
+$color__subtle: rgb(249, 249, 249);
+$color__white: rgb(255, 255, 255);
+
+$color__pm: rgb(66, 86, 47);
+$color__sub: rgb(58, 126, 142);
+$color__rd: rgb(205, 92, 92);
+$color__vo: rgb(240, 238, 247);
+$color__yy: rgb(255, 249, 233);
+$color__bp: rgb(255, 240, 246);
+
+[data-device-type="desktop"] {
+    /* Landscape 가로모드일 때 적용할 CSS */
+
+    #wrap {
+        width: 1900px;
+    }
+
+    #contentView {
+        width: 1900px;
+    }
+
+    .list_table {
+        height: 150vh;
+    }
+}
+
+[data-device-type="mobile"] {
+    /* Landscape 세로모드일 때 적용할 CSS */
+}
+
+/* 서치박스 (검색) */
+
+.list_title {
+    background-color: rgba($color__grey, .1);
+    padding: .3rem .5rem;
+
+    form {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 1rem;
+        margin: .5rem 0;
+
+        .closure {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+
+            p {
+                width: 55px;
+            }
+
+            input[type=checkbox],
+            input[type=radio] {
+                vertical-align: text-bottom;
+            }
+        }
+
+        button {
+            max-width: max(300px, 20vmax);
+            padding: .5rem
+        }
+
+        input[type=date] {
+            width: max(110px, 10vmax);
+        }
+    }
+
+    div + div {
+        border-left: .5px solid $color__mid;
+        padding-left: .7rem;
+    }
+}
+
+.list_table {
+    overflow: auto;
+    height: 80vh;
+}
+
+.tab_wrap {
+    display: flex;
+    gap: .3rem;
+    margin-top: 1rem;
+
+    li {
+        padding: .5rem 1rem .7rem;
+        border: .5px solid rgba($color__pm, .3);
+        border-radius: .3rem .3rem 0 0;
+        cursor: pointer;
+        border-bottom: 0;
+        color: $color__grey;
+
+        &.on {
+            background-color: rgba($color__pm, .7);
+            color: $color__white;
+        }
+    }
+}
+
+table {
+    th,
+    td {
+        border: .5px solid $color__mid;
+        padding: .5rem .5rem;
+        vertical-align: middle;
+    }
+
+    th {
+        height: 40px;
+        background-color: $color__yy;
+        text-align: center;
+        min-width: 100px;
+        max-width: 100px;
+        position: -webkit-sticky;
+        position: sticky;
+        top: -1px;
+        z-index: 1;
+    }
+
+    td {
+        cursor: default;
+        text-align: right;
+
+        p {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+
+    tfoot {
+        background: $color__vo;
+        height: 50px;
+
+        td {
+            &:first-child {
+                font-weight: bold;
+                text-align: center;
+            }
+        }
+    }
+}
+
+/* 매입 */
+
+.inCome {
+    .inCome_client {
+        thead,
+        tbody {
+            td {
+                &:nth-child(1),
+                &:nth-child(2),
+                &:nth-child(4),
+                &:nth-child(5) {
+                    text-align: center;
+                }
+
+                &:nth-child(3),
+                &:nth-child(10),
+                &:nth-child(19),
+                &:nth-child(20),
+                &:nth-child(21),
+                &:nth-child(22) {
+                    text-align: left;
+                }
+
+                &:nth-child(8),
+                &:nth-child(11),
+                &:nth-child(12) {
+                    background-color: rgba($color__sub, .2);
+                }
+            }
+        }
+    }
+
+    .inCome_level {
+        display: none;
+
+        thead,
+        tbody {
+            td {
+                &:nth-child(1) {
+                    text-align: left;
+                }
+            }
+        }
+    }
+
+    .inCome_company {
+        display: none;
+
+        thead,
+        tbody {
+            td {
+                &:nth-child(1),
+                &:nth-child(2),
+                &:nth-child(6) {
+                    text-align: left;
+                }
+            }
+        }
+    }
+}
+
+/* 매출 */
+
+.outCome {
+    display: none;
+
+    .outCome_client {
+        thead,
+        tbody {
+            td {
+
+                &:nth-child(1),
+                &:nth-child(2),
+                &:nth-child(3),
+                &:nth-child(21) {
+                    text-align: center;
+                }
+
+                &:nth-child(4),
+                &:nth-child(5),
+                &:nth-child(6),
+                &:nth-child(11),
+                &:nth-child(20),
+                &:nth-child(21),
+                &:nth-child(22),
+                &:nth-child(23),
+                &:nth-child(24),
+                &:nth-child(26),
+                &:nth-child(27) {
+                    text-align: left;
+                }
+
+                &:nth-child(9),
+                &:nth-child(12),
+                &:nth-child(13) {
+                    background-color: rgba($color__sub, .2);
+                }
+            }
+        }
+    }
+
+    .outCome_level {
+        display: none;
+
+        thead,
+        tbody {
+            td {
+                &:nth-child(1) {
+                    text-align: left;
+                }
+            }
+        }
+    }
+
+    .outCome_company {
+        display: none;
+
+        thead,
+        tbody {
+            td {
+                &:nth-child(1),
+                &:nth-child(2),
+                &:nth-child(6) {
+                    text-align: left;
+                }
+            }
+        }
+    }
+}
+
+/* 직송 */
+
+.direct {
+    display: none;
+
+    .direct_client {
+
+        thead,
+        tbody {
+            td {
+                &:nth-child(1),
+                &:nth-child(2) {
+                    text-align: center;
+                }
+
+                &:nth-child(3),
+                &:nth-child(4),
+                &:nth-child(5),
+                &:nth-child(6),
+                &:nth-child(9),
+                &:nth-child(19),
+                &:nth-child(20),
+                &:nth-child(22),
+                &:nth-child(23) {
+                    text-align: left;
+                }
+
+                &:nth-child(8),
+                &:nth-child(12) {
+                    background-color: rgba($color__sub, .2);
+                }
+            }
+        }
+    }
+
+    .direct_level {
+        display: none;
+
+        thead,
+        tbody {
+
+            td {
+                &:nth-child(1) {
+                    text-align: left;
+                }
+            }
+        }
+    }
+
+    .direct_company {
+        display: none;
+
+        thead,
+        tbody {
+            td {
+                &:nth-child(1),
+                &:nth-child(2),
+                &:nth-child(6) {
+                    text-align: left;
+                }
+            }
+        }
+    }
+}
+
+/* 계근사진 팝업 */
+
+#pop_add {
+    .popText {
+        h5 {
+            padding: .8rem;
+            margin-bottom: 1.5rem;
+            color: $color__pm;
+            border: 1px solid $color__pm;
+            box-shadow: 0 0 .5rem .2rem rgba($color__pm, .1);
+
+            i {
+                padding-right: .3rem;
+                font-weight: normal;
+            }
+        }
+    }
+
+    .list_box {
+        display: flex;
+        flex-flow: row wrap;
+        overflow: auto;
+        height: 60vh;
+    }
+
+    .list {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+
+        > p {
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .img_box {
+            display: flex;
+            flex-flow: row nowrap;
+            gap: .5rem;
+
+            p {
+                width: 300px;
+                height: auto;
+                background-color: antiquewhite;
+            }
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+    }
+
+    .pop_btn {
+        text-align: right;
+        margin-top: 1rem;
+
+        button {
+            padding: .6rem 1rem;
+        }
+    }
+}
+
+/* 매입출 선택 팝업 */
+
+#pop_choice {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, .7);
+    z-index: 2;
+
+    .popText {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #fff;
+        padding: 1rem;
+        width: 320px;
+        border-radius: .5rem;
+
+        h6 {
+            margin-bottom: 1.5rem;
+            font-weight: normal;
+        }
+
+        p {
+            text-align: center;
+            font-size: 1.5rem;
+            line-height: 1.4;
+            font-weight: bold;
+        }
+
+        .pop_btn {
+            margin-top: 1.5rem;
+            text-align: center;
+
+            button {
+                padding: .5rem 1rem;
+            }
+        }
+    }
+}
+
+
+@media screen and (max-width: 1000px) {
+    #pop_add {
+        .popText {
+            width: 96%;
+        }
+
+        .list {
+            width: 100%;
+        }
+
+        .list_box {
+            flex-flow: row wrap;
+            width: 100%;
+            height: auto;
+        }
+    }
+
+    .list_title {
+        form {
+            gap: 1rem;
+            align-items: inherit;
+        }
+    }
+
+    .list_title form button {
+        max-width: 100%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .list_title form .closure {
+        gap: 1.4rem;
+        padding-bottom: 0.4rem;
+
+        &:first-child {
+            gap: .3rem;
+        }
+    }
+
+    .list_title form .closure p {
+        font-size: 12px;
+        width: 60px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    #pop_choice {
+        .popText {
+            width: 90%;
+        }
+    }
+}
+
+
+@media screen and (max-width: 426px) {
+    .list_title form input[type=date] {
+        width: max(110px, 12vmax);
+    }
+
+    .list_title form {
+        button{
+            margin-left: auto;
+        }
+
+        .closure {
+            gap: 1.5rem;
+
+            &.m_closure {
+                flex-direction: column;
+            }
+
+            label {
+                display: flex;
+                flex-direction: column;
+            }
+
+            span {
+                display: inline-block;
+                width: 4px;
+                word-break: break-all;
+                text-align: center;
+
+                &.hide {
+                    display: none;
+                }
+            }
+        }
+    }
+}

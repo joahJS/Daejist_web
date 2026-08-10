@@ -1,0 +1,80 @@
+@import
+    '_common.scss',
+    '_commonTable.scss',
+    '_commonModal.scss',
+    '_formElements.scss',
+    '_customElements.scss',
+    '_mainLayout.scss';
+
+//
+
+@font-face {
+    font-family: 'NG_R';
+    src: url('../font/NanumBarunGothic.ttf') format('ttf');    
+    // font-variation-settings: "wdth" 80;
+}
+
+@font-face {
+    font-family: 'SUIT-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Regular.woff2') format('woff2');
+    // font-weight: normal;
+    // font-style: normal;
+}
+
+:root {
+    box-sizing: border-box;
+    font-size: 16px; // 1rem
+    line-height: 1;
+    font-family: 'NG_R', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    // background-color: #fff;
+    background-color: rgba(58, 77, 131, 0.01);
+    font-family: 'SUIT-Regular', sans-serif;
+    color: #000;
+    font-size: 14px;
+    text-rendering: optimizeSpeed;
+    overflow-x: hidden;
+    overflow-y: overlay;
+    margin: 0;
+}
+
+table {
+    border-spacing: 0;
+    border-collapse: collapse;
+    background-color: #fff;
+}
+
+ul,
+ol {
+    list-style: none;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select,
+optgroup {
+    // font: inherit;
+    // border: none;
+    // background: none;
+    // vertical-align: middle;
+    // -webkit-appearance: none;
+    // -moz-appearance: none;
+    // appearance: none;
+}
+
+h1, h2, h3, h4, h5 {
+    margin: 0;
+}
+
+.form-input-label {
+    color: #3a4e84;
+}
