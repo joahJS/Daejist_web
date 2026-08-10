@@ -1,6 +1,6 @@
 
 var dataYN = "N";
-let cor = 0;
+let corByDealer = {}; // 거래처(지점)별 누적잔액
 /* javascript (table) */
 
 /* ---------- jQuery basics ---------- */
@@ -83,7 +83,7 @@ $("#btnApply").on("click", function(){
 })
 
 function getCarryOver(sdate, edate) {
-	
+
 	$.ajax({
 		url:contextUrl + "/member/getCarryOver.do",
 		type:"post",
@@ -91,7 +91,13 @@ function getCarryOver(sdate, edate) {
 		success: function(res){
 			if(res != ""){
 				$("#txtCarryOver").val($.round_comma(res.CARRY_OVER_AMT+"", 0, false, true));
-				cor = res.CARRY_OVER_AMT;
+
+				corByDealer = {};
+				if(res.byDealer){
+					for(var dealerCd in res.byDealer){
+						corByDealer[dealerCd] = parseFloat(res.byDealer[dealerCd]) || 0;
+					}
+				}
 			}
 		}
 	})
@@ -141,21 +147,19 @@ function getTableData(){
 			        const rowRecv = tableRow.querySelector('[data-receive]');
 			        const rowRemain = tableRow.querySelector('[data-remain]');
 			        const rowReceipt = tableRow.querySelector('[data-receipt]');
+			        const rowCompany = tableRow.querySelector('[data-company]');
 
 			        //tableRow.dataset.rowId = tableData[i]; // 행 고유 ID
 
 			        var row = res[i];
-			        
-			        if(i == 0){
-			        	//$("#txtCarryOver").val($.round_comma(row["K_CHA"]+"", 0, false, true));
-			        	cor += row["K_DAE"]+row["J_BUGASE"]-row["K_CHA"];
-			        	//console.log(cor);
-			        	//jan += row["K_DAE"]+row["J_BUGASE"];
-			        }else{
-			        	cor += row["K_DAE"]+row["J_BUGASE"]-row["K_CHA"];
-			        	//jan += row["K_DAE"]+row["J_BUGASE"]-row["K_CHA"];
+			        var dealerCd = row["DEALER_CD"];
+
+			        // 거래처(지점)마다 이월잔액을 따로 관리해서 누적잔액이 섞이지 않게 함
+			        if(corByDealer[dealerCd] === undefined){
+			        	corByDealer[dealerCd] = 0;
 			        }
-			        
+			        corByDealer[dealerCd] += row["K_DAE"]+row["J_BUGASE"]-row["K_CHA"];
+
 			        rowDate.textContent = row["J_DATE"];
 			        rowCarNo.textContent = row["J_BNUM"];
 			        rowGrade.textContent = row["GUBUN1"];
@@ -166,9 +170,10 @@ function getTableData(){
 			        rowPrice.textContent = $.round_comma(row["K_DAE"]+"", 0, false, true);
 			        rowTax.textContent = $.round_comma(row["J_BUGASE"]+"", 0, false, true);
 			        rowRecv.textContent = $.round_comma(row["K_CHA"]+"", 0, false, true);
-			        rowRemain.textContent = $.round_comma(cor+"", 0, false, true);
+			        rowRemain.textContent = $.round_comma(corByDealer[dealerCd]+"", 0, false, true);
 			        rowReceipt.textContent = "";
-			        	
+			        rowCompany.textContent = row["DEALER_NM"] || "";
+
 			        rowContainer.appendChild(tableRow);
 			    }
 				

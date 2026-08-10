@@ -70,6 +70,7 @@
                                 <col class="data_recieve">
                                 <col class="data_remain">
                                 <col class="data_receipt">
+                                <col class="data_company">
                             </colgroup>
 
                             <thead>
@@ -87,6 +88,7 @@
                                     <th scope="col">입금액</th>
                                     <th scope="col">잔액</th>
                                     <th scope="col">계산서 여부</th>
+                                    <th scope="col">거래처</th>
                                 </tr>
                             </thead>
 
@@ -106,6 +108,7 @@
                                     <td data-tax>0</td>
                                     <td data-receive>0</td>
                                     <td data-remain></td>
+                                    <td></td>
                                     <td></td>
                                 </tr>
                             </tfoot>
@@ -127,6 +130,7 @@
                             <td data-receive></td>
                             <td data-remain></td>
                             <td data-receipt></td>
+                            <td data-company></td>
                         </tr>
                     </template>
                 </div> <!-- #contentView -->
