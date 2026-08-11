@@ -17,6 +17,14 @@ $(document).ready(function() {
 	sessionStorage.removeItem("sdate");
 	sessionStorage.removeItem("edate");
 
+	// 조회기간 기본값: 이번달 1일 ~ 오늘
+	var today = new Date();
+	var yyyy = today.getFullYear();
+	var mm = String(today.getMonth() + 1).padStart(2, '0');
+	var dd = String(today.getDate()).padStart(2, '0');
+	$("#dateBegin").val(yyyy + "-" + mm + "-01");
+	$("#dateEnd").val(yyyy + "-" + mm + "-" + dd);
+
 }); // 페이지가 시작될 때
 
 /* ---------- Plain Javascripts ---------- */
