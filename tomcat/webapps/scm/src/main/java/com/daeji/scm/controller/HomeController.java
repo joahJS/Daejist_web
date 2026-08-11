@@ -75,34 +75,38 @@ public class HomeController {
         if (dealerList.isEmpty()) {
             return null;
         }
-        // 거래명세서는 세금계산서 성격의 대외 문서이므로, 동일 사업자번호에 지점이 여러 건
-        // 연결되어 있더라도 지금은 대표 거래처(첫 번째 등록 건) 기준으로만 발행한다.
-        // 지점별로 별도 발행할지, 한 문서에 합산할지는 별도 확인이 필요하다.
-        UserVO userInfo = dealerList.get(0);
         String sdate = request.getParameter("sdate");
         String edate = request.getParameter("edate");
-        HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("sdate", sdate);
-        map.put("edate", edate);
-        map.put("J_ID1", userInfo.getDEALER_CD());
-        List<Map<String, Object>> result = this.hService.getPrintData(map);
-        HashMap<String, Object> comInfo = new HashMap<String, Object>();
-        int i = 0;
-        while (i < result.size()) {
-            Map<String, Object> rMap = result.get(i);
-            if (i == 0) {
-                String IDT_NO = rMap.get("IDT_NO").toString();
-                IDT_NO = String.valueOf(IDT_NO.substring(0, 3)) + "-" + IDT_NO.substring(3, 5) + "-" + IDT_NO.substring(5);
-                comInfo.put("IDT_NO", IDT_NO);
-                comInfo.put("DEALER_NM", rMap.get("DEALER_NM"));
-                comInfo.put("REP_NM", rMap.get("REP_NM"));
-                comInfo.put("ADDR", rMap.get("ADDR"));
-                comInfo.put("BIZ_NM", rMap.get("BIZ_NM"));
-                comInfo.put("TYPE_NM", rMap.get("TYPE_NM"));
-                break;
-            }
-            ++i;
+
+        // 거래명세서 내용(줄)은 사업자번호에 속한 모든 지점의 매입 내역을 합쳐서 전부 보여준다.
+        List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+        for (UserVO dealer : dealerList) {
+            HashMap<String, Object> map = new HashMap<String, Object>();
+            map.put("sdate", sdate);
+            map.put("edate", edate);
+            map.put("J_ID1", dealer.getDEALER_CD());
+            result.addAll(this.hService.getPrintData(map));
         }
+        result.sort((a, b) -> {
+            String da = "" + a.get("YY") + a.get("MM") + a.get("DD");
+            String db = "" + b.get("YY") + b.get("MM") + b.get("DD");
+            return da.compareTo(db);
+        });
+
+        // 상단 법인명 등은 지점 데이터 유무와 상관없이 거래시작일이 가장 빠른 지점(dealerList 첫 번째) 것으로 고정한다.
+        UserVO repDealer = dealerList.get(0);
+        HashMap<String, Object> comInfo = new HashMap<String, Object>();
+        String IDT_NO = repDealer.getIDT_NO();
+        IDT_NO = IDT_NO.substring(0, 3) + "-" + IDT_NO.substring(3, 5) + "-" + IDT_NO.substring(5);
+        comInfo.put("IDT_NO", IDT_NO);
+        comInfo.put("DEALER_NM", repDealer.getDEALER_NM());
+        comInfo.put("REP_NM", repDealer.getREP_NM());
+        comInfo.put("ADDR", repDealer.getADDR() != null && !repDealer.getADDR().isEmpty()
+                ? repDealer.getADDR() + " " + repDealer.getDTL_ADDR()
+                : repDealer.getDTL_ADDR());
+        comInfo.put("BIZ_NM", repDealer.getBIZ_NM());
+        comInfo.put("TYPE_NM", repDealer.getTYPE_NM());
+
         Map<String, Object> daejiInfo = this.hService.getDaejiInfo();
         mav.setViewName("printOut");
         mav.addObject("list", result);
