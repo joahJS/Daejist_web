@@ -1,6 +1,6 @@
 
 var dataYN = "N";
-let corByDealer = {}; // 거래처(지점)별 누적잔액
+let cor = 0; // 누적잔액(지점 구분 없이 사업자번호 전체 합산)
 let queryReqId = 0; // 조회 요청 번호(오래된 응답이 최신 화면을 덮어쓰는 것 방지)
 let carryOverXhr = null;
 let tableDataXhr = null;
@@ -109,13 +109,7 @@ function getCarryOver(sdate, edate, reqId) {
 			}
 			if(res != ""){
 				$("#txtCarryOver").val($.round_comma(res.CARRY_OVER_AMT+"", 0, false, true));
-
-				corByDealer = {};
-				if(res.byDealer){
-					for(var dealerCd in res.byDealer){
-						corByDealer[dealerCd] = parseFloat(res.byDealer[dealerCd]) || 0;
-					}
-				}
+				cor = parseFloat(res.CARRY_OVER_AMT) || 0;
 			}
 		}
 	})
@@ -180,13 +174,9 @@ function getTableData(){
 			        //tableRow.dataset.rowId = tableData[i]; // 행 고유 ID
 
 			        var row = res[i];
-			        var dealerCd = row["DEALER_CD"];
 
-			        // 거래처(지점)마다 이월잔액을 따로 관리해서 누적잔액이 섞이지 않게 함
-			        if(corByDealer[dealerCd] === undefined){
-			        	corByDealer[dealerCd] = 0;
-			        }
-			        corByDealer[dealerCd] += row["K_DAE"]+row["J_BUGASE"]-row["K_CHA"];
+			        // 지점 구분 없이 사업자번호 전체 기준으로 누적잔액 계산
+			        cor += row["K_DAE"]+row["J_BUGASE"]-row["K_CHA"];
 
 			        rowDate.textContent = row["J_DATE"];
 			        rowCarNo.textContent = row["J_BNUM"];
@@ -198,7 +188,7 @@ function getTableData(){
 			        rowPrice.textContent = $.round_comma(row["K_DAE"]+"", 0, false, true);
 			        rowTax.textContent = $.round_comma(row["J_BUGASE"]+"", 0, false, true);
 			        rowRecv.textContent = $.round_comma(row["K_CHA"]+"", 0, false, true);
-			        rowRemain.textContent = $.round_comma(corByDealer[dealerCd]+"", 0, false, true);
+			        rowRemain.textContent = $.round_comma(cor+"", 0, false, true);
 			        rowReceipt.textContent = "";
 			        rowCompany.textContent = row["DEALER_NM"] || "";
 
