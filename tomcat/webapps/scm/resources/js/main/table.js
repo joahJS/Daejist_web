@@ -254,7 +254,7 @@ $("#printOut").on("click", function(){
 		return;
 	}
 	
-	location.href="/scm/member/print.do?sdate="+sdate+"&edate="+edate;
+	window.open("/scm/member/print.do?sdate="+sdate+"&edate="+edate, "_blank");
 })
 
 $("#logout").on("click", function(){

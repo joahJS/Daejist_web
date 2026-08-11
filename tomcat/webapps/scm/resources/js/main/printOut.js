@@ -96,5 +96,5 @@ function sumOfAllFears(arrayName) {
 /* 배열의 숫자 총합 리턴 끝 */
 
 $("#btnClose").on("click", function(){
-	location.href="/scm/member/table.do";
+	window.close();
 })
