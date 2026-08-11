@@ -22,7 +22,6 @@ implements HomeService {
 
     @Override
     public List<Map<String, Object>> getTableData(Map<String, Object> map) {
-        System.out.println(this.hDao.getTableData(map));
         return this.hDao.getTableData(map);
     }
 

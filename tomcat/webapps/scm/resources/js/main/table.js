@@ -1,6 +1,9 @@
 
 var dataYN = "N";
 let corByDealer = {}; // 거래처(지점)별 누적잔액
+let queryReqId = 0; // 조회 요청 번호(오래된 응답이 최신 화면을 덮어쓰는 것 방지)
+let carryOverXhr = null;
+let tableDataXhr = null;
 /* javascript (table) */
 
 /* ---------- jQuery basics ---------- */
@@ -82,13 +85,20 @@ $("#btnApply").on("click", function(){
 	getTableData();
 })
 
-function getCarryOver(sdate, edate) {
+function getCarryOver(sdate, edate, reqId) {
 
-	$.ajax({
+	if(carryOverXhr){
+		carryOverXhr.abort(); // 이전에 보낸(아직 안 끝난) 조회는 취소
+	}
+
+	carryOverXhr = $.ajax({
 		url:contextUrl + "/member/getCarryOver.do",
 		type:"post",
 		data:{"sdate":sdate, "edate":edate},
 		success: function(res){
+			if(reqId !== queryReqId){
+				return; // 그 사이 새로 조회가 시작됐으면 이 응답은 버림
+			}
 			if(res != ""){
 				$("#txtCarryOver").val($.round_comma(res.CARRY_OVER_AMT+"", 0, false, true));
 
@@ -106,31 +116,41 @@ function getCarryOver(sdate, edate) {
 function getTableData(){
 	var sdate = $("#dateBegin").val();
 	var edate = $("#dateEnd").val();
-	
+
 	if(sdate == null || sdate == ""){
 		createAlert('alert', '시작일자를 입력해 주세요.');
 		$("#dateBegin").focus();
 		return;
 	}
-	
+
 	if(edate == null || edate == ""){
 		createAlert('alert', '종료일자를 입력해 주세요.');
 		$("#dateEnd").focus();
 		return;
 	}
-	
-	getCarryOver(sdate, edate);
-	
-	$.ajax({
+
+	queryReqId++;
+	var thisReqId = queryReqId;
+
+	if(tableDataXhr){
+		tableDataXhr.abort(); // 이전에 보낸(아직 안 끝난) 조회는 취소
+	}
+
+	getCarryOver(sdate, edate, thisReqId);
+
+	tableDataXhr = $.ajax({
 		url:contextUrl + "/member/getTableData.do",
 		type:"post",
 		data:{"sdate":sdate, "edate":edate},
 		success: function(res){
+			if(thisReqId !== queryReqId){
+				return; // 그 사이 새로 조회가 시작됐으면 이 응답은 버림
+			}
 			if(res != ""){
 				var jan = 0;
-				
+
 				$(rowContainer).text("");
-				
+
 				for (i = 0; i < res.length; i ++) {
 			        const tableRow = rowTemplate.content.cloneNode(true).children[0];
 
