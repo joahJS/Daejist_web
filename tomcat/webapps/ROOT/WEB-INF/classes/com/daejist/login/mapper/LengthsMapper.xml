@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.daejist.login.mapper.LengthsMapper">
+	<!-- <select id="getLengths" resultType="map">
+     SELECT ISNULL(A.J_SERIAL, 0) AS CD
+          , ISNULL(A.GUBUN1, '') AS NM
+       FROM JAJAE A
+      WHERE A.RMK IS NOT NULL 
+        AND <![CDATA[A.RMK <> '']]>
+      ORDER BY A.RMK
+	</select>
+
+	<select id="getLengthsParam" resultType="map">
+		  SELECT A.L1 AS CD
+		       , A.L1 AS NM
+		    FROM LENGTHS A
+		   WHERE TITLE = #{value}
+	</select> -->
+	
+	<select id="getDeaModel" resultType="map">
+		SELECT COM_NM AS CD
+		     , COM_NM AS NM
+		  FROM COM_BASE_CD 
+		 WHERE CD_GB = '0002'
+	</select>
+	
+	<select id="getLengths" resultType="map">
+		 SELECT ISNULL(A.J_SERIAL, 0) AS CD
+	          , ISNULL(A.GUBUN1, '') AS NM
+	       FROM JAJAE A
+	      WHERE A.RMK IS NOT NULL 
+	        AND A.RMK != ''
+	        AND A.DAEGUBUN = #{value}
+	      ORDER BY LEN(A.RMK), A.RMK
+	</select>
+
+	<select id="getLengthsParam" resultType="map">
+		  SELECT A.L1 AS CD
+		       , A.L1 AS NM
+		    FROM LENGTHS A
+		   WHERE TITLE = #{value}
+		   GROUP BY A.L1
+	</select>
+</mapper>

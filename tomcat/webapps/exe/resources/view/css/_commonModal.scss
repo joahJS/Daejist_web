@@ -1,0 +1,333 @@
+.common-modal {
+    position: fixed;
+    inset: 0;
+    color: #3a4e84;
+    z-index: 999;
+
+
+    &::backdrop {
+        background-color: rgb(0 0 0 / .25);
+    }
+
+    .section-contents {
+        padding-inline: 0;
+        flex-shrink: 0;
+
+        &.readable {
+            padding-inline: 24px;
+            margin: 24px 0;
+        }
+
+        &.scrolling-table {
+            height: 200px;
+            overflow: scroll;
+            border-block: 1px solid #ebeef2;
+            position: relative;
+            scrollbar-width: auto;
+
+            thead {
+                position: sticky;
+                top: 0;
+                left: 0;
+                background-color: #fbfbfd;
+            }
+
+            &.plus-min-height {
+                height: 400px;
+            }
+
+        }
+    }
+
+    .form-input-date, .form-input-select {
+        min-width: 150px;
+    }
+
+    button {
+        outline: 0;
+    }
+
+}
+
+.common-div-md {
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.common-modal .scrolling-table .common-data-table.add-member-table {
+    border-top: 0;
+    border-bottom: 0;
+}
+
+.common-modal-container {
+    position: fixed;
+    inset: 0;
+    margin: auto;
+    // width: min(640px, 100% - 24px);
+    width: min(1024px, 100% - 24px);
+    height: fit-content;
+    // max-height: calc(100% - 24px);
+    max-height: 80vh;
+    border: 1px solid #ebeef2;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 16px 32px rgb(58 78 132 / .1);
+    // overflow: hidden;
+    overflow-y: scroll;
+
+    -ms-overflow-style: none; /* IE, Edge */
+    scrollbar-width: none; /* Firefox */
+
+    &::-webkit-scrollbar {
+        position: absolute;
+        bottom: 0;
+        display: block;
+        width: 8px;
+        height: 8px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: rgba(58, 77, 131, .15);
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 3px;
+        height: 3px;
+    }
+
+}
+
+.modal-titlebar {
+    display: flex;
+    height: 56px;
+    border-block-end: 1px solid #ebeef2;
+}
+
+.modal-icon {
+    display: grid;
+    place-items: center;
+    width: 56px;
+    background-color: #f7f8fb;
+
+    svg {
+        outline: 0;
+    }
+}
+
+.modal-label {
+    display: flex;
+    align-items: center;
+    padding-inline: 24px;
+    font-weight: 900;
+}
+
+#modalViewDtl {
+    &.have-a-button-area {
+        padding-inline: 0;
+        margin-block-end: 0;
+
+        .modal-search-compartment.m-flex {
+            padding-inline: 24px;
+        }
+
+        .modal-contents {
+            margin-block-end: 0;
+            padding-inline: 0;
+        }
+
+        #btnSearch.m-r-button {
+            margin-right: 24px;
+        }
+
+        #evalScore {
+            margin: 0 24px;
+        }
+
+        .section-contents {
+            padding-inline: 24px;
+
+            &.for-inner-upload {
+                padding-inline: 0;
+            }
+        }
+
+        .modal-section-title {
+            padding-inline: 24px;
+        }
+
+        .modal-control-compartment {
+            margin-block-start: 36px;
+            flex-shrink: 0;
+        }
+    }
+}
+
+.modal-contents {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 12px;
+    margin-block-start: 12px;
+    margin-block-end: 36px;
+    padding-inline: 24px;
+    max-height: 480px;
+    overflow-y: auto;
+
+    > * {
+        flex: 0 auto;
+    }
+
+   
+}
+
+.modal-section-title {
+    flex: 0 0 48px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 48px;
+    font-weight: 600;
+}
+
+.modal-control-compartment {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 16px;
+    height: 72px;
+    padding-inline: 24px;
+    background-color: #f7f8fb;
+    border-block-start: 1px solid #ebeef2;
+}
+
+.modal-search-compartment {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: flex-end;
+    gap: 1rem;
+
+    > div {
+        flex: 1 auto;
+    }
+}
+
+//
+
+.common-modal {
+    .common-button {
+        &.modal-search {
+            width: fit-content;
+            grid-column: 2;
+            margin-left: auto;
+        }
+    }
+
+    .md-block {
+        display: block;
+    }
+
+    .common-table {
+        .table-cell {
+            p {
+                &.double-line-header {
+                    -webkit-line-clamp: 2;
+                    line-height: 1.35;
+                }
+            }
+        }
+    }
+
+    &.have-a-tab {
+        .modal-contents {
+            display: none;
+
+            &.recent-tab {
+                display: flex;
+
+                > .modal-search-compartment:first-child > .labeled-input-binder:first-child {
+                    padding-inline: 0;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .modal-contents {
+        padding-inline: 12px;
+    }
+
+    .common-modal-container {
+        width: min(640px, 100% - 12px);
+    }
+
+    .common-table.pic-table {
+        grid-template-columns: 50px 1fr .75fr !important;
+    }
+
+    .modal-search-compartment {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .common-modal {    
+        .common-table {
+            .table-cell {
+                p {
+                    &.double-line-header {
+                        display: flex;
+                        -webkit-line-clamp: 1;
+                    }
+                }
+            }
+        }
+
+        .form-input-date {
+            // min-width: auto;
+            min-width: fit-content;
+        }
+    }
+
+    #modalViewDtl {
+        &.have-a-button-area {
+    
+            .modal-search-compartment.m-flex {
+                padding-inline: 12px;
+            }
+    
+            #btnSearch.m-r-button {
+                margin-right: 12px;
+            }
+    
+            #evalScore {
+                margin: 0 12px;
+            }
+    
+            .section-contents {
+                padding-inline: 12px;
+            }
+    
+            .modal-section-title {
+                padding-inline: 12px;
+            }
+    
+        }
+    }
+
+    .common-modal.self-input-member .section-control-compartment.for-add-mb {
+        height: auto !important;
+    }
+}
+
+.common-modal .common-modal-container {
+    overflow-y: hidden;
+}
+
+.modal-inner-label-button {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+
+    p {
+        opacity: 0.5;
+    }
+}

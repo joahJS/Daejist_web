@@ -1,0 +1,287 @@
+03-Jan-2025 12:03:42.139 정보 [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: :/usr/local/mysql/lib:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+03-Jan-2025 12:03:42.628 정보 [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["http-nio-8855"]
+03-Jan-2025 12:03:42.744 정보 [main] org.apache.tomcat.util.net.NioSelectorPool.getSharedSelector Using a shared selector for servlet write/read
+03-Jan-2025 12:03:42.768 정보 [main] org.apache.catalina.startup.Catalina.load Initialization processed in 2253 ms
+03-Jan-2025 12:03:42.890 정보 [main] org.apache.catalina.core.StandardService.startInternal Starting service daejist7
+03-Jan-2025 12:03:42.890 정보 [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet Engine: Apache Tomcat/8.0.50
+03-Jan-2025 12:03:43.030 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployWAR Deploying web application archive /daejist7/tomcat/webapps/daejiM.war
+03-Jan-2025 12:04:09.663 정보 [daejist7.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+03-Jan-2025 12:04:09.883 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log No Spring WebApplicationInitializer types detected on classpath
+03-Jan-2025 12:04:09.980 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring root WebApplicationContext
+03-Jan-2025 12:04:32.019 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring DispatcherServlet 'appServlet'
+03-Jan-2025 12:04:39.755 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployWAR Deployment of web application archive /daejist7/tomcat/webapps/daejiM.war has finished in 56,726 ms
+03-Jan-2025 12:04:39.854 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployWAR Deploying web application archive /daejist7/tomcat/webapps/scm.war
+03-Jan-2025 12:04:56.440 정보 [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: :/usr/local/mysql/lib:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+03-Jan-2025 12:04:57.310 정보 [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["http-nio-8855"]
+03-Jan-2025 12:04:57.421 심각 [main] org.apache.coyote.AbstractProtocol.init Failed to initialize end point associated with ProtocolHandler ["http-nio-8855"]
+ java.net.BindException: 주소가 이미 사용 중입니다
+	at sun.nio.ch.Net.bind0(Native Method)
+	at sun.nio.ch.Net.bind(Net.java:433)
+	at sun.nio.ch.Net.bind(Net.java:425)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
+	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
+	at org.apache.tomcat.util.net.NioEndpoint.bind(NioEndpoint.java:350)
+	at org.apache.tomcat.util.net.AbstractEndpoint.init(AbstractEndpoint.java:823)
+	at org.apache.coyote.AbstractProtocol.init(AbstractProtocol.java:476)
+	at org.apache.coyote.http11.AbstractHttp11JsseProtocol.init(AbstractHttp11JsseProtocol.java:120)
+	at org.apache.catalina.connector.Connector.initInternal(Connector.java:960)
+	at org.apache.catalina.util.LifecycleBase.init(LifecycleBase.java:102)
+	at org.apache.catalina.core.StandardService.initInternal(StandardService.java:568)
+	at org.apache.catalina.util.LifecycleBase.init(LifecycleBase.java:102)
+	at org.apache.catalina.core.StandardServer.initInternal(StandardServer.java:871)
+	at org.apache.catalina.util.LifecycleBase.init(LifecycleBase.java:102)
+	at org.apache.catalina.startup.Catalina.load(Catalina.java:592)
+	at org.apache.catalina.startup.Catalina.load(Catalina.java:615)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.catalina.startup.Bootstrap.load(Bootstrap.java:308)
+	at org.apache.catalina.startup.Bootstrap.main(Bootstrap.java:482)
+
+03-Jan-2025 12:04:57.423 심각 [main] org.apache.catalina.core.StandardService.initInternal Failed to initialize connector [Connector[HTTP/1.1-8855]]
+ org.apache.catalina.LifecycleException: Failed to initialize component [Connector[HTTP/1.1-8855]]
+	at org.apache.catalina.util.LifecycleBase.init(LifecycleBase.java:107)
+	at org.apache.catalina.core.StandardService.initInternal(StandardService.java:568)
+	at org.apache.catalina.util.LifecycleBase.init(LifecycleBase.java:102)
+	at org.apache.catalina.core.StandardServer.initInternal(StandardServer.java:871)
+	at org.apache.catalina.util.LifecycleBase.init(LifecycleBase.java:102)
+	at org.apache.catalina.startup.Catalina.load(Catalina.java:592)
+	at org.apache.catalina.startup.Catalina.load(Catalina.java:615)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.catalina.startup.Bootstrap.load(Bootstrap.java:308)
+	at org.apache.catalina.startup.Bootstrap.main(Bootstrap.java:482)
+Caused by: org.apache.catalina.LifecycleException: Protocol handler initialization failed
+	at org.apache.catalina.connector.Connector.initInternal(Connector.java:962)
+	at org.apache.catalina.util.LifecycleBase.init(LifecycleBase.java:102)
+	... 12 more
+Caused by: java.net.BindException: 주소가 이미 사용 중입니다
+	at sun.nio.ch.Net.bind0(Native Method)
+	at sun.nio.ch.Net.bind(Net.java:433)
+	at sun.nio.ch.Net.bind(Net.java:425)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
+	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
+	at org.apache.tomcat.util.net.NioEndpoint.bind(NioEndpoint.java:350)
+	at org.apache.tomcat.util.net.AbstractEndpoint.init(AbstractEndpoint.java:823)
+	at org.apache.coyote.AbstractProtocol.init(AbstractProtocol.java:476)
+	at org.apache.coyote.http11.AbstractHttp11JsseProtocol.init(AbstractHttp11JsseProtocol.java:120)
+	at org.apache.catalina.connector.Connector.initInternal(Connector.java:960)
+	... 13 more
+
+03-Jan-2025 12:04:57.466 정보 [main] org.apache.catalina.startup.Catalina.load Initialization processed in 4299 ms
+03-Jan-2025 12:04:57.660 정보 [main] org.apache.catalina.core.StandardService.startInternal Starting service daejist7
+03-Jan-2025 12:04:57.702 정보 [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet Engine: Apache Tomcat/8.0.50
+03-Jan-2025 12:04:57.858 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployWAR Deploying web application archive /daejist7/tomcat/webapps/daejiM.war
+03-Jan-2025 12:05:05.989 정보 [daejist7.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+03-Jan-2025 12:05:05.996 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log No Spring WebApplicationInitializer types detected on classpath
+03-Jan-2025 12:05:06.161 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring root WebApplicationContext
+03-Jan-2025 12:05:18.482 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring DispatcherServlet 'appServlet'
+03-Jan-2025 12:05:24.622 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployWAR Deployment of web application archive /daejist7/tomcat/webapps/scm.war has finished in 44,768 ms
+03-Jan-2025 12:05:24.688 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployWAR Deploying web application archive /daejist7/tomcat/webapps/ROOT.war
+03-Jan-2025 12:05:32.786 정보 [daejist7.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+03-Jan-2025 12:05:33.090 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log No Spring WebApplicationInitializer types detected on classpath
+03-Jan-2025 12:05:33.199 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring root WebApplicationContext
+03-Jan-2025 12:05:38.200 정보 [daejist7.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+03-Jan-2025 12:05:38.287 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log No Spring WebApplicationInitializer types detected on classpath
+03-Jan-2025 12:05:38.409 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring root WebApplicationContext
+03-Jan-2025 12:05:46.735 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring DispatcherServlet 'appServlet'
+03-Jan-2025 12:05:55.252 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployWAR Deployment of web application archive /daejist7/tomcat/webapps/ROOT.war has finished in 30,564 ms
+03-Jan-2025 12:05:55.342 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployWAR Deploying web application archive /daejist7/tomcat/webapps/exe.war
+03-Jan-2025 12:05:59.419 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring DispatcherServlet 'appServlet'
+03-Jan-2025 12:06:08.203 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployWAR Deployment of web application archive /daejist7/tomcat/webapps/daejiM.war has finished in 70,345 ms
+03-Jan-2025 12:06:08.256 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployWAR Deploying web application archive /daejist7/tomcat/webapps/scm.war
+03-Jan-2025 12:06:11.533 정보 [daejist7.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+03-Jan-2025 12:06:11.573 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log No Spring WebApplicationInitializer types detected on classpath
+03-Jan-2025 12:06:12.054 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring root WebApplicationContext
+03-Jan-2025 12:06:20.606 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring FrameworkServlet 'appServlet'
+03-Jan-2025 12:06:26.725 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployWAR Deployment of web application archive /daejist7/tomcat/webapps/exe.war has finished in 31,383 ms
+03-Jan-2025 12:06:26.761 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /daejist7/tomcat/webapps/host-manager
+03-Jan-2025 12:06:28.660 정보 [daejist7.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+03-Jan-2025 12:06:28.688 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /daejist7/tomcat/webapps/host-manager has finished in 1,927 ms
+03-Jan-2025 12:06:28.688 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /daejist7/tomcat/webapps/manager
+03-Jan-2025 12:06:30.738 정보 [daejist7.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+03-Jan-2025 12:06:30.760 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /daejist7/tomcat/webapps/manager has finished in 2,072 ms
+03-Jan-2025 12:06:30.840 정보 [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["http-nio-8855"]
+03-Jan-2025 12:06:31.486 정보 [main] org.apache.catalina.startup.Catalina.start Server startup in 168717 ms
+03-Jan-2025 12:06:34.984 정보 [daejist7.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+03-Jan-2025 12:06:35.066 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log No Spring WebApplicationInitializer types detected on classpath
+03-Jan-2025 12:06:35.156 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring root WebApplicationContext
+03-Jan-2025 12:06:36.160 정보 [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: /usr/local/fakechroot/lib/fakechroot:/home/hosting_users/usr/lib:/home/hosting_users/lib:/usr/local/mysql/lib:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+03-Jan-2025 12:06:37.248 정보 [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["http-nio-8855"]
+03-Jan-2025 12:06:37.393 심각 [main] org.apache.coyote.AbstractProtocol.init Failed to initialize end point associated with ProtocolHandler ["http-nio-8855"]
+ java.net.BindException: 주소가 이미 사용 중입니다
+	at sun.nio.ch.Net.bind0(Native Method)
+	at sun.nio.ch.Net.bind(Net.java:433)
+	at sun.nio.ch.Net.bind(Net.java:425)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
+	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
+	at org.apache.tomcat.util.net.NioEndpoint.bind(NioEndpoint.java:350)
+	at org.apache.tomcat.util.net.AbstractEndpoint.init(AbstractEndpoint.java:823)
+	at org.apache.coyote.AbstractProtocol.init(AbstractProtocol.java:476)
+	at org.apache.coyote.http11.AbstractHttp11JsseProtocol.init(AbstractHttp11JsseProtocol.java:120)
+	at org.apache.catalina.connector.Connector.initInternal(Connector.java:960)
+	at org.apache.catalina.util.LifecycleBase.init(LifecycleBase.java:102)
+	at org.apache.catalina.core.StandardService.initInternal(StandardService.java:568)
+	at org.apache.catalina.util.LifecycleBase.init(LifecycleBase.java:102)
+	at org.apache.catalina.core.StandardServer.initInternal(StandardServer.java:871)
+	at org.apache.catalina.util.LifecycleBase.init(LifecycleBase.java:102)
+	at org.apache.catalina.startup.Catalina.load(Catalina.java:592)
+	at org.apache.catalina.startup.Catalina.load(Catalina.java:615)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.catalina.startup.Bootstrap.load(Bootstrap.java:308)
+	at org.apache.catalina.startup.Bootstrap.main(Bootstrap.java:482)
+
+03-Jan-2025 12:06:37.454 심각 [main] org.apache.catalina.core.StandardService.initInternal Failed to initialize connector [Connector[HTTP/1.1-8855]]
+ org.apache.catalina.LifecycleException: Failed to initialize component [Connector[HTTP/1.1-8855]]
+	at org.apache.catalina.util.LifecycleBase.init(LifecycleBase.java:107)
+	at org.apache.catalina.core.StandardService.initInternal(StandardService.java:568)
+	at org.apache.catalina.util.LifecycleBase.init(LifecycleBase.java:102)
+	at org.apache.catalina.core.StandardServer.initInternal(StandardServer.java:871)
+	at org.apache.catalina.util.LifecycleBase.init(LifecycleBase.java:102)
+	at org.apache.catalina.startup.Catalina.load(Catalina.java:592)
+	at org.apache.catalina.startup.Catalina.load(Catalina.java:615)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.catalina.startup.Bootstrap.load(Bootstrap.java:308)
+	at org.apache.catalina.startup.Bootstrap.main(Bootstrap.java:482)
+Caused by: org.apache.catalina.LifecycleException: Protocol handler initialization failed
+	at org.apache.catalina.connector.Connector.initInternal(Connector.java:962)
+	at org.apache.catalina.util.LifecycleBase.init(LifecycleBase.java:102)
+	... 12 more
+Caused by: java.net.BindException: 주소가 이미 사용 중입니다
+	at sun.nio.ch.Net.bind0(Native Method)
+	at sun.nio.ch.Net.bind(Net.java:433)
+	at sun.nio.ch.Net.bind(Net.java:425)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
+	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
+	at org.apache.tomcat.util.net.NioEndpoint.bind(NioEndpoint.java:350)
+	at org.apache.tomcat.util.net.AbstractEndpoint.init(AbstractEndpoint.java:823)
+	at org.apache.coyote.AbstractProtocol.init(AbstractProtocol.java:476)
+	at org.apache.coyote.http11.AbstractHttp11JsseProtocol.init(AbstractHttp11JsseProtocol.java:120)
+	at org.apache.catalina.connector.Connector.initInternal(Connector.java:960)
+	... 13 more
+
+03-Jan-2025 12:06:37.455 정보 [main] org.apache.catalina.startup.Catalina.load Initialization processed in 4654 ms
+03-Jan-2025 12:06:37.610 정보 [main] org.apache.catalina.core.StandardService.startInternal Starting service daejist7
+03-Jan-2025 12:06:37.611 정보 [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet Engine: Apache Tomcat/8.0.50
+03-Jan-2025 12:06:37.919 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployWAR Deploying web application archive /daejist7/tomcat/webapps/daejiM.war
+03-Jan-2025 12:06:48.180 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring DispatcherServlet 'appServlet'
+03-Jan-2025 12:06:55.461 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployWAR Deployment of web application archive /daejist7/tomcat/webapps/scm.war has finished in 47,205 ms
+03-Jan-2025 12:06:55.461 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployWAR Deploying web application archive /daejist7/tomcat/webapps/ROOT.war
+03-Jan-2025 12:07:08.922 정보 [daejist7.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+03-Jan-2025 12:07:09.006 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log No Spring WebApplicationInitializer types detected on classpath
+03-Jan-2025 12:07:09.113 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring root WebApplicationContext
+03-Jan-2025 12:07:16.600 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring DispatcherServlet 'appServlet'
+03-Jan-2025 12:07:19.636 정보 [daejist7.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+03-Jan-2025 12:07:19.914 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log No Spring WebApplicationInitializer types detected on classpath
+03-Jan-2025 12:07:20.062 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring root WebApplicationContext
+03-Jan-2025 12:07:24.647 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployWAR Deployment of web application archive /daejist7/tomcat/webapps/ROOT.war has finished in 29,186 ms
+03-Jan-2025 12:07:24.647 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployWAR Deploying web application archive /daejist7/tomcat/webapps/exe.war
+03-Jan-2025 12:07:38.529 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring DispatcherServlet 'appServlet'
+03-Jan-2025 12:07:39.024 정보 [daejist7.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+03-Jan-2025 12:07:39.028 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log No Spring WebApplicationInitializer types detected on classpath
+03-Jan-2025 12:07:39.684 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring root WebApplicationContext
+03-Jan-2025 12:07:45.815 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring FrameworkServlet 'appServlet'
+03-Jan-2025 12:07:46.657 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployWAR Deployment of web application archive /daejist7/tomcat/webapps/daejiM.war has finished in 68,738 ms
+03-Jan-2025 12:07:46.657 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployWAR Deploying web application archive /daejist7/tomcat/webapps/scm.war
+03-Jan-2025 12:07:50.268 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployWAR Deployment of web application archive /daejist7/tomcat/webapps/exe.war has finished in 25,620 ms
+03-Jan-2025 12:07:50.268 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /daejist7/tomcat/webapps/host-manager
+03-Jan-2025 12:07:51.657 정보 [daejist7.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+03-Jan-2025 12:07:51.717 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /daejist7/tomcat/webapps/host-manager has finished in 1,449 ms
+03-Jan-2025 12:07:51.717 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /daejist7/tomcat/webapps/manager
+03-Jan-2025 12:07:52.937 정보 [daejist7.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+03-Jan-2025 12:07:52.976 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /daejist7/tomcat/webapps/manager has finished in 1,258 ms
+03-Jan-2025 12:07:53.040 정보 [main] org.apache.catalina.startup.Catalina.start Server startup in 175573 ms
+03-Jan-2025 12:07:53.042 심각 [main] org.apache.catalina.core.StandardServer.await StandardServer.await: create[localhost:8856]: 
+ java.net.BindException: 주소가 이미 사용 중입니다 (Bind failed)
+	at java.net.PlainSocketImpl.socketBind(Native Method)
+	at java.net.AbstractPlainSocketImpl.bind(AbstractPlainSocketImpl.java:387)
+	at java.net.ServerSocket.bind(ServerSocket.java:375)
+	at java.net.ServerSocket.<init>(ServerSocket.java:237)
+	at org.apache.catalina.core.StandardServer.await(StandardServer.java:438)
+	at org.apache.catalina.startup.Catalina.await(Catalina.java:729)
+	at org.apache.catalina.startup.Catalina.start(Catalina.java:675)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.catalina.startup.Bootstrap.start(Bootstrap.java:349)
+	at org.apache.catalina.startup.Bootstrap.main(Bootstrap.java:483)
+
+03-Jan-2025 12:07:53.043 정보 [main] org.apache.coyote.AbstractProtocol.pause Pausing ProtocolHandler ["http-nio-8855"]
+03-Jan-2025 12:07:53.043 정보 [main] org.apache.catalina.core.StandardService.stopInternal Stopping service daejist7
+03-Jan-2025 12:07:53.046 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Destroying Spring FrameworkServlet 'appServlet'
+03-Jan-2025 12:07:53.048 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Closing Spring root WebApplicationContext
+03-Jan-2025 12:07:53.139 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Destroying Spring FrameworkServlet 'appServlet'
+03-Jan-2025 12:07:53.159 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Closing Spring root WebApplicationContext
+03-Jan-2025 12:07:53.298 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Destroying Spring FrameworkServlet 'appServlet'
+03-Jan-2025 12:07:53.343 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Closing Spring root WebApplicationContext
+03-Jan-2025 12:07:53.458 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Destroying Spring FrameworkServlet 'appServlet'
+03-Jan-2025 12:07:53.468 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Closing Spring root WebApplicationContext
+03-Jan-2025 12:07:53.583 경고 [daejist7.cafe24.com-startStop-1] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesThreads The web application [daejiM] appears to have started a thread named [SeedGenerator Thread] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.lang.Object.wait(Native Method)
+ java.lang.Object.wait(Object.java:502)
+ sun.security.provider.SeedGenerator$ThreadedSeedGenerator.run(SeedGenerator.java:334)
+ java.lang.Thread.run(Thread.java:745)
+03-Jan-2025 12:07:53.618 정보 [main] org.apache.coyote.AbstractProtocol.stop Stopping ProtocolHandler ["http-nio-8855"]
+03-Jan-2025 12:07:53.618 정보 [main] org.apache.coyote.AbstractProtocol.destroy Destroying ProtocolHandler ["http-nio-8855"]
+03-Jan-2025 12:08:03.260 정보 [daejist7.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+03-Jan-2025 12:08:03.331 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log No Spring WebApplicationInitializer types detected on classpath
+03-Jan-2025 12:08:03.395 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring root WebApplicationContext
+03-Jan-2025 12:08:11.835 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring DispatcherServlet 'appServlet'
+03-Jan-2025 12:08:14.898 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployWAR Deployment of web application archive /daejist7/tomcat/webapps/scm.war has finished in 28,241 ms
+03-Jan-2025 12:08:14.902 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployWAR Deploying web application archive /daejist7/tomcat/webapps/ROOT.war
+03-Jan-2025 12:08:19.806 정보 [daejist7.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+03-Jan-2025 12:08:19.833 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log No Spring WebApplicationInitializer types detected on classpath
+03-Jan-2025 12:08:19.848 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring root WebApplicationContext
+03-Jan-2025 12:08:22.117 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring DispatcherServlet 'appServlet'
+03-Jan-2025 12:08:24.867 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployWAR Deployment of web application archive /daejist7/tomcat/webapps/ROOT.war has finished in 9,965 ms
+03-Jan-2025 12:08:24.867 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployWAR Deploying web application archive /daejist7/tomcat/webapps/exe.war
+03-Jan-2025 12:08:29.262 정보 [daejist7.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+03-Jan-2025 12:08:29.272 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log No Spring WebApplicationInitializer types detected on classpath
+03-Jan-2025 12:08:29.409 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring root WebApplicationContext
+03-Jan-2025 12:08:30.878 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring FrameworkServlet 'appServlet'
+03-Jan-2025 12:08:32.071 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployWAR Deployment of web application archive /daejist7/tomcat/webapps/exe.war has finished in 7,204 ms
+03-Jan-2025 12:08:32.084 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /daejist7/tomcat/webapps/host-manager
+03-Jan-2025 12:08:32.449 정보 [daejist7.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+03-Jan-2025 12:08:32.452 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /daejist7/tomcat/webapps/host-manager has finished in 368 ms
+03-Jan-2025 12:08:32.452 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /daejist7/tomcat/webapps/manager
+03-Jan-2025 12:08:32.914 정보 [daejist7.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+03-Jan-2025 12:08:32.920 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /daejist7/tomcat/webapps/manager has finished in 468 ms
+03-Jan-2025 12:08:32.938 정보 [main] org.apache.catalina.startup.Catalina.start Server startup in 115482 ms
+03-Jan-2025 12:08:32.940 심각 [main] org.apache.catalina.core.StandardServer.await StandardServer.await: create[localhost:8856]: 
+ java.net.BindException: 주소가 이미 사용 중입니다 (Bind failed)
+	at java.net.PlainSocketImpl.socketBind(Native Method)
+	at java.net.AbstractPlainSocketImpl.bind(AbstractPlainSocketImpl.java:387)
+	at java.net.ServerSocket.bind(ServerSocket.java:375)
+	at java.net.ServerSocket.<init>(ServerSocket.java:237)
+	at org.apache.catalina.core.StandardServer.await(StandardServer.java:438)
+	at org.apache.catalina.startup.Catalina.await(Catalina.java:729)
+	at org.apache.catalina.startup.Catalina.start(Catalina.java:675)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.catalina.startup.Bootstrap.start(Bootstrap.java:349)
+	at org.apache.catalina.startup.Bootstrap.main(Bootstrap.java:483)
+
+03-Jan-2025 12:08:32.940 정보 [main] org.apache.coyote.AbstractProtocol.pause Pausing ProtocolHandler ["http-nio-8855"]
+03-Jan-2025 12:08:32.940 정보 [main] org.apache.catalina.core.StandardService.stopInternal Stopping service daejist7
+03-Jan-2025 12:08:32.942 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Destroying Spring FrameworkServlet 'appServlet'
+03-Jan-2025 12:08:32.944 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Closing Spring root WebApplicationContext
+03-Jan-2025 12:08:32.998 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Destroying Spring FrameworkServlet 'appServlet'
+03-Jan-2025 12:08:33.007 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Closing Spring root WebApplicationContext
+03-Jan-2025 12:08:33.053 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Destroying Spring FrameworkServlet 'appServlet'
+03-Jan-2025 12:08:33.054 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Closing Spring root WebApplicationContext
+03-Jan-2025 12:08:33.078 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Destroying Spring FrameworkServlet 'appServlet'
+03-Jan-2025 12:08:33.090 정보 [daejist7.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Closing Spring root WebApplicationContext
+03-Jan-2025 12:08:33.143 정보 [main] org.apache.coyote.AbstractProtocol.stop Stopping ProtocolHandler ["http-nio-8855"]
+03-Jan-2025 12:08:33.144 정보 [main] org.apache.coyote.AbstractProtocol.destroy Destroying ProtocolHandler ["http-nio-8855"]

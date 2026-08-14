@@ -1,0 +1,94 @@
+/* ---------- whatever else ---------- */
+
+$radius-out: .75rem;
+$radius-in: .25rem;
+$radius-form: .1rem;
+
+$border-multiply: .05rem solid rgba(0, 0, 0, .15);
+
+$shadow-deep: 0 1rem 2rem -.5rem rgba(0, 0, 0, .3);
+
+$z-max: 50000;
+$z-nearmax: 49999;
+$z-high: 500;
+$z-mid: 2;
+$z-low: 0;
+$z-min: -1;
+
+/* ---------- @keyframes ---------- */
+
+@keyframes popout {
+    30% {
+        transform: scale(0);
+    }
+
+    60% {
+        transform: scale(.9);
+    }
+
+    80% {
+        transform: scale(.75);
+    }
+
+    90% {
+        transform: scale(.95);
+    }
+
+    95% {
+        transform: scale(.9);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes kickin-down {
+    0% {
+        transform: translateY(200%);
+    }
+
+    5% {
+        transform: translateY(0);
+    }
+
+    90% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 0;
+    }
+}
+
+@keyframes clicked {
+    from {
+        transform: rotateZ(-90deg) scale(.8);
+    }
+
+    to {
+        transform: rotateZ(-90deg) scale(1);
+    }
+}
+
+@keyframes agree-round {
+    from {
+        stroke-dashoffset: 130;
+    }
+
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes agree-check {
+    from {
+        stroke-dashoffset: 52;
+    }
+
+    to {
+        stroke-dashoffset: 0;
+    }
+}

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dj.exe.dao.prcDAO"> <!-- 네임스페이스를 dao 패키지 경로로 변경 -->
+ 
+	<select id="prclist" parameterType="map" resultType="com.dj.exe.vo.prcVO" statementType="CALLABLE">
+	     	SET ANSI_WARNINGS OFF;
+		    SET ARITHIGNORE ON;
+		    SET ARITHABORT OFF;
+		
+		    SELECT 
+		        'N' AS CHK,
+		        A.JUNPYOID,
+		        A.SUN,
+		        A.J_DATE,
+		        A.KERATYPE,
+		        CASE A.KERATYPE 
+		            WHEN '입고' THEN A.MAIPCHER
+		            WHEN '출고' THEN A.J_COMPANY 
+		        END AS DEALER_NM,
+		        A.J_BNUM,
+		        D.GUBUN1 AS GRADE_NM,
+		        C.EMP_NM AS CHRG_NM,
+		        A.SECONDWEIGHT AS TOT_WEIGHT,
+		        CASE WHEN A.KERATYPE = '입고' THEN CONVERT(VARCHAR(5), CONVERT(DATETIME, A.FIRSTTIME), 8) ELSE CONVERT(VARCHAR(5), CONVERT(DATETIME, A.SECONDTIME), 8) END AS TIME1,
+		        A.FIRSTWEIGHT AS EMPTY_WEIGHT,
+		        CASE WHEN A.KERATYPE = '입고' THEN CONVERT(VARCHAR(5), CONVERT(DATETIME, A.SECONDTIME), 8) ELSE CONVERT(VARCHAR(5), CONVERT(DATETIME, A.FIRSTTIME), 8) END AS TIME2,
+		        A.WEIGHT AS LANDED_WEIGHT,
+		        CASE WHEN A.KERATYPE = '출고' THEN A.OCHAGAM ELSE A.ICHAGAM END AS CHAGAM_WEIGHT,
+		        CASE WHEN A.KERATYPE = '입고' THEN A.IWEIGHT ELSE A.OWEIGHT END AS ACPT_WEIGHT,
+		        A.CUSTOMWEIGHT AS COMP_WEIGHT,
+		        A.LOSSWEIGHT AS LOSS_WEIGHT,
+		        CASE WHEN A.KERATYPE = '입고' THEN D.DANGA ELSE D.SELLPRC2 END AS STD_UNIT_PRC,
+		        CASE WHEN A.KERATYPE = '입고' THEN A.IDANGA ELSE A.ODANGA END AS APPLY_UNIT_PRC,
+		        D.DANGA - (CASE WHEN A.KERATYPE = '입고' THEN A.IDANGA ELSE A.ODANGA END ) AS DIFF_UNIT_PRC,
+		        ISNULL(ROUND(A.TRANSPORTKUMAK / ISNULL(F.DANJUNG, CASE WHEN A.KERATYPE = '입고' THEN A.IWEIGHT ELSE A.OWEIGHT END), 1), 0) AS CRY_UNIT_PRC,
+		        A.UNIT_PRC_CHG_YN,
+		        A.TRANSPORTKUMAK,
+		        A.ETC_DEALER_CD1,
+		        A.ETC_REMARK1,
+		        A.ETC_COST1,
+		        A.ETC_DEALER_CD2,
+		        A.ETC_REMARK2,
+		        A.ETC_COST2,
+		        A.J_CHECK,
+		        G.DEALER_NM AS ETC_DEALER_NM1,
+		        H.DEALER_NM AS ETC_DEALER_NM2
+		    FROM MESURING A
+		    LEFT OUTER JOIN ACC_DEALER_CD B ON (CASE A.KERATYPE WHEN '입고' THEN A.MAIPCHERID WHEN '출고' THEN A.J_ASSIGNID END) = B.DEALER_CD
+		    LEFT OUTER JOIN HR_EMP_BASIS C ON B.CHRG_ID = C.EMP_ID
+		    LEFT OUTER JOIN JAJAE D ON A.J_SERIAL = D.J_SERIAL
+		    LEFT OUTER JOIN HR_EMP_BASIS E ON A.GUMSU_SERIAL = E.EMP_ID
+		    LEFT OUTER JOIN INLIST F ON (CASE A.KERATYPE WHEN '입고' THEN A.IPCHULGO_MAIPID WHEN '출고' THEN A.IPCHULGO_MACHULID END) = F.J_ID
+		    LEFT JOIN ACC_DEALER_CD G ON A.ETC_DEALER_CD1 = CONVERT(VARCHAR, G.DEALER_CD)
+		    LEFT JOIN ACC_DEALER_CD H ON A.ETC_DEALER_CD2 = CONVERT(VARCHAR, H.DEALER_CD)
+		    WHERE A.J_DATE BETWEEN #{sYmdFrom} AND #{sYmdTo}
+		        AND A.KERATYPE != '직송'
+		        AND B.DEALER_CD != 6303870006
+		        
+		        <if test="!sKeraType.equals('ALL')">
+		            AND A.KERATYPE = #{sKeraType}
+		        </if>
+		        
+		        <if test="!empName.equals('ALL')">
+		        	AND C.EMP_NM = #{empName}
+		        </if>
+		        
+		        <if test="!jCheck.equals('ALL')">
+		        	AND A.J_CHECK = #{jCheck}
+		        </if>
+		        <!-- 
+		        <if test="sUtPrcYn.equals('Y')">
+		            <if test="sKeraType.equals('입고')">
+		                AND A.IDANGA > 0
+		            </if>
+		            <if test="sKeraType.equals('출고')">
+		                AND A.ODANGA > 0
+		            </if>
+		            <if test="!sKeraType.equals('입고') and !sKeraType.equals('출고')">
+		                AND (A.IDANGA > 0 OR A.ODANGA > 0)
+		            </if>
+		        </if>
+		        <if test="sUtPrcYn.equals('N')">
+		            <if test="sKeraType.equals('입고')">
+		                AND A.IDANGA = 0
+		            </if>
+		            <if test="sKeraType.equals('출고')">
+		                AND A.ODANGA = 0
+		            </if>
+		            <if test="!sKeraType.equals('입고') and !sKeraType.equals('출고')">
+		                AND (A.IDANGA = 0 AND A.ODANGA = 0)
+		            </if>
+		        </if>
+		         -->
+		    AND D.DAEGUBUN IN ('고철A', '고철B', '슈레더')
+		    AND A.J_SERIAL NOT IN ('4049042', '5050042')
+		    ORDER BY A.J_DATE, A.SUN;
+		</select>
+    
+    
+	    <update id="updateIDanga" parameterType="map" statementType="CALLABLE">
+	        UPDATE test.dbo.mesuring
+	        SET iDanga = #{inputText},
+	        	IKongkep = #{inputText} * IWeight,
+	        	UNIT_PRC_CHG_YN = 'Y',
+	        	EDIT_GB = 'C'
+	        WHERE JunpyoID = #{junpyoid} AND KeraType = '입고';
+	    </update>
+	
+	    <update id="updateODanga" parameterType="map" statementType="CALLABLE">
+	        UPDATE test.dbo.mesuring
+	        SET ODanga = #{inputText},
+	        	OKongkep = #{inputText} * OWeight,
+	        	UNIT_PRC_CHG_YN = 'Y',
+	        	EDIT_GB = 'C'
+	        WHERE JunpyoID = #{junpyoid} AND KeraType = '출고';
+	    </update>
+	    
+	    <select id="emplist" resultType="com.dj.exe.vo.empuserVO" statementType="CALLABLE">
+	     	SELECT EMP_NM, EMP_ID
+	     	FROM HR_EMP_BASIS
+	     	WHERE DEPT_CD = 3000;
+		</select>
+
+</mapper>

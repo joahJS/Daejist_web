@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mobile.daeji.dao.PriceListDao">
+	<select id="getRk" resultType="map">
+		SELECT TOP 1 
+		       ISNULL(RK1,'') AS RK1
+	         , ISNULL(RK2,'') AS RK2
+	         , ISNULL(RK3,'') AS RK3
+	         , ISNULL(RK4,'') AS RK4
+	         , ISNULL(RK5,'') AS RK5
+	         , ISNULL(RK6,'') AS RK6
+	         , ISNULL(RK7,'') AS RK7
+	         , ISNULL(RK8,'') AS RK8
+	         , ISNULL(RK9,'') AS RK9
+	         , ISNULL(HDDT ,'') AS HDDT 
+             , ISNULL(DHDT ,'') AS DHDT 
+             , ISNULL(DGDT ,'') AS DGDT 
+             , ISNULL(PGDT ,'') AS PGDT 
+             , ISNULL(PPDT ,'') AS PPDT 
+             , ISNULL(HCDT ,'') AS HCDT 
+             , ISNULL(HTDT ,'') AS HTDT 
+             , ISNULL(SADT ,'') AS SADT 
+             , ISNULL(INDT ,'') AS INDT 
+             , ISNULL(YADT1,'') AS YADT1
+             , ISNULL(YADT2,'') AS YADT2
+             , ISNULL(SCRDT,'') AS SCRDT
+             , ISNULL(PAPDT,'') AS PAPDT
+	      FROM JAJAERK
+	     ORDER BY J_DATE DESC 
+	</select>
+	
+	<select id="getJajaeList" resultType="map">
+	    SELECT A1.THICKPOS,A1.J_SERIAL
+		     , A1.GUBUN1 
+		     , FORMAT(ISNULL(A1.SELLPRC1,0),'#,0') AS SELLPRC1 --대한단가
+		     , FORMAT(ISNULL(A1.SELLPRC2,0),'#,0') AS SELLPRC2 --현대제철
+		     , FORMAT(ISNULL(A1.SELLPRC3,0),'#,0') AS SELLPRC3 --동국(포항)
+		     , FORMAT(ISNULL(A1.SELLPRC4,0),'#,0') AS SELLPRC4 --포스코(광양)
+		     , FORMAT(ISNULL(A1.SELLPRC5,0),'#,0') AS SELLPRC5 --포스코(포항)
+		     , FORMAT(ISNULL(A1.SELLPRC6,0),'#,0') AS SELLPRC6 --한국철강
+		     , FORMAT(ISNULL(A1.SELLPRC7,0),'#,0') AS SELLPRC7 --한국특강
+		     , FORMAT(ISNULL(A1.SELLPRC8,0),'#,0') AS SELLPRC8 --세아창원
+		     , FORMAT(ISNULL(A1.DANGA,0),'#,0') AS SELLPRC9 --인근(기준)
+		     , A1.LASTDATE  
+		  FROM JAJAE A1
+		 WHERE (A1.THICKPOS <![CDATA[<]]> 800 OR A1.THICKPOS BETWEEN 900 AND 998) -- 슈레더:800번대로 설정, 슈레더 B,C,D 는 위에 표시되어야함
+		 ORDER BY A1.THICKPOS
+	</select>
+	
+	<select id="getJajaeList_su" resultType="map">
+		SELECT A1.J_SERIAL
+		     , A1.GUBUN1 
+		     , FORMAT(ISNULL(A2.DANGA,0),'#,0') AS BFDAN
+		     , FORMAT(ISNULL(A1.DANGA,0),'#,0') AS ATDAN
+		     , REPLACE(FORMAT(CONVERT(DATE,A2.J_DATE),'M/dd'),'-','/') AS BFDATE
+     		 , REPLACE(FORMAT(CONVERT(DATE,A1.LASTDATE),'M/dd'),'-','/') AS ATDATE
+		  FROM JAJAE A1
+		  LEFT JOIN (SELECT ROW_NUMBER() OVER(PARTITION BY J_SERIAL ORDER BY J_DATE DESC) AS ROWNUM
+		                  , J_DATE
+		                  , J_SERIAL
+		                  , DANGA
+		               FROM JAJAEHIS ) A2
+		    ON A1.J_SERIAL = A2.J_SERIAL
+		   AND A2.ROWNUM = 1
+		 WHERE (A1.THICKPOS <![CDATA[<]]>= 998 AND A1.THICKPOS BETWEEN 800 AND 899) -- 슈레더:800번대로 설정, 슈레더 B,C,D 는 위에 표시되어야함
+		 ORDER BY A1.THICKPOS
+	</select>
+	
+	<select id="savePriceList" resultType="map">
+						  DECLARE @ERROR_GB VARCHAR(20) = NULL,
+						  @OUT_RESULT_MSG VARCHAR(1000) = NULL
+						  <!-- @JSON1 VARCHAR(MAX) = #{scrap},
+                          @JSON2 VARCHAR(MAX) = #{sureder}; -->
+						  
+				  BEGIN TRY
+				     BEGIN TRAN
+						
+						INSERT INTO JAJAERK( J_DATE
+			                              , RK1
+		                                  , RK2
+		                                  , RK3
+		                                  , RK4
+		                                  , RK5
+		                                  , RK6
+		                                  , RK7
+		                                  , RK8
+		                                  , RK9
+		                                  , HDDT
+                                          , DHDT
+                                          , DGDT
+                                          , PGDT
+                                          , PPDT
+                                          , HCDT
+                                          , HTDT
+                                          , SADT
+                                          , INDT
+                                          , YADT1
+                                          , YADT2
+                                          , SCRDT
+                                          , PAPDT )
+		                             VALUES
+		                            	  ( CONVERT(VARCHAR(20), GETDATE(),20)
+		                                  , #{RK1}
+		                                  , #{RK2}
+		                                  , #{RK3}
+		                                  , #{RK4}
+		                                  , #{RK5}
+		                                  , #{RK6}
+		                                  , #{RK7}
+		                                  , #{RK8}
+		                                  , #{RK9}
+		                                  , #{HDDT}
+                                          , #{DHDT}
+                                          , #{DGDT}
+                                          , #{PGDT}
+                                          , #{PPDT}
+                                          , #{HCDT}
+                                          , #{HTDT}
+                                          , #{SADT}
+                                          , #{INDT}
+                                          , #{YADT1}
+                                          , #{YADT2}
+                                          , #{SCRDT}
+                                          , #{PAPDT} )
+                                    
+				        
+					    <!-- IF @JSON1 IS NOT NULL AND @JSON1 != ''
+					       BEGIN 
+						       WITH TEMP1 AS (
+					       		SELECT J_SERIAL
+		                             , CASE WHEN ISNULL(SELLPRC1,'') = '' THEN 0 ELSE CONVERT(NUMERIC(12,0), SELLPRC1) END AS SELLPRC1
+		                             , CASE WHEN ISNULL(SELLPRC2,'') = '' THEN 0 ELSE CONVERT(NUMERIC(12,0), SELLPRC2) END AS SELLPRC2
+		                             , CASE WHEN ISNULL(SELLPRC3,'') = '' THEN 0 ELSE CONVERT(NUMERIC(12,0), SELLPRC3) END AS SELLPRC3
+		                             , CASE WHEN ISNULL(SELLPRC4,'') = '' THEN 0 ELSE CONVERT(NUMERIC(12,0), SELLPRC4) END AS SELLPRC4
+		                             , CASE WHEN ISNULL(SELLPRC5,'') = '' THEN 0 ELSE CONVERT(NUMERIC(12,0), SELLPRC5) END AS SELLPRC5
+		                             , CASE WHEN ISNULL(SELLPRC6,'') = '' THEN 0 ELSE CONVERT(NUMERIC(12,0), SELLPRC6) END AS SELLPRC6
+		                             , CASE WHEN ISNULL(SELLPRC7,'') = '' THEN 0 ELSE CONVERT(NUMERIC(12,0), SELLPRC7) END AS SELLPRC7
+		                             , CASE WHEN ISNULL(SELLPRC8,'') = '' THEN 0 ELSE CONVERT(NUMERIC(12,0), SELLPRC8) END AS SELLPRC8
+		                             , CASE WHEN ISNULL(SELLPRC9,'') = '' THEN 0 ELSE CONVERT(NUMERIC(12,0), SELLPRC9) END AS SELLPRC9
+							      FROM OPENJSON (@JSON1)
+							         	WITH( J_SERIAL	 VARCHAR(20)	   '$.J_SERIAL'
+							         	    , SELLPRC1 VARCHAR(100) '$.SELLPRC1'
+							         	    , SELLPRC2 VARCHAR(100) '$.SELLPRC2'
+							         	    , SELLPRC3 VARCHAR(100) '$.SELLPRC3'
+							         	    , SELLPRC4 VARCHAR(100) '$.SELLPRC4'
+							         	    , SELLPRC5 VARCHAR(100) '$.SELLPRC5'
+							         	    , SELLPRC6 VARCHAR(100) '$.SELLPRC6'
+							         	    , SELLPRC7 VARCHAR(100) '$.SELLPRC7'
+							         	    , SELLPRC8 VARCHAR(100) '$.SELLPRC8'
+							         	    , SELLPRC9 VARCHAR(100) '$.SELLPRC9' )
+					       		)
+					    
+						       INSERT INTO JAJAEHIS ( 
+				                           USERID, J_SERIAL, J_DATE 
+				                         , DAEGUBUN, GUBUN, YK_DANGA
+				                         , GOJUNG_DANGA, DANGA, EJEUN_DANGA 
+				                         , SP_DANGA, IN_DANGA, OUT_DANGA 
+				                         , SEHA_DANGA, THICKPOS 
+				                         , DANGA2, DANGA3, DANGA4
+				                         , DANGA5, DANGA6, DANGA7
+				                         , DANGA8, DANGA9         
+				                         ) 
+				                    SELECT A2.J_SPEC AS J_SPEC 
+				                         , A1.J_SERIAL  AS J_SERIAL
+				                         , CONVERT(VARCHAR(20),GETDATE(),20)  AS J_DATE
+				                         , A2.DAEGUBUN AS DAEGUBUN
+				                         , A2.GUBUN1 AS GUBUN 
+				                         , ISNULL(A1.SELLPRC1,0) AS YK_DANGA       
+				                         , ISNULL(A1.SELLPRC2, 0) AS GOJUNG_DANGA 
+				                         , ISNULL(A2.DANGA, 0) AS DANGA            
+				                         , ISNULL(A1.SELLPRC3, 0) AS EJEUN_DANGA   
+				                         , ISNULL(A1.SELLPRC4, 0) AS SP_DANGA      
+				                         , ISNULL(A1.SELLPRC5, 0) AS IN_DANGA      
+				                         , ISNULL(A1.SELLPRC6, 0) AS OUT_DANGA     
+				                         , ISNULL(A1.SELLPRC7, 0) AS SEHA_DANGA    
+				                         , A2.THICKPOS
+				                         , ISNULL(A1.SELLPRC2,0)
+				                         , ISNULL(A1.SELLPRC3,0)
+				                         , ISNULL(A1.SELLPRC4,0)
+				                         , ISNULL(A1.SELLPRC5,0)
+				                         , ISNULL(A1.SELLPRC6,0)
+				                         , ISNULL(A1.SELLPRC7,0)
+				                         , ISNULL(A1.SELLPRC8,0)
+				                         , ISNULL(A1.SELLPRC9,0)
+				                      FROM TEMP1 A1
+				                      LEFT JOIN JAJAE A2
+				                        ON A1.J_SERIAL = A2.J_SERIAL;
+							       
+							         MERGE INTO JAJAE AS A
+										USING (SELECT J_SERIAL
+						                            , CASE WHEN ISNULL(SELLPRC1,'') = '' THEN 0 ELSE CONVERT(NUMERIC(12,0), SELLPRC1) END AS SELLPRC1
+						                            , CASE WHEN ISNULL(SELLPRC2,'') = '' THEN 0 ELSE CONVERT(NUMERIC(12,0), SELLPRC2) END AS SELLPRC2
+						                            , CASE WHEN ISNULL(SELLPRC3,'') = '' THEN 0 ELSE CONVERT(NUMERIC(12,0), SELLPRC3) END AS SELLPRC3
+						                            , CASE WHEN ISNULL(SELLPRC4,'') = '' THEN 0 ELSE CONVERT(NUMERIC(12,0), SELLPRC4) END AS SELLPRC4
+						                            , CASE WHEN ISNULL(SELLPRC5,'') = '' THEN 0 ELSE CONVERT(NUMERIC(12,0), SELLPRC5) END AS SELLPRC5
+						                            , CASE WHEN ISNULL(SELLPRC6,'') = '' THEN 0 ELSE CONVERT(NUMERIC(12,0), SELLPRC6) END AS SELLPRC6
+						                            , CASE WHEN ISNULL(SELLPRC7,'') = '' THEN 0 ELSE CONVERT(NUMERIC(12,0), SELLPRC7) END AS SELLPRC7
+						                            , CASE WHEN ISNULL(SELLPRC8,'') = '' THEN 0 ELSE CONVERT(NUMERIC(12,0), SELLPRC8) END AS SELLPRC8
+						                            , CASE WHEN ISNULL(SELLPRC9,'') = '' THEN 0 ELSE CONVERT(NUMERIC(12,0), SELLPRC9) END AS SELLPRC9
+											     FROM OPENJSON (@JSON1)
+											        	WITH( J_SERIAL	 VARCHAR(20)	   '$.J_SERIAL'
+											        	    , SELLPRC1 VARCHAR(100) '$.SELLPRC1'
+											        	    , SELLPRC2 VARCHAR(100) '$.SELLPRC2'
+											        	    , SELLPRC3 VARCHAR(100) '$.SELLPRC3'
+											        	    , SELLPRC4 VARCHAR(100) '$.SELLPRC4'
+											        	    , SELLPRC5 VARCHAR(100) '$.SELLPRC5'
+											        	    , SELLPRC6 VARCHAR(100) '$.SELLPRC6'
+											        	    , SELLPRC7 VARCHAR(100) '$.SELLPRC7'
+											        	    , SELLPRC8 VARCHAR(100) '$.SELLPRC8'
+											        	    , SELLPRC9 VARCHAR(100) '$.SELLPRC9' )
+										) AS B		 
+										ON (A.J_SERIAL = B.J_SERIAL AND A.J_SERIAL = B.J_SERIAL)
+									WHEN MATCHED THEN				 
+										UPDATE SET A.SELLPRC1 = B.SELLPRC1
+							    			     , A.SELLPRC2 = B.SELLPRC2 
+							    			     , A.SELLPRC3 = B.SELLPRC3
+							    			     , A.SELLPRC4 = B.SELLPRC4  
+							    			     , A.SELLPRC5 = B.SELLPRC5
+											     , A.SELLPRC6 = B.SELLPRC6  
+							    			     , A.SELLPRC7 = B.SELLPRC7
+							    			     , A.SELLPRC8 = B.SELLPRC8
+							    			     , A.SELLPRC9 = B.SELLPRC9
+							    			     , A.LASTDATE = CONVERT(VARCHAR(10),GETDATE(), 23)
+							    			     , A.J_SPEC = #{USRCD};
+						     END
+					    
+						     IF @JSON2 IS NOT NULL AND @JSON2 != ''
+						        BEGIN
+							          WITH TEMP1 AS (
+							       		SELECT J_SERIAL
+				                             , CASE WHEN ISNULL(DANGA,'') = '' THEN 0 ELSE CONVERT(NUMERIC(12,0), DANGA) END AS DANGA
+									      FROM OPENJSON (@JSON2)
+									         	WITH( J_SERIAL VARCHAR(20) '$.J_SERIAL'
+									         	    , DANGA VARCHAR(100) '$.DANGA' )
+							       		)
+							       		
+							       		INSERT INTO JAJAEHIS ( 
+				                           USERID, J_SERIAL, J_DATE 
+				                         , DAEGUBUN, GUBUN, YK_DANGA
+				                         , GOJUNG_DANGA, DANGA, EJEUN_DANGA 
+				                         , SP_DANGA, IN_DANGA, OUT_DANGA 
+				                         , SEHA_DANGA, THICKPOS 
+				                         , DANGA2, DANGA3, DANGA4
+				                         , DANGA5, DANGA6, DANGA7
+				                         , DANGA8, DANGA9         
+				                         ) 
+				                    SELECT A2.J_SPEC AS J_SPEC 
+				                         , A1.J_SERIAL  AS J_SERIAL
+				                         , CONVERT(VARCHAR(20),GETDATE(),20)  AS J_DATE
+				                         , A2.DAEGUBUN AS DAEGUBUN
+				                         , A2.GUBUN1 AS GUBUN 
+				                         , ISNULL(A2.SELLPRC1,0) AS YK_DANGA       
+				                         , ISNULL(A2.SELLPRC2, 0) AS GOJUNG_DANGA 
+				                         , ISNULL(A1.DANGA, 0) AS DANGA            
+				                         , ISNULL(A2.SELLPRC3, 0) AS EJEUN_DANGA   
+				                         , ISNULL(A2.SELLPRC4, 0) AS SP_DANGA      
+				                         , ISNULL(A2.SELLPRC5, 0) AS IN_DANGA      
+				                         , ISNULL(A2.SELLPRC6, 0) AS OUT_DANGA     
+				                         , ISNULL(A2.SELLPRC7, 0) AS SEHA_DANGA    
+				                         , A2.THICKPOS
+				                         , ISNULL(A2.SELLPRC2,0)
+				                         , ISNULL(A2.SELLPRC3,0)
+				                         , ISNULL(A2.SELLPRC4,0)
+				                         , ISNULL(A2.SELLPRC5,0)
+				                         , ISNULL(A2.SELLPRC6,0)
+				                         , ISNULL(A2.SELLPRC7,0)
+				                         , ISNULL(A2.SELLPRC8,0)
+				                         , ISNULL(A2.SELLPRC9,0)
+				                      FROM TEMP1 A1
+				                      LEFT JOIN JAJAE A2
+				                        ON A1.J_SERIAL = A2.J_SERIAL;
+							       
+							         MERGE INTO JAJAE AS A
+										USING (SELECT J_SERIAL
+						                            , CASE WHEN ISNULL(DANGA,'') = '' THEN 0 ELSE CONVERT(NUMERIC(12,0), DANGA) END AS DANGA
+											     FROM OPENJSON (@JSON2)
+											        	WITH( J_SERIAL VARCHAR(20) '$.J_SERIAL'
+											        	    , DANGA VARCHAR(100) '$.DANGA' )
+										) AS B		 
+										ON (A.J_SERIAL = B.J_SERIAL AND A.J_SERIAL = B.J_SERIAL)
+									WHEN MATCHED THEN				 
+										UPDATE SET A.DANGA = B.DANGA
+							    			     , A.LASTDATE = CONVERT(VARCHAR(10),GETDATE(), 23)
+							    			     , A.J_SPEC = #{USRCD};
+							      END -->
+                        
+													    					    				   	    
+					    SET @ERROR_GB = @@ROWCOUNT;
+					    SET @OUT_RESULT_MSG = '저장이 완료되었습니다.';
+		    		    COMMIT TRAN;
+			    
+				    END TRY 
+	  
+		          BEGIN CATCH 
+						ROLLBACK TRAN;
+						SET @ERROR_GB = '-1';
+						SET @OUT_RESULT_MSG = CONCAT( '오류 메시지 : ', ERROR_MESSAGE()
+													, '\r\n줄번호 : ', ERROR_LINE()
+			  										, '\r\n오류번호 : ', ERROR_NUMBER()
+			  										, '\r\n상태코드 : ', ERROR_STATE()
+			  										, '\r\n프로시저명 : ', ERROR_PROCEDURE()
+			  										, '\r\n심각도 : ', ERROR_SEVERITY()
+			  										, '\r\n오류줄번호 : ', @@ERROR);		     
+		     
+					END CATCH
+		
+			       IF @ERROR_GB = '0'
+			          BEGIN
+			         	 	SELECT @ERROR_GB AS RESULT
+			         			 , '저장된 건이 없습니다.' AS MSG
+			         	END 
+		           ELSE 
+			          BEGIN
+						    SELECT @ERROR_GB AS RESULT
+						    	 , @OUT_RESULT_MSG AS MSG
+					    END
+					   
+	</select>
+</mapper>

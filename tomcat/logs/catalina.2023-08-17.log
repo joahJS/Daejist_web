@@ -1,0 +1,96 @@
+17-Aug-2023 09:16:04.219 정보 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.startup.HostConfig.undeploy Undeploying context [/daejiM]
+17-Aug-2023 09:16:04.221 정보 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.core.ApplicationContext.log Destroying Spring FrameworkServlet 'appServlet'
+17-Aug-2023 09:16:04.225 정보 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.core.ApplicationContext.log Closing Spring root WebApplicationContext
+17-Aug-2023 09:16:04.665 경고 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesJdbc The web application [daejiM] registered the JDBC driver [com.microsoft.sqlserver.jdbc.SQLServerDriver] but failed to unregister it when the web application was stopped. To prevent a memory leak, the JDBC Driver has been forcibly unregistered.
+17-Aug-2023 09:16:04.691 정보 [daejist7.cafe24.com-startStop-19] org.apache.catalina.startup.HostConfig.deployWAR Deploying web application archive /daejist7/tomcat/webapps/daejiM.war
+17-Aug-2023 09:16:04.696 심각 [daejist7.cafe24.com-startStop-19] org.apache.catalina.startup.ContextConfig.beforeStart Exception fixing docBase for context [/daejiM]
+ java.util.zip.ZipException: zip file is empty
+	at java.util.zip.ZipFile.open(Native Method)
+	at java.util.zip.ZipFile.<init>(ZipFile.java:219)
+	at java.util.zip.ZipFile.<init>(ZipFile.java:149)
+	at java.util.jar.JarFile.<init>(JarFile.java:166)
+	at java.util.jar.JarFile.<init>(JarFile.java:103)
+	at sun.net.www.protocol.jar.URLJarFile.<init>(URLJarFile.java:93)
+	at sun.net.www.protocol.jar.URLJarFile.getJarFile(URLJarFile.java:69)
+	at sun.net.www.protocol.jar.JarFileFactory.get(JarFileFactory.java:99)
+	at sun.net.www.protocol.jar.JarURLConnection.connect(JarURLConnection.java:122)
+	at sun.net.www.protocol.jar.JarURLConnection.getJarFile(JarURLConnection.java:89)
+	at org.apache.catalina.startup.ExpandWar.expand(ExpandWar.java:130)
+	at org.apache.catalina.startup.ContextConfig.fixDocBase(ContextConfig.java:619)
+	at org.apache.catalina.startup.ContextConfig.beforeStart(ContextConfig.java:755)
+	at org.apache.catalina.startup.ContextConfig.lifecycleEvent(ContextConfig.java:309)
+	at org.apache.catalina.util.LifecycleSupport.fireLifecycleEvent(LifecycleSupport.java:95)
+	at org.apache.catalina.util.LifecycleBase.fireLifecycleEvent(LifecycleBase.java:90)
+	at org.apache.catalina.util.LifecycleBase.setStateInternal(LifecycleBase.java:388)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:144)
+	at org.apache.catalina.core.ContainerBase.addChildInternal(ContainerBase.java:753)
+	at org.apache.catalina.core.ContainerBase.addChild(ContainerBase.java:729)
+	at org.apache.catalina.core.StandardHost.addChild(StandardHost.java:717)
+	at org.apache.catalina.startup.HostConfig.deployWAR(HostConfig.java:974)
+	at org.apache.catalina.startup.HostConfig$DeployWar.run(HostConfig.java:1850)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+
+17-Aug-2023 09:16:04.698 심각 [daejist7.cafe24.com-startStop-19] org.apache.catalina.core.ContainerBase.addChildInternal ContainerBase.addChild: start: 
+ org.apache.catalina.LifecycleException: Failed to start component [StandardEngine[daejist7].StandardHost[daejist7.cafe24.com].StandardContext[/daejiM]]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:162)
+	at org.apache.catalina.core.ContainerBase.addChildInternal(ContainerBase.java:753)
+	at org.apache.catalina.core.ContainerBase.addChild(ContainerBase.java:729)
+	at org.apache.catalina.core.StandardHost.addChild(StandardHost.java:717)
+	at org.apache.catalina.startup.HostConfig.deployWAR(HostConfig.java:974)
+	at org.apache.catalina.startup.HostConfig$DeployWar.run(HostConfig.java:1850)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: org.apache.catalina.LifecycleException: Failed to start component [org.apache.catalina.webresources.StandardRoot@236aaf8]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:162)
+	at org.apache.catalina.core.StandardContext.resourcesStart(StandardContext.java:4977)
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:5110)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:145)
+	... 10 more
+Caused by: org.apache.catalina.LifecycleException: Failed to initialize component [org.apache.catalina.webresources.WarResourceSet@6093ee1]
+	at org.apache.catalina.util.LifecycleBase.init(LifecycleBase.java:107)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:135)
+	at org.apache.catalina.webresources.StandardRoot.startInternal(StandardRoot.java:712)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:145)
+	... 13 more
+Caused by: java.lang.IllegalArgumentException: java.util.zip.ZipException: zip file is empty
+	at org.apache.catalina.webresources.AbstractSingleArchiveResourceSet.initInternal(AbstractSingleArchiveResourceSet.java:142)
+	at org.apache.catalina.util.LifecycleBase.init(LifecycleBase.java:102)
+	... 16 more
+Caused by: java.util.zip.ZipException: zip file is empty
+	at java.util.zip.ZipFile.open(Native Method)
+	at java.util.zip.ZipFile.<init>(ZipFile.java:219)
+	at java.util.zip.ZipFile.<init>(ZipFile.java:149)
+	at java.util.jar.JarFile.<init>(JarFile.java:166)
+	at java.util.jar.JarFile.<init>(JarFile.java:130)
+	at org.apache.tomcat.util.compat.JreCompat.jarFileNewInstance(JreCompat.java:170)
+	at org.apache.tomcat.util.compat.JreCompat.jarFileNewInstance(JreCompat.java:155)
+	at org.apache.catalina.webresources.AbstractSingleArchiveResourceSet.initInternal(AbstractSingleArchiveResourceSet.java:139)
+	... 17 more
+
+17-Aug-2023 09:16:04.698 심각 [daejist7.cafe24.com-startStop-19] org.apache.catalina.startup.HostConfig.deployWAR Error deploying web application archive /daejist7/tomcat/webapps/daejiM.war
+ java.lang.IllegalStateException: ContainerBase.addChild: start: org.apache.catalina.LifecycleException: Failed to start component [StandardEngine[daejist7].StandardHost[daejist7.cafe24.com].StandardContext[/daejiM]]
+	at org.apache.catalina.core.ContainerBase.addChildInternal(ContainerBase.java:757)
+	at org.apache.catalina.core.ContainerBase.addChild(ContainerBase.java:729)
+	at org.apache.catalina.core.StandardHost.addChild(StandardHost.java:717)
+	at org.apache.catalina.startup.HostConfig.deployWAR(HostConfig.java:974)
+	at org.apache.catalina.startup.HostConfig$DeployWar.run(HostConfig.java:1850)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+
+17-Aug-2023 09:16:04.699 정보 [daejist7.cafe24.com-startStop-19] org.apache.catalina.startup.HostConfig.deployWAR Deployment of web application archive /daejist7/tomcat/webapps/daejiM.war has finished in 7 ms
+17-Aug-2023 09:16:34.702 정보 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.startup.HostConfig.undeploy Undeploying context [/daejiM]
+17-Aug-2023 09:16:34.705 정보 [daejist7.cafe24.com-startStop-20] org.apache.catalina.startup.HostConfig.deployWAR Deploying web application archive /daejist7/tomcat/webapps/daejiM.war
+17-Aug-2023 09:16:37.054 정보 [daejist7.cafe24.com-startStop-20] org.apache.catalina.core.ApplicationContext.log No Spring WebApplicationInitializer types detected on classpath
+17-Aug-2023 09:16:37.060 정보 [daejist7.cafe24.com-startStop-20] org.apache.catalina.core.ApplicationContext.log Initializing Spring root WebApplicationContext
+17-Aug-2023 09:16:37.919 정보 [daejist7.cafe24.com-startStop-20] org.apache.catalina.core.ApplicationContext.log Initializing Spring DispatcherServlet 'appServlet'
+17-Aug-2023 09:16:38.405 정보 [daejist7.cafe24.com-startStop-20] org.apache.catalina.startup.HostConfig.deployWAR Deployment of web application archive /daejist7/tomcat/webapps/daejiM.war has finished in 3,700 ms

@@ -1,0 +1,747 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mobile.daeji.dao.InoutComeDao">
+	<select id="getInoutComeList_Dealer" resultType="map">
+		WITH TEMP1 AS (
+		<if test='KERATYPE == "매입"'>
+			SELECT *                                                                 
+			  FROM(                                                                  
+			         SELECT ISNULL(A.J_DATE  ,'') AS J_DATE                                              
+			              , ISNULL(A.JUNPYOID,'') AS JUNPYOID                                              
+			              , ISNULL(G.J_DATE,'') AS MESURE_DT                                    
+			              , ISNULL(D.DEALER_NM,'') AS DEALER_NM                                              
+			              , ISNULL(E.EMP_NM,'') AS INSPECTOR                                    
+			              , ISNULL(G.J_BNUM,'') AS J_BNUM                                                
+			              , ISNULL(FORMAT(G.WEIGHT,'#,#'),'') AS LANDEDWEIGHT                                 
+			              , ISNULL(FORMAT(A.HALIN,'#,#'),'') AS LOSS                                          
+			              , ISNULL(FORMAT(A.IWEIGHT,'#,#'),'') AS ACCEPTWEIGHT                                
+			              , ISNULL(FORMAT(ISNULL(A.IWEIGHT, 0) - ISNULL(G.WEIGHT, 0),'#,#'),'') AS DIFFWEIGHT 
+			              , ISNULL(F.GUBUN1,'') AS GUBUN1                                                 
+			              , ISNULL(FORMAT(A.MIDANGA,'#,#.#'),'') AS STDDUNITPRICE                               
+			              , ISNULL(FORMAT(A.DANGA,'#,#.#'),'') AS PAYEDUNITPRICE                                
+			              , ISNULL(FORMAT(((ISNULL(A.IWEIGHT, 0) * ISNULL(A.DANGA, 0)) + ISNULL(A.CKONGKEP, 0) + (ISNULL(G.ETC_COST1, 0) + ISNULL(G.ETC_COST2, 0))) / A.IWEIGHT,'#,#.#'),'') AS ARRVUNITPRICE
+			              , ISNULL(FORMAT((((ISNULL(A.IWEIGHT, 0) * ISNULL(A.DANGA, 0)) + ISNULL(A.CKONGKEP, 0) + (ISNULL(G.ETC_COST1, 0) + ISNULL(G.ETC_COST2, 0))) / A.IWEIGHT)
+			                 - A.MIDANGA,'#,#'),'') AS DIFFUNITPRICE
+			              , ISNULL(FORMAT(ISNULL(A.CKONGKEP, 0),'#,#'),'') AS CARRYCOST                                                    
+			              , ISNULL(FORMAT(A.IKONGKEP,'#,#'),'') AS TOTALPRICE                                                              
+			              , ISNULL(FORMAT((ISNULL(A.IWEIGHT, 0) * ISNULL(A.DANGA, 0)) + ISNULL(A.CKONGKEP, 0),'#,#'),'') AS ARRVTOTALPRICE 
+			              , ISNULL(G.J_STATE,'') AS LOSSCAUSE                                                                
+			              , ISNULL(G.JUNPYOID,'') AS IMAGE                                                                   
+			              , ISNULL(G.GUMSUBIGO,'') AS INSPECTNOTE                                                            
+			              , ISNULL(FORMAT(ROUND((ISNULL(A.CKONGKEP, 0) / A.DANJUNG), 1, 0),'#,#'),'') AS CARRY_UNIT_PRICE                  
+			              , ISNULL(H.DEALER_NM,'') AS ETC_DEALER_NM1                                                         
+			              , ISNULL(FORMAT(G.ETC_COST1,'#,#'), '') AS ETC_COST1                                                   
+			              , ISNULL(G.ETC_REMARK1,'') AS ETC_REMARK1                                                                         
+			              , ISNULL(I.DEALER_NM,'') AS ETC_DEALER_NM2                                                       
+			              , ISNULL(FORMAT(G.ETC_COST2,'#,#'), '') AS ETC_COST2                                                   
+			              , ISNULL(FORMAT(ISNULL(G.ETC_COST1, 0) + ISNULL(G.ETC_COST1, 0),'#,#'),'') AS ETC_COST                           
+			              , ISNULL(G.ETC_REMARK2,'') AS ETC_REMARK2                                                                           
+			           FROM INLIST A                                                                              
+			           LEFT OUTER JOIN JAJAE C                                                                    
+			             ON C.J_SERIAL = A.J_SERIAL                                                               
+			           LEFT OUTER JOIN ACC_DEALER_CD D                                                            
+			             ON D.DEALER_CD = A.J_ID1                                                                 
+			           LEFT OUTER JOIN HR_EMP_BASIS E                                                             
+			             ON E.EMP_ID = D.CHRG_ID                                                                  
+			           LEFT OUTER JOIN JAJAE F                                                                    
+			             ON F.GUBUN1 = C.GUBUN1             	                                                      
+			           LEFT OUTER JOIN MESURING G                                                                 
+			             ON G.IPCHULGO_MAIPID = A.J_ID
+			           LEFT JOIN ACC_DEALER_CD H
+			             ON G.ETC_DEALER_CD1 = CONVERT(VARCHAR,H.DEALER_CD)      
+			           LEFT JOIN ACC_DEALER_CD I
+			             ON G.ETC_DEALER_CD2 = CONVERT(VARCHAR,I.DEALER_CD)                                                       
+			          WHERE A.J_DATE BETWEEN #{FDATE} AND #{TDATE}                                                              
+			            AND A.KERATYPE = '매입'                                                                   
+			            AND G.KERATYPE != '직송'                                                                  
+			            AND G.J_CHECK = '1'     
+			            <if test='DAEGUBUN != null and DAEGUBUN.size != 0'>
+			            AND F.DAEGUBUN IN 
+			            <foreach collection="DAEGUBUN" item="item" open="(" close=")" separator=",">
+			            	#{item}
+			            </foreach>
+			            </if>                                                                  
+			     ) Y1 
+		</if>
+		<if test='KERATYPE == "매출"'>
+			 SELECT * 
+			   FROM ( 
+			          SELECT ISNULL(A.J_DATE,'') AS J_DATE 
+			               , ISNULL(A.JUNPYOID,'') AS JUNPYOID 
+			               , ISNULL(G.J_DATE,'') AS MESURE_DT 
+			               , ISNULL(D.DEALER_NM,'') AS DEALER_NM 
+			               , ISNULL(E.EMP_NM,'') AS INSPECTOR 
+			               , ISNULL(G.J_BNUM,'') AS J_BNUM 
+			               , ISNULL(FORMAT(G.WEIGHT ,'#,#'),'') AS LANDEDWEIGHT 
+			               , ISNULL(FORMAT(A.HALIN,'#,#'),'') AS LOSS 
+			               , ISNULL(FORMAT(A.OWEIGHT,'#,#'),'') AS ACCEPTWEIGHT 
+			               , ISNULL(FORMAT(ISNULL(A.OWEIGHT, 0) - ISNULL(G.WEIGHT, 0),'#,#'),'') AS DIFFWEIGHT 
+			               , ISNULL(F.GUBUN1,'') AS GUBUN1 
+			               , ISNULL(FORMAT(A.MIDANGA,'#,#.#'),'') AS STDDUNITPRICE 
+			               , ISNULL(FORMAT(A.DANGA,'#,#.#'),'') AS SALEUNITPRICE 
+			               , ISNULL(FORMAT(((ISNULL(A.OWEIGHT, 0) * ISNULL(A.DANGA, 0)) - ISNULL(A.CKONGKEP, 0)) / A.OWEIGHT,'#,#.#'),'') AS ARRVUNITPRICE 
+			               , ISNULL(FORMAT((((ISNULL(A.OWEIGHT, 0) * ISNULL(A.DANGA, 0)) - ISNULL(A.CKONGKEP, 0)) / A.OWEIGHT)
+			                 - A.MIDANGA,'#,#'),'') AS DIFFUNITPRICE
+			               , ISNULL(FORMAT(ISNULL(A.CKONGKEP, 0),'#,#'),'') AS CARRYCOST 
+			               , ISNULL(FORMAT(A.KONGKEP,'#,#'),'') AS TOTALPRICE 
+			               , ISNULL(FORMAT((ISNULL(A.OWEIGHT, 0) * ISNULL(A.DANGA, 0)) - ISNULL(A.CKONGKEP, 0),'#,#'),'') AS ARRVTOTALPRICE 
+			               , ISNULL(G.J_STATE,'') AS LOSSCAUSE 
+			               , ISNULL(G.JUNPYOID,'') AS IMAGE 
+			               , ISNULL(G.GUMSUBIGO,'') AS INSPECTNOTE 
+			               , ISNULL(FORMAT(ROUND((ISNULL(A.CKONGKEP, 0) / A.DANJUNG), 1,0),'#,#'),'') AS CARRY_UNIT_PRICE 
+			               , ISNULL(H.DEALER_NM,'') AS ETC_DEALER_NM1 
+			               , ISNULL(FORMAT(G.ETC_COST1,'#,#') ,'') AS ETC_COST1
+			               , ISNULL(G.ETC_REMARK1,'') AS ETC_REMARK1  
+			               , ISNULL(I.DEALER_NM,'') AS ETC_DEALER_NM2  
+			               , ISNULL(FORMAT(G.ETC_COST2,'#,#'),'') AS ETC_COST2  
+			               , ISNULL(G.ETC_REMARK2,'') AS ETC_REMARK2
+			            FROM INLIST A 
+			            LEFT OUTER JOIN JAJAE C 
+			              ON C.J_SERIAL = A.J_SERIAL 
+			            LEFT OUTER JOIN ACC_DEALER_CD D 
+			              ON D.DEALER_CD = A.J_ID1 
+			            LEFT OUTER JOIN HR_EMP_BASIS E 
+			              ON E.EMP_ID = D.CHRG_ID 
+			            LEFT OUTER JOIN JAJAE F 
+			              ON F.GUBUN1 = C.GUBUN1 
+			            LEFT OUTER JOIN MESURING G 
+			              ON G.IPCHULGO_MACHULID = A.J_ID 
+			            LEFT JOIN ACC_DEALER_CD H
+			             ON G.ETC_DEALER_CD1 = CONVERT(VARCHAR,H.DEALER_CD)      
+			           LEFT JOIN ACC_DEALER_CD I
+			             ON G.ETC_DEALER_CD2 = CONVERT(VARCHAR,I.DEALER_CD) 
+			           WHERE A.J_DATE BETWEEN #{FDATE} AND #{TDATE}     
+			             AND A.KERATYPE = '매출' 
+			             AND G.KERATYPE != '직송' 
+			             AND G.J_CHECK = '1' 
+			             <if test='DAEGUBUN != null and DAEGUBUN.size != 0'>
+			             AND F.DAEGUBUN IN 
+			             <foreach collection="DAEGUBUN" item="item" open="(" close=")" separator=",">
+			             	#{item}
+			             </foreach>
+			             </if>
+			      ) Y1 
+		</if>
+		<if test='KERATYPE == "직송"'>
+			SELECT ISNULL(B.J_DATE ,'') AS J_DATE                    
+			     , ISNULL(XX.EMP_NM,'') AS NAME              
+			     , ISNULL(H.GUBUN1 ,'') AS GUBUN1                    
+			     , ISNULL(A.J_BNUM ,'') AS J_BNUM                    
+			     , ISNULL(D.DEALER_NM,'') AS SALE_DEALER_NM  
+			     , ISNULL(FORMAT(B.DANJUNG,'#,#'),'') AS OWEIGHT           
+			     , ISNULL(FORMAT(B.DANGA  , '#,#.#'),'') AS SALEUNITPRICE       
+			     , ISNULL(FORMAT(B.KONGKEP, '#,#'),'')  AS SALEPRICE         
+			     , ISNULL(E.DEALER_NM,'') AS DEALER_NM  
+			     , ISNULL(FORMAT(C.DANGA, '#,#.#'),'') AS PURCHUNITPRICE      
+			     , ISNULL(FORMAT(C.IKONGKEP, '#,#'),'') AS PURC_AMT         
+			     , ISNULL(FORMAT(ROUND(((ISNULL(B.DANJUNG, 0) * ISNULL(C.DANGA, 0)) + ISNULL(B.CKONGKEP, 0)) / B.DANJUNG, 1, 0),'#,#.#'),'') AS ARRIVEUNITPRICE
+			     , ISNULL(FORMAT(ISNULL(B.CKONGKEP, 0),'#,#'),'') AS CARRYCOST                                                                               
+			     , ISNULL(FORMAT(ROUND((ISNULL(B.CKONGKEP, 0) / B.DANJUNG), 1, 0),'#,#'),'') AS CARRY_UNIT_PRICE                                             
+			     , ISNULL(FORMAT((ISNULL(C.DANJUNG, 0) * ISNULL(C.DANGA, 0)) +ISNULL(B.CKONGKEP, 0),'#,#'),'') AS ARRVTOTALPRICE                             
+			     , ISNULL(FORMAT(ISNULL(B.DANGA, 0) -ROUND(((ISNULL(B.DANJUNG, 0) * ISNULL(C.DANGA, 0)) + ISNULL(B.CKONGKEP, 0)) / B.DANJUNG, 1, 0),'#,#'),'') AS DIFFUNITPRICE
+			     , ISNULL(FORMAT(C.HALIN, '#,#'),'') AS HALIN                      
+			     , ISNULL(I.DEALER_NM,'') AS ETC_DEALER_NM1
+			     , ISNULL(FORMAT(A.ETC_COST1, '#,#'),'') AS ETC_COST1                
+			     , ISNULL(A.ETC_REMARK1,'') AS ETC_REMARK1               
+			     , ISNULL(J.DEALER_NM,'') AS ETC_DEALER_NM2
+			     , ISNULL(FORMAT(A.ETC_COST2, '#,#'),'') AS ETC_COST2                 
+			     , ISNULL(A.ETC_REMARK2,'') AS ETC_REMARK2
+			  FROM MESURING A                   
+			  LEFT OUTER JOIN INLIST B          
+			    ON A.IPCHULGO_MACHULID = B.J_ID 
+			  LEFT OUTER JOIN INLIST C          
+			    ON A.IPCHULGO_MAIPID = C.J_ID   
+			  LEFT OUTER JOIN(SELECT X2.EMP_NM, X1.DEALER_CD, X1.DEALER_NM, X1.CHRG_ID 
+			                    FROM ACC_DEALER_CD X1                                  
+			                    LEFT OUTER JOIN HR_EMP_BASIS X2                        
+			                      ON X1.CHRG_ID = X2.EMP_ID) D                         
+			   ON A.J_ASSIGNID = D.DEALER_CD--매출처                                   
+			 LEFT OUTER JOIN ACC_DEALER_CD E --매입처                                  
+			   ON C.J_ID1 = E.DEALER_CD                                                
+			 LEFT OUTER JOIN(SELECT X2.EMP_NM, X1.DEALER_CD, X1.DEALER_NM, X1.CHRG_ID  
+			                     FROM ACC_DEALER_CD X1            
+			                     LEFT OUTER JOIN HR_EMP_BASIS X2  
+			                       ON X1.CHRG_ID = X2.EMP_ID) E1  
+			   ON A.MAIPCHERID = E1.DEALER_CD--매입처             
+			 LEFT OUTER JOIN HR_EMP_BASIS XX                      
+			   ON C.CHRG_ID = XX.EMP_ID                           
+			 LEFT OUTER JOIN JAJAE H                              
+			   ON A.J_SERIAL = H.J_SERIAL 
+			 LEFT JOIN ACC_DEALER_CD I
+               ON A.ETC_DEALER_CD1 = CONVERT(VARCHAR,I.DEALER_CD)      
+             LEFT JOIN ACC_DEALER_CD J
+               ON A.ETC_DEALER_CD2 = CONVERT(VARCHAR,J.DEALER_CD)                        
+			WHERE A.KERATYPE = '직송'                             
+			  AND B.JUNPYOID IS NOT NULL                          
+			  AND C.JUNPYOID IS NOT NULL                          
+			  AND A.J_DATE BETWEEN #{FDATE} AND #{TDATE} 
+			  <if test='DAEGUBUN != null and DAEGUBUN.size != 0'>
+              AND H.DAEGUBUN IN 
+              <foreach collection="DAEGUBUN" item="item" open="(" close=")" separator=",">
+              	#{item}
+              </foreach>
+              </if>
+		</if>
+		)
+		
+		SELECT 'DATA' AS TYPE
+		     , *
+		     , (SELECT COUNT(0) FROM TEMP1) AS CNT
+		  FROM TEMP1
+		 ORDER BY J_DATE, REPLACE(DEALER_NM, '(주)', '') ASC OFFSET (#{pageNum}-1)*#{pageLength}
+	       ROW FETCH NEXT #{pageLength} ROW ONLY
+	</select>
+	
+	<select id="getInoutComeList_Gubun" resultType="map">
+		WITH TEMP1 AS (
+			<if test='KERATYPE == "매입"'>
+			SELECT E.GUBUN1                                     
+			     , FORMAT(SUM(A.IWEIGHT),'#,#') AS ACCEPTWEIGHT               
+			     , FORMAT(SUM(A.IWEIGHT) -SUM(F.WEIGHT),'#,#') AS DIFFWEIGHT  
+			     , FORMAT(SUM(F.WEIGHT),'#,#') AS LANDEDWEIGHT                
+			     , FORMAT(ROUND(AVG(A.MIDANGA), 1, 0),'#,#.#') AS STDDUNITPRICE 
+			     , FORMAT(ROUND(AVG(A.DANGA), 1, 0),'#,#.#') AS PAYEDUNITPRICE  
+			     , FORMAT(SUM(A.IKONGKEP),'#,#') AS TOTALPRICE                
+			     , FORMAT(SUM(A.HALIN),'#,#') AS HALIN                          
+			  FROM INLIST A                                     
+			  LEFT OUTER JOIN IPCHULGO B                        
+			    ON B.J_ID = A.J_ID                              
+			  LEFT OUTER JOIN JAJAE C                           
+			    ON C.J_SERIAL = A.J_SERIAL                      
+			  LEFT OUTER JOIN ACC_DEALER_CD D                   
+			    ON D.DEALER_CD = A.J_ID1                        
+			  LEFT OUTER JOIN JAJAE E                           
+			    ON E.GUBUN1 = C.GUBUN1                          
+			  LEFT OUTER JOIN MESURING F                        
+			    ON F.IPCHULGO_MAIPID = A.J_ID                   
+			  WHERE A.J_DATE BETWEEN #{FDATE} AND #{TDATE}
+			    AND A.KERATYPE = '매입' 
+			    AND F.KERATYPE != '직송' 
+			    AND F.J_CHECK = '1' 
+			    AND A.DANGA != 0   
+			    <if test='DAEGUBUN != null and DAEGUBUN.size != 0'>
+	            AND E.DAEGUBUN IN 
+	            <foreach collection="DAEGUBUN" item="item" open="(" close=")" separator=",">
+	            	#{item}
+	            </foreach>
+	            </if>
+			 GROUP BY A.J_SERIAL, E.GUBUN1 
+			</if>
+			<if test='KERATYPE == "매출"'>
+				 SELECT E.GUBUN1 
+				 	  , FORMAT(SUM(A.OWEIGHT),'#,#') AS ACCEPTWEIGHT 
+				 	  , FORMAT(SUM(A.OWEIGHT) - SUM(F.WEIGHT),'#,#') AS DIFFWEIGHT 
+				 	  , FORMAT(SUM(F.WEIGHT),'#,#') AS LANDEDWEIGHT 
+				 	  , FORMAT(ROUND(AVG(A.MIDANGA),1,0),'#,#.#') AS STTDUNITPRICE 
+				 	  , FORMAT(ROUND(AVG(A.DANGA),1,0),'#,#.#') AS SALEUNITPRICE 
+				 	  , FORMAT(SUM(A.KONGKEP),'#,#') AS TOTALPRICE 
+				 	  , FORMAT(SUM(A.HALIN),'#,#') AS HALIN 
+				   FROM INLIST A 
+				   LEFT OUTER JOIN JAJAE C 
+				     ON C.J_SERIAL = A.J_SERIAL 
+				   LEFT OUTER JOIN ACC_DEALER_CD D 
+				     ON D.DEALER_CD = A.J_ID1 
+				   LEFT OUTER JOIN JAJAE E 
+				     ON E.GUBUN1 = C.GUBUN1 
+				   LEFT OUTER JOIN MESURING F 
+				     ON F.IPCHULGO_MACHULID = A.J_ID 
+				  WHERE A.J_DATE BETWEEN #{FDATE} AND #{TDATE} 
+				    AND A.KERATYPE = '매출' 
+				    AND F.KERATYPE != '직송' 
+				    AND F.J_CHECK = '1' 
+				    AND A.DANGA != 0    
+				    <if test='DAEGUBUN != null and DAEGUBUN.size != 0'>
+		            AND E.DAEGUBUN IN 
+		            <foreach collection="DAEGUBUN" item="item" open="(" close=")" separator=",">
+		            	#{item}
+		            </foreach>
+		            </if>
+				  GROUP BY A.J_SERIAL, E.GUBUN1 
+			</if>
+			<if test='KERATYPE == "직송"'>
+				SELECT A1.J_SERIAL                                                
+				     , B1.GUBUN1                                                  
+				     , FORMAT(SUM(A1.OWEIGHT),'#,#') AS ACCEPTWEIGHT                            
+				     , FORMAT(SUM(A2.WEIGHT),'#,#') AS LANDEDWEIGHT                             
+				     , FORMAT(SUM(A1.OWEIGHT) -SUM(A2.WEIGHT),'#,#') AS DIFFWEIGHT              
+				     , FORMAT(ROUND(AVG(A1.MIDANGA), 1, 1),'#,#.#') AS STTDUNITPRICE              
+				     , FORMAT(ROUND(AVG(A1.DANGA), 1, 1),'#,#.#') AS SALEUNITPRICE                
+				     , FORMAT(SUM(A1.KONGKEP),'#,#') AS TOTALPRICE                              
+				     , FORMAT(MAX(A3.HALIN),'#,#') AS HALIN                                     
+				  FROM INLIST A1                                                  
+				  LEFT JOIN MESURING A2
+				    ON A1.J_ID = A2.IPCHULGO_MACHULID                             
+				  LEFT JOIN(SELECT A1.J_SERIAL                                    
+				                 , B1.GUBUN1                                      
+				                 , SUM(A1.HALIN) AS HALIN                         
+				              FROM INLIST A1                                      
+				              LEFT JOIN MESURING A2                               
+				                ON A1.J_ID = A2.IPCHULGO_MAIPID                   
+				              LEFT JOIN JAJAE B1                                  
+				                ON A1.J_SERIAL = B1.J_SERIAL                      
+				             WHERE A1.J_DATE BETWEEN #{FDATE} AND #{TDATE}
+				               AND A1.KERATYPE = '매입'                           
+				               AND A2.KERATYPE = '직송'                           
+				            GROUP BY A1.J_SERIAL, B1.GUBUN1 )A3                   
+				    ON A1.J_SERIAL = A3.J_SERIAL                                  
+				  LEFT JOIN JAJAE B1                                              
+				    ON A1.J_SERIAL = B1.J_SERIAL                                  
+				 WHERE A1.J_DATE BETWEEN #{FDATE} AND #{TDATE}            
+				   AND A1.KERATYPE = '매출'                                       
+				   AND A2.KERATYPE = '직송' 
+				   <if test='DAEGUBUN != null and DAEGUBUN.size != 0'>
+		           AND B1.DAEGUBUN IN 
+		           <foreach collection="DAEGUBUN" item="item" open="(" close=")" separator=",">
+		           	#{item}
+		           </foreach>
+		           </if>                                      
+				 GROUP BY A1.J_SERIAL, B1.GUBUN1                                  
+			</if>
+		)
+		
+		SELECT *
+		     , (SELECT COUNT(0) FROM TEMP1) AS CNT
+		  FROM TEMP1
+		 ORDER BY GUBUN1 ASC OFFSET (#{pageNum}-1)*#{pageLength}
+	       ROW FETCH NEXT #{pageLength} ROW ONLY
+	       
+	</select>
+	
+	<select id="getInoutComeList_Com" resultType="map">
+		WITH TEMP1 AS (
+			<if test='KERATYPE == "직송"'>
+		    	 SELECT ROW_NUMBER() OVER(ORDER BY REPLACE(DEALER_NM, '(주)', '')) AS ROWNUM
+		    	      , ISNULL(C1.DEALER_NM,'') AS DEALER_NM                                 
+				      , ISNULL(C2.EMP_NM,'') AS CHRG_NM                         
+				      , FORMAT(SUM(A1.DANJUNG),'#,#') AS ACCEPT_WEIGHT  
+				      <if test='JKGUB == "매입"'>
+				      , FORMAT(SUM(A1.IKONGKEP),'#,#') AS PRICE                    
+				      </if>           
+				      <if test='JKGUB == "매출"'>
+				      , FORMAT(SUM(A1.KONGKEP),'#,#') AS PRICE
+				      </if>
+				      , FORMAT(ROUND(AVG(A1.DANGA), 1, 1),'#,#.#') AS AVG_UNIT_PRICE 
+				      , ISNULL(C1.J_REGION,'') AS J_REGION                                  
+				   FROM INLIST A1                                    
+				   LEFT JOIN MESURING A2     
+				   <if test='JKGUB == "매입"'>                        
+				     ON A1.J_ID = A2.IPCHULGO_MAIPID
+				   </if>         
+				   <if test='JKGUB == "매출"'>
+				     ON A1.J_ID = A2.IPCHULGO_MACHULID
+			       </if>           
+				   LEFT JOIN JAJAE B1                                
+				     ON A1.J_SERIAL = B1.J_SERIAL                    
+				   LEFT JOIN ACC_DEALER_CD C1                        
+				     ON A1.J_ID1 = C1.DEALER_CD                      
+				   LEFT JOIN HR_EMP_BASIS C2                         
+				     ON C1.CHRG_ID = C2.EMP_ID                       
+				  WHERE A1.J_DATE BETWEEN #{FDATE} AND #{TDATE}  
+				    AND A2.KERATYPE = '직송'                          
+				    AND A1.KERATYPE = #{JKGUB}                           
+				    AND A2.J_CHECK = '1'                             
+				    AND A1.DANGA != 0 
+				    <if test='DAEGUBUN != null and DAEGUBUN.size != 0'>
+		            AND B1.DAEGUBUN IN  
+		            <foreach collection="DAEGUBUN" item="item" open="(" close=")" separator=",">
+		            	#{item}
+		            </foreach>
+		            </if>    
+				  GROUP BY C1.DEALER_NM, C2.EMP_NM, C1.J_REGION      
+		    </if>
+		    <if test='KERATYPE != "직송"'>
+		    	 SELECT ROW_NUMBER() OVER(ORDER BY REPLACE(DEALER_NM, '(주)', '')) AS ROWNUM
+		    	      , ISNULL(C1.DEALER_NM,'') AS DEALER_NM                                 
+				      , ISNULL(C2.EMP_NM,'') AS CHRG_NM                         
+				      , FORMAT(SUM(A1.DANJUNG),'#,#') AS ACCEPT_WEIGHT  
+				      <if test='KERATYPE == "매입"'>
+				      , FORMAT(SUM(A1.IKONGKEP),'#,#') AS PRICE                    
+				      </if>           
+				      <if test='KERATYPE == "매출"'>
+				      , FORMAT(SUM(A1.KONGKEP),'#,#') AS PRICE
+				      </if>
+				      , FORMAT(ROUND(AVG(A1.DANGA), 1, 1),'#,#.#') AS AVG_UNIT_PRICE 
+				      , ISNULL(C1.J_REGION,'') AS J_REGION 
+				   FROM INLIST A1                                      
+				   LEFT JOIN MESURING A2                               
+				   <if test='KERATYPE == "매입"'>                        
+				     ON A1.J_ID = A2.IPCHULGO_MAIPID
+				   </if>         
+				   <if test='KERATYPE == "매출"'>
+				     ON A1.J_ID = A2.IPCHULGO_MACHULID
+			       </if>                
+				   LEFT JOIN JAJAE B1                                  
+				     ON A1.J_SERIAL = B1.J_SERIAL                      
+				   LEFT JOIN ACC_DEALER_CD C1                          
+				     ON A1.J_ID1 = C1.DEALER_CD                        
+				   LEFT JOIN HR_EMP_BASIS C2                           
+				     ON C1.CHRG_ID = C2.EMP_ID                         
+				  WHERE A1.J_DATE BETWEEN #{FDATE} AND #{TDATE}  
+				    AND A2.KERATYPE != '직송'                          
+				    AND A1.KERATYPE = #{KERATYPE}                           
+				    AND A2.J_CHECK = '1'                               
+				    AND A1.DANGA != 0                  
+				    <if test='DAEGUBUN != null and DAEGUBUN.size != 0'>
+		            AND B1.DAEGUBUN IN  
+		            <foreach collection="DAEGUBUN" item="item" open="(" close=")" separator=",">
+		            	#{item}
+		            </foreach>
+				  	</if>
+				  GROUP BY C1.DEALER_NM, C2.EMP_NM, C1.J_REGION   
+		    </if>
+		)
+		
+		SELECT *
+		     , (SELECT COUNT(0) FROM TEMP1) AS CNT
+		  FROM TEMP1
+		 ORDER BY ROWNUM ASC OFFSET (#{pageNum}-1)*#{pageLength}
+	       ROW FETCH NEXT #{pageLength} ROW ONLY
+	    
+	</select>
+	
+	<select id="getTotSumList_Deale" resultType="map">
+		WITH TEMP1 AS (
+		<if test='KERATYPE == "매입"'>
+			SELECT *                                                                 
+			  FROM(                                                                  
+			         SELECT ISNULL(FORMAT(SUM(G.WEIGHT),'#,#'),'') AS LANDEDWEIGHT --대지중량                                 
+			              , ISNULL(FORMAT(SUM(A.HALIN),'#,#'),'') AS LOSS--감량                                          
+			              , ISNULL(FORMAT(SUM(A.IWEIGHT),'#,#'),'') AS ACCEPTWEIGHT--인수량                                
+			              , ISNULL(FORMAT(SUM(ISNULL(A.IWEIGHT, 0) - ISNULL(G.WEIGHT, 0)),'#,#'),'') AS DIFFWEIGHT --차이중량
+			              , ISNULL(FORMAT(ROUND(AVG(A.DANGA),1),'#,#.#'),'') AS PAYEDUNITPRICE --지급단가                               
+			              , ISNULL(FORMAT(ISNULL(SUM(A.CKONGKEP), 0),'#,#'),'') AS CARRYCOST -- 운반비                                                   
+			              , ISNULL(FORMAT(SUM(A.IKONGKEP),'#,#'),'') AS TOTALPRICE -- 금액                                                             
+			              , ISNULL(FORMAT(SUM((ISNULL(A.IWEIGHT, 0) * ISNULL(A.DANGA, 0)) + ISNULL(A.CKONGKEP, 0)),'#,#'),'') AS ARRVTOTALPRICE -- 도착도금액
+			           FROM INLIST A                                                                              
+			           LEFT OUTER JOIN JAJAE C                                                                    
+			             ON C.J_SERIAL = A.J_SERIAL                                                               
+			           LEFT OUTER JOIN ACC_DEALER_CD D                                                            
+			             ON D.DEALER_CD = A.J_ID1                                                                 
+			           LEFT OUTER JOIN HR_EMP_BASIS E                                                             
+			             ON E.EMP_ID = D.CHRG_ID                                                                  
+			           LEFT OUTER JOIN JAJAE F                                                                    
+			             ON F.GUBUN1 = C.GUBUN1                                                                   
+			           LEFT OUTER JOIN MESURING G                                                                 
+			             ON G.IPCHULGO_MAIPID = A.J_ID                                                            
+			          WHERE A.J_DATE BETWEEN #{FDATE} AND #{TDATE}                                                              
+			            AND A.KERATYPE = '매입'                                                                   
+			            AND G.KERATYPE != '직송'                                                                  
+			            AND G.J_CHECK = '1'   
+			            <if test='DAEGUBUN != null and DAEGUBUN.size != 0'>
+			            AND F.DAEGUBUN IN 
+			            <foreach collection="DAEGUBUN" item="item" open="(" close=")" separator=",">
+			            	#{item}
+			            </foreach>
+			            </if>                                                                  
+			     ) Y1 
+		</if>
+		<if test='KERATYPE == "매출"'>
+			 SELECT * 
+			   FROM ( 
+			          SELECT ISNULL(FORMAT(SUM(G.WEIGHT) ,'#,#'),'') AS LANDEDWEIGHT --대지중량
+			               , ISNULL(FORMAT(SUM(A.HALIN),'#,#'),'') AS LOSS --감량
+			               , ISNULL(FORMAT(SUM(A.OWEIGHT),'#,#'),'') AS ACCEPTWEIGHT --인수량
+			               , ISNULL(FORMAT(SUM(ISNULL(A.OWEIGHT, 0) - ISNULL(G.WEIGHT, 0)),'#,#'),'') AS DIFFWEIGHT --중량차이
+			               , ISNULL(FORMAT(ROUND(AVG(A.DANGA),1),'#,#.#'),'') AS SALEUNITPRICE --지급단가
+			               , ISNULL(FORMAT(ISNULL(SUM(A.CKONGKEP), 0),'#,#'),'') AS CARRYCOST --운반비
+			               , ISNULL(FORMAT(SUM(A.KONGKEP),'#,#'),'') AS TOTALPRICE --금액
+			               , ISNULL(FORMAT(SUM((ISNULL(A.OWEIGHT, 0) * ISNULL(A.DANGA, 0)) - ISNULL(A.CKONGKEP, 0)),'#,#'),'') AS ARRVTOTALPRICE --도착도금액
+			            FROM INLIST A 
+			            LEFT OUTER JOIN JAJAE C 
+			              ON C.J_SERIAL = A.J_SERIAL 
+			            LEFT OUTER JOIN ACC_DEALER_CD D 
+			              ON D.DEALER_CD = A.J_ID1 
+			            LEFT OUTER JOIN HR_EMP_BASIS E 
+			              ON E.EMP_ID = D.CHRG_ID 
+			            LEFT OUTER JOIN JAJAE F 
+			              ON F.GUBUN1 = C.GUBUN1 
+			            LEFT OUTER JOIN MESURING G 
+			              ON G.IPCHULGO_MACHULID = A.J_ID 
+			           WHERE A.J_DATE BETWEEN #{FDATE} AND #{TDATE}     
+			             AND A.KERATYPE = '매출' 
+			             AND G.KERATYPE != '직송' 
+			             AND G.J_CHECK = '1' 
+			             <if test='DAEGUBUN != null and DAEGUBUN.size != 0'>
+			             AND F.DAEGUBUN IN 
+			             <foreach collection="DAEGUBUN" item="item" open="(" close=")" separator=",">
+			             	#{item}
+			             </foreach>
+			             </if>
+			      ) Y1 
+		</if>
+		<if test='KERATYPE == "직송"'>
+			SELECT ISNULL(FORMAT(SUM(B.DANJUNG),'#,#'),'') AS OWEIGHT --매출중량          
+			     , ISNULL(FORMAT(ROUND(AVG(B.DANGA),1)  , '#,#.#'),'') AS SALEUNITPRICE --매출단가      
+			     , ISNULL(FORMAT(SUM(B.KONGKEP), '#,#'),'')  AS SALEPRICE --매출액
+			     , ISNULL(FORMAT(ROUND(AVG(C.DANGA),1), '#,#.#'),'') AS PURCHUNITPRICE -- 매입단가  
+			     , ISNULL(FORMAT(SUM(C.IKONGKEP), '#,#'),'') AS PURC_AMT --매입금액         
+			     , ISNULL(FORMAT(SUM(ROUND(((ISNULL(B.DANJUNG, 0) * ISNULL(C.DANGA, 0)) + ISNULL(B.CKONGKEP, 0)) / B.DANJUNG, 1, 0)),'#,#.#'),'') AS ARRIVEUNITPRICE --차액
+			     , ISNULL(FORMAT(ISNULL(SUM(B.CKONGKEP), 0),'#,#'),'') AS CARRYCOST --운반비                                                                               
+			     , ISNULL(FORMAT(SUM((ISNULL(C.DANJUNG, 0) * ISNULL(C.DANGA, 0)) +ISNULL(B.CKONGKEP, 0)),'#,#'),'') AS ARRVTOTALPRICE -- 도착도금액                          
+			     , ISNULL(FORMAT(SUM(C.HALIN), '#,#'),'') AS HALIN --감량                      
+			  FROM MESURING A                   
+			  LEFT OUTER JOIN INLIST B          
+			    ON A.IPCHULGO_MACHULID = B.J_ID 
+			  LEFT OUTER JOIN INLIST C          
+			    ON A.IPCHULGO_MAIPID = C.J_ID   
+			  LEFT OUTER JOIN(SELECT X2.EMP_NM, X1.DEALER_CD, X1.DEALER_NM, X1.CHRG_ID 
+			                    FROM ACC_DEALER_CD X1                                  
+			                    LEFT OUTER JOIN HR_EMP_BASIS X2                        
+			                      ON X1.CHRG_ID = X2.EMP_ID) D                         
+			   ON A.J_ASSIGNID = D.DEALER_CD--매출처                                   
+			 LEFT OUTER JOIN ACC_DEALER_CD E --매입처                                  
+			   ON C.J_ID1 = E.DEALER_CD                                                
+			 LEFT OUTER JOIN(SELECT X2.EMP_NM, X1.DEALER_CD, X1.DEALER_NM, X1.CHRG_ID  
+			                     FROM ACC_DEALER_CD X1            
+			                     LEFT OUTER JOIN HR_EMP_BASIS X2  
+			                       ON X1.CHRG_ID = X2.EMP_ID) E1  
+			   ON A.MAIPCHERID = E1.DEALER_CD--매입처             
+			 LEFT OUTER JOIN HR_EMP_BASIS XX                      
+			   ON C.CHRG_ID = XX.EMP_ID                           
+			 LEFT OUTER JOIN JAJAE H                              
+			   ON A.J_SERIAL = H.J_SERIAL                         
+			WHERE A.KERATYPE = '직송'                             
+			  AND B.JUNPYOID IS NOT NULL                          
+			  AND C.JUNPYOID IS NOT NULL                          
+			  AND A.J_DATE BETWEEN #{FDATE} AND #{TDATE} 
+			  <if test='DAEGUBUN != null and DAEGUBUN.size != 0'>
+              AND H.DAEGUBUN IN 
+              <foreach collection="DAEGUBUN" item="item" open="(" close=")" separator=",">
+              	#{item}
+              </foreach>
+              </if>
+		</if>
+		)
+		
+		SELECT 'TOT' AS TYPE                    
+			 , *
+		  FROM TEMP1
+	</select>
+	
+	<select id="getTotSumList_Gubun" resultType="map">
+		WITH TEMP1 AS (
+			<if test='KERATYPE == "매입"'>
+			SELECT ISNULL(FORMAT(SUM(Z1.ACCEPTWEIGHT),'#,#'),'') AS ACCEPTWEIGHT --인수량               
+				 , ISNULL(FORMAT(SUM(Z1.DIFFWEIGHT),'#,#'),'') AS DIFFWEIGHT  --차이중량
+				 , ISNULL(FORMAT(SUM(Z1.LANDEDWEIGHT),'#,#'),'') AS LANDEDWEIGHT --대지중량          
+				 , ISNULL(FORMAT(ROUND(AVG(Z1.PAYEDUNITPRICE), 1, 0),'#,#.#'),'') AS PAYEDUNITPRICE  --지급단가
+				 , ISNULL(FORMAT(SUM(Z1.TOTALPRICE),'#,#'),'') AS TOTALPRICE --금액                
+				 , ISNULL(FORMAT(SUM(Z1.HALIN),'#,#'),'') AS HALIN --감량
+			  FROM (
+			  	SELECT SUM(A.IWEIGHT) AS ACCEPTWEIGHT               
+				     , SUM(A.IWEIGHT) -SUM(F.WEIGHT) AS DIFFWEIGHT  
+				     , SUM(F.WEIGHT) AS LANDEDWEIGHT                
+				     , ROUND(AVG(A.DANGA), 1, 0) AS PAYEDUNITPRICE  
+				     , SUM(A.IKONGKEP) AS TOTALPRICE                
+				     , SUM(A.HALIN) AS HALIN                          
+				  FROM INLIST A                                     
+				  LEFT OUTER JOIN JAJAE C                           
+				    ON C.J_SERIAL = A.J_SERIAL                      
+				  LEFT OUTER JOIN JAJAE E                           
+				    ON E.GUBUN1 = C.GUBUN1                          
+				  LEFT OUTER JOIN MESURING F                        
+				    ON F.IPCHULGO_MAIPID = A.J_ID                   
+				  WHERE A.J_DATE BETWEEN #{FDATE} AND #{TDATE}
+				    AND A.KERATYPE = '매입' 
+				    AND F.KERATYPE != '직송' 
+				    AND F.J_CHECK = '1' 
+				    AND A.DANGA != 0  
+				   <if test='DAEGUBUN != null and DAEGUBUN.size != 0'>
+		            AND E.DAEGUBUN IN 
+		            <foreach collection="DAEGUBUN" item="item" open="(" close=")" separator=",">
+		            	#{item}
+		            </foreach>
+		            </if>
+			      GROUP BY A.J_SERIAL, E.GUBUN1
+			  ) Z1
+			    
+			</if>
+			<if test='KERATYPE == "매출"'>
+				SELECT ISNULL(FORMAT(SUM(Z1.ACCEPTWEIGHT),'#,#'),'') AS ACCEPTWEIGHT 
+				     , ISNULL(FORMAT(SUM(Z1.DIFFWEIGHT),'#,#'),'') AS DIFFWEIGHT 
+				     , ISNULL(FORMAT(SUM(Z1.LANDEDWEIGHT),'#,#'),'') AS LANDEDWEIGHT 
+				     , ISNULL(FORMAT(ROUND(AVG(Z1.SALEUNITPRICE),1,0),'#,#.#'),'') AS SALEUNITPRICE 
+				     , ISNULL(FORMAT(SUM(Z1.TOTALPRICE),'#,#'),'') AS TOTALPRICE 
+				     , ISNULL(FORMAT(SUM(Z1.HALIN),'#,#'),'') AS HALIN 
+				  FROM (
+				        SELECT SUM(A.OWEIGHT) AS ACCEPTWEIGHT 
+				       	     , SUM(A.OWEIGHT) - SUM(F.WEIGHT) AS DIFFWEIGHT 
+				       	     , SUM(F.WEIGHT) AS LANDEDWEIGHT 
+				       	     , ROUND(AVG(A.DANGA),1,0) AS SALEUNITPRICE 
+				       	     , SUM(A.KONGKEP) AS TOTALPRICE 
+				       	     , SUM(A.HALIN) AS HALIN 
+				          FROM INLIST A 
+				          LEFT OUTER JOIN JAJAE C 
+				            ON C.J_SERIAL = A.J_SERIAL 
+				          LEFT OUTER JOIN ACC_DEALER_CD D 
+				            ON D.DEALER_CD = A.J_ID1 
+				          LEFT OUTER JOIN JAJAE E 
+				            ON E.GUBUN1 = C.GUBUN1 
+				          LEFT OUTER JOIN MESURING F 
+				            ON F.IPCHULGO_MACHULID = A.J_ID 
+				         WHERE A.J_DATE BETWEEN #{FDATE} AND #{TDATE} 
+				           AND A.KERATYPE = '매출' 
+				           AND F.KERATYPE != '직송' 
+				           AND F.J_CHECK = '1' 
+				           AND A.DANGA != 0    
+				           <if test='DAEGUBUN != null and DAEGUBUN.size != 0'>
+				                AND E.DAEGUBUN IN 
+				               <foreach collection="DAEGUBUN" item="item" open="(" close=")" separator=",">
+				               	#{item}
+				               </foreach>
+			               </if>
+				         GROUP BY A.J_SERIAL, E.GUBUN1)Z1
+				  
+			</if>
+			<if test='KERATYPE == "직송"'>
+				SELECT ISNULL(FORMAT(SUM(Z1.ACCEPTWEIGHT),'#,#'),'') AS ACCEPTWEIGHT                            
+				     , ISNULL(FORMAT(SUM(Z1.LANDEDWEIGHT),'#,#'),'') AS LANDEDWEIGHT                             
+				     , ISNULL(FORMAT(SUM(Z1.DIFFWEIGHT),'#,#'),'') AS DIFFWEIGHT              
+				     , ISNULL(FORMAT(ROUND(AVG(Z1.SALEUNITPRICE), 1, 1),'#,#.#'),'') AS SALEUNITPRICE                
+				     , ISNULL(FORMAT(SUM(Z1.TOTALPRICE),'#,#'),'') AS TOTALPRICE                              
+				     , ISNULL(FORMAT(SUM(Z1.HALIN),'#,#'),'') AS HALIN
+				  FROM (
+				  		SELECT SUM(A1.OWEIGHT) AS ACCEPTWEIGHT                            
+						     , SUM(A2.WEIGHT) AS LANDEDWEIGHT                             
+						     , SUM(A1.OWEIGHT) -SUM(A2.WEIGHT) AS DIFFWEIGHT              
+						     , ROUND(AVG(A1.DANGA), 1, 1) AS SALEUNITPRICE                
+						     , SUM(A1.KONGKEP) AS TOTALPRICE                              
+						     , MAX(A3.HALIN) AS HALIN                                     
+						  FROM INLIST A1                                                  
+						  LEFT JOIN MESURING A2
+						    ON A1.J_ID = A2.IPCHULGO_MACHULID                             
+						  LEFT JOIN(SELECT A1.J_SERIAL                                    
+						                 , B1.GUBUN1                                      
+						                 , SUM(A1.HALIN) AS HALIN                         
+						              FROM INLIST A1                                      
+						              LEFT JOIN MESURING A2                               
+						                ON A1.J_ID = A2.IPCHULGO_MAIPID                   
+						              LEFT JOIN JAJAE B1                                  
+						                ON A1.J_SERIAL = B1.J_SERIAL                      
+						             WHERE A1.J_DATE BETWEEN #{FDATE} AND #{TDATE}
+						               AND A1.KERATYPE = '매입'                           
+						               AND A2.KERATYPE = '직송'                           
+						            GROUP BY A1.J_SERIAL, B1.GUBUN1 )A3                   
+						    ON A1.J_SERIAL = A3.J_SERIAL                                  
+						  LEFT JOIN JAJAE B1                                              
+						    ON A1.J_SERIAL = B1.J_SERIAL                                  
+						 WHERE A1.J_DATE BETWEEN #{FDATE} AND #{TDATE}            
+						   AND A1.KERATYPE = '매출'                                       
+						   AND A2.KERATYPE = '직송' 
+						   <if test='DAEGUBUN != null and DAEGUBUN.size != 0'>
+				           AND B1.DAEGUBUN IN 
+				           <foreach collection="DAEGUBUN" item="item" open="(" close=")" separator=",">
+				           	#{item}
+				           </foreach>
+				           </if>                                      
+						 GROUP BY A1.J_SERIAL, B1.GUBUN1 )Z1
+				                                 
+			</if>
+		)
+		
+		SELECT 'TOT' AS TYPE
+		     , *
+		  FROM TEMP1
+	</select>
+	
+	<select id="getTotSumList_Com" resultType="map">
+		WITH TEMP1 AS (
+			<if test='KERATYPE == "직송"'>
+			SELECT ISNULL(FORMAT(SUM(Z1.ACCEPT_WEIGHT),'#,#'),'') AS ACCEPT_WEIGHT  --인수량
+			     <if test='JKGUB == "매입"'>
+			     , ISNULL(FORMAT(SUM(Z1.PRICE),'#,#'),'') AS PRICE --금액                   
+			     </if>           
+			     <if test='JKGUB == "매출"'>
+			     , ISNULL(FORMAT(SUM(Z1.PRICE),'#,#'),'') AS PRICE
+			     </if>
+			     , ISNULL(FORMAT(ROUND(AVG(Z1.AVG_UNIT_PRICE), 0),'#,#.#'),'') AS AVG_UNIT_PRICE --평균단가
+			  FROM (
+			  		SELECT SUM(A1.DANJUNG) AS ACCEPT_WEIGHT  
+				        <if test='JKGUB == "매입"'>
+				        , SUM(A1.IKONGKEP) AS PRICE                    
+				        </if>           
+				        <if test='JKGUB == "매출"'>
+				        , SUM(A1.KONGKEP) AS PRICE
+				        </if>
+				        , ROUND(AVG(A1.DANGA), 1, 1) AS AVG_UNIT_PRICE 
+				     FROM INLIST A1                                    
+				     LEFT JOIN MESURING A2     
+				     <if test='JKGUB == "매입"'>                        
+				       ON A1.J_ID = A2.IPCHULGO_MAIPID
+				     </if>         
+				     <if test='JKGUB == "매출"'>
+				       ON A1.J_ID = A2.IPCHULGO_MACHULID
+			         </if>           
+				     LEFT JOIN JAJAE B1                                
+				       ON A1.J_SERIAL = B1.J_SERIAL                    
+				     LEFT JOIN ACC_DEALER_CD C1                        
+				       ON A1.J_ID1 = C1.DEALER_CD                      
+				     LEFT JOIN HR_EMP_BASIS C2                         
+				       ON C1.CHRG_ID = C2.EMP_ID                       
+				    WHERE A1.J_DATE BETWEEN #{FDATE} AND #{TDATE} 
+				      AND A2.KERATYPE = '직송'                          
+				      AND A1.KERATYPE = #{JKGUB}                           
+				      AND A2.J_CHECK = '1'                             
+				      AND A1.DANGA != 0 
+				      <if test='DAEGUBUN != null and DAEGUBUN.size != 0'>
+		              AND B1.DAEGUBUN IN  
+		              <foreach collection="DAEGUBUN" item="item" open="(" close=")" separator=",">
+		              	#{item}
+		              </foreach>
+		              </if>    
+				    GROUP BY C1.DEALER_NM, C2.EMP_NM )Z1
+		    	       
+		    </if>
+		    <if test='KERATYPE != "직송"'>
+		    	SELECT ISNULL(FORMAT(SUM(Z1.ACCEPT_WEIGHT),'#,#'),'') AS ACCEPT_WEIGHT  
+					 <if test='KERATYPE == "매입"'>
+					 , ISNULL(FORMAT(SUM(Z1.PRICE),'#,#'),'') AS PRICE                    
+					 </if>           
+					 <if test='KERATYPE == "매출"'>
+					 , ISNULL(FORMAT(SUM(Z1.PRICE),'#,#'),'') AS PRICE
+					 </if>
+					 , ISNULL(FORMAT(ROUND(AVG(Z1.AVG_UNIT_PRICE), 0),'#,#'),'') AS AVG_UNIT_PRICE 
+		    	  FROM ( 
+			    	  SELECT SUM(A1.DANJUNG) AS ACCEPT_WEIGHT  
+					      <if test='KERATYPE == "매입"'>
+					      , SUM(A1.IKONGKEP) AS PRICE                    
+					      </if>           
+					      <if test='KERATYPE == "매출"'>
+					      , SUM(A1.KONGKEP) AS PRICE
+					      </if>
+					      , ROUND(AVG(A1.DANGA), 1, 1) AS AVG_UNIT_PRICE 
+					   FROM INLIST A1                                      
+					   LEFT JOIN MESURING A2                               
+					   <if test='KERATYPE == "매입"'>                        
+					     ON A1.J_ID = A2.IPCHULGO_MAIPID
+					   </if>         
+					   <if test='KERATYPE == "매출"'>
+					     ON A1.J_ID = A2.IPCHULGO_MACHULID
+				       </if>                
+					   LEFT JOIN JAJAE B1                                  
+					     ON A1.J_SERIAL = B1.J_SERIAL                      
+					   LEFT JOIN ACC_DEALER_CD C1                          
+					     ON A1.J_ID1 = C1.DEALER_CD                        
+					   LEFT JOIN HR_EMP_BASIS C2                           
+					     ON C1.CHRG_ID = C2.EMP_ID                         
+					  WHERE A1.J_DATE BETWEEN #{FDATE} AND #{TDATE} 
+					    AND A2.KERATYPE != '직송'                          
+					    AND A1.KERATYPE = #{KERATYPE}                           
+					    AND A2.J_CHECK = '1'                               
+					    AND A1.DANGA != 0                  
+					    <if test='DAEGUBUN != null and DAEGUBUN.size != 0'>
+			            AND B1.DAEGUBUN IN  
+			            <foreach collection="DAEGUBUN" item="item" open="(" close=")" separator=",">
+			            	#{item}
+			            </foreach>
+					  	</if>
+					  GROUP BY C1.DEALER_NM, C2.EMP_NM )Z1
+		    	    
+		    </if>
+		)
+		
+		SELECT 'TOT' AS TYPE
+		     , *
+		  FROM TEMP1
+	</select>
+</mapper>

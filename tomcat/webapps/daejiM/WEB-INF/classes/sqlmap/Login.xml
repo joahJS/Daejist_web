@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mobile.daeji.dao.LoginDao">
+
+	<select id="getUserInfo" resultType="map">
+		SELECT TOP 1 A1.*
+		  FROM ZUSRLST A1
+		 WHERE A1.USRID = #{username} 
+		   AND A1.USEYN = 'Y'
+	</select>
+</mapper>

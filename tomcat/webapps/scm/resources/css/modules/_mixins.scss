@@ -1,0 +1,64 @@
+/* ---------- mixin ---------- */
+
+@use 'colors' as clr;
+
+@mixin button-hover($face-color, $text-color, $active-color) {
+    background-color: $face-color;
+    box-shadow: 0 0 0 -.25rem rgba($face-color, .5);
+    color: $text-color;
+
+    &:hover {
+        box-shadow: 0 .5rem 1rem -.25rem rgba($face-color, .5);
+        text-shadow: 0 .05rem .05rem rgba(clr.$darker, .5);
+        transition: .15s ease-out;
+    }
+
+    &:active {
+        filter: saturate(.9);
+    }
+
+    &:focus {
+        background-color: $active-color;
+        box-shadow: 0 0 0 .15rem solid rgba($face-color, .5);
+        outline: .05rem solid $face-color;
+        outline-offset: .1rem;
+    }
+}
+
+@mixin hide-it { // 폼 요소 기본 형태 숨기기
+    position: absolute;
+    left: -50000rem;
+    opacity: 0;
+
+    & + label {
+        display: inline-flex;
+        position: relative;
+        width: fit-content;
+    }
+}
+
+@mixin ellipsis($type) {
+    @if $type == 1 {
+        @include text-ellipsis;
+    } @else {
+        @include multiline-ellipsis($type);
+    }
+}
+
+@mixin text-ellipsis { // 한줄 말줄임 처리
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+@mixin multiline-ellipsis($line-count) {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    height: ($line-count * 1em);
+    word-wrap: break-word;
+    line-clamp: $line-count;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+/* ---------- %placeholder ----------*/

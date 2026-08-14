@@ -1,0 +1,60 @@
+@charset "UTF-8";
+/* 컬러 */
+/* 헤더 */
+[data-device-type=mobile] {
+  /* Portrait 세로모드일 때 */
+}
+[data-device-type=mobile] header {
+  width: 100%;
+  background-color: rgb(66, 87, 46);
+}
+[data-device-type=mobile] header nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  padding: 0.9rem 0.3rem;
+  color: rgb(255, 255, 255);
+}
+[data-device-type=mobile] header .prev {
+  cursor: pointer;
+}
+[data-device-type=mobile] header div {
+  padding: 0.2rem 0.8rem;
+  border-radius: 5px;
+}
+[data-device-type=mobile] header img {
+  width: 35px;
+  padding-top: 0.3rem;
+}
+
+[data-device-type=desktop] {
+  /* Landscape 가로모드일 때 */
+}
+[data-device-type=desktop] header {
+  width: 100%;
+  background-color: rgb(66, 87, 46);
+}
+[data-device-type=desktop] header nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  max-width: 1900px;
+  width: 1900px;
+  padding: 0.9rem 0.3rem;
+  color: rgb(255, 255, 255);
+}
+[data-device-type=desktop] header .prev {
+  cursor: pointer;
+}
+[data-device-type=desktop] header div {
+  padding: 0.2rem 0.8rem;
+  border-radius: 5px;
+}
+[data-device-type=desktop] header img {
+  width: 35px;
+  padding-top: 0.3rem;
+}
+
+/* 헤더 끝 */

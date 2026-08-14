@@ -1,0 +1,81 @@
+@charset "UTF-8";
+/* 컬러 */
+body {
+  background-image: linear-gradient(to bottom right, rgba(255, 249, 233, 0.4) 1%, transparent);
+}
+
+button {
+  box-shadow: 0 0.5rem 1rem rgba(51, 38, 38, 0.3);
+}
+
+#mainWrap {
+  height: 100vh;
+}
+
+#wrap {
+  overflow: hidden;
+}
+
+.contentView_in {
+  display: flex;
+  flex-direction: column;
+  gap: 10rem;
+  align-items: center;
+  width: 100%;
+}
+
+#logoBackground {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  width: 110vw;
+  transform: translateX(-50%) rotate(-55deg);
+  opacity: 0.3;
+  z-index: -1;
+}
+
+#contentView {
+  display: grid;
+  place-items: center;
+  height: inherit;
+}
+
+.DJ_title {
+  text-align: center;
+}
+.DJ_title > h5 {
+  color: rgb(66, 86, 47);
+}
+.DJ_title > h1 {
+  color: rgb(37, 51, 29);
+}
+
+#frmBTN {
+  display: flex;
+  flex-flow: column nowrap;
+  width: min(100%, 23.5rem);
+}
+#frmBTN button {
+  padding: 1rem;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+#frmBTN button:hover {
+  background-color: rgb(66, 86, 47);
+}
+#frmBTN button i {
+  font-size: 1.3rem;
+  vertical-align: bottom;
+  padding-right: 0.3rem;
+}
+
+.logout {
+  cursor: pointer;
+  text-align: right;
+  color: rgb(66, 86, 47);
+  align-self: flex-end;
+  margin-top: 0.5rem;
+}
+.logout:hover {
+  font-weight: bold;
+}

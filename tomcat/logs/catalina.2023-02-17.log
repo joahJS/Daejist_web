@@ -1,0 +1,9 @@
+17-Feb-2023 14:49:44.447 정보 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.startup.HostConfig.undeploy Undeploying context [/daejiM]
+17-Feb-2023 14:49:44.454 정보 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.core.ApplicationContext.log Destroying Spring FrameworkServlet 'appServlet'
+17-Feb-2023 14:49:44.734 정보 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.core.ApplicationContext.log Closing Spring root WebApplicationContext
+17-Feb-2023 14:49:44.993 경고 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesJdbc The web application [daejiM] registered the JDBC driver [com.microsoft.sqlserver.jdbc.SQLServerDriver] but failed to unregister it when the web application was stopped. To prevent a memory leak, the JDBC Driver has been forcibly unregistered.
+17-Feb-2023 14:49:45.050 정보 [daejist7.cafe24.com-startStop-12] org.apache.catalina.startup.HostConfig.deployWAR Deploying web application archive /daejist7/tomcat/webapps/daejiM.war
+17-Feb-2023 14:49:47.624 정보 [daejist7.cafe24.com-startStop-12] org.apache.catalina.core.ApplicationContext.log No Spring WebApplicationInitializer types detected on classpath
+17-Feb-2023 14:49:47.631 정보 [daejist7.cafe24.com-startStop-12] org.apache.catalina.core.ApplicationContext.log Initializing Spring root WebApplicationContext
+17-Feb-2023 14:49:48.985 정보 [daejist7.cafe24.com-startStop-12] org.apache.catalina.core.ApplicationContext.log Initializing Spring DispatcherServlet 'appServlet'
+17-Feb-2023 14:49:49.359 정보 [daejist7.cafe24.com-startStop-12] org.apache.catalina.startup.HostConfig.deployWAR Deployment of web application archive /daejist7/tomcat/webapps/daejiM.war has finished in 4,310 ms

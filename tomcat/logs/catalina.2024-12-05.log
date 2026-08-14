@@ -1,0 +1,204 @@
+05-Dec-2024 13:52:34.128 심각 [http-nio-8855-exec-103] org.apache.catalina.core.StandardWrapperValve.invoke Servlet.service() for servlet [appServlet] in context with path [/scm] threw exception [Request processing failed; nested exception is org.apache.ibatis.exceptions.PersistenceException: 
+### Error querying database.  Cause: com.microsoft.sqlserver.jdbc.SQLServerException: 'date' 열에 값을 추가하는 중 오버플로가 발생했습니다.
+### The error may exist in file [/daejist7/tomcat/webapps/scm/WEB-INF/classes/sqlmap/home.xml]
+### The error may involve com.daeji.scm.dao.HomeDao.getCarryOver
+### The error occurred while handling results
+### SQL: DECLARE        @DATEF CHAR(10)=?,        @DATET CHAR(10)=?,       @CVCOD NUMERIC(12,0)=?;              WITH TEMP1 AS (             -- 이월             SELECT Z1.ACCOD                 , Z1.CVCOD                 , SUM(Z1.JAMT) AS JAMT               FROM ( SELECT ISNULL(A1.ACDRJN, 0) + ISNULL(A1.ACCRJN, 0) JAMT                        , A1.ACCOD                        , A1.CVCOD                       FROM ACJANF A1                                                          WHERE A1.ACYEAR = SUBSTRING(@DATEF,1,4)                                                             UNION ALL                                                                           SELECT ISNULL(SUM(CASE WHEN B1.ACRDR = '1' THEN ISNULL(ACAMT, 0) - ISNULL(ADAMT, 0)                                     ELSE ISNULL(ADAMT, 0) - ISNULL(ACAMT, 0) END), 0) AS JAMT                            , A1.ACCOD                         , A1.CVCOD                        FROM ACTRAN A1                                                                                         LEFT JOIN ACMSTF B1                                                                                     ON A1.ACCOD = B1.ACCOD                                                                              WHERE A1.TDATE BETWEEN SUBSTRING(@DATEF, 1, 4) + '0101' AND CONVERT(VARCHAR(8), DATEADD(DAY, -1, CONVERT(DATE, @DATEF)), 112)                      AND A1.APVYN = 'Y'                                                  GROUP BY A1.ACCOD, A1.CVCOD  )Z1               GROUP BY Z1.ACCOD, Z1.CVCOD          ), TEMP2 AS (             --전표데이터             SELECT A1.TDATE                  , A1.ATGUB                  , A1.SEQNO                  , A1.LINNO                 , A1.CVCOD                 , A1.ACCOD                  , A1.ATEXT                  , A1.ACAMT                  , A1.ADAMT               FROM ACTRAN A1              WHERE A1.TDATE BETWEEN @DATEF AND @DATET                AND A1.APVYN = 'Y'          ), TEMP3 AS (             --거래처별, 계정별 잔액/ 계정코드/계정과목명/이월금액/차변금액/대변금액/잔액             SELECT Z1.CVCOD --계정코드                 , Z1.ACCOD --계정과목코드                 , Z2.ACDSP --계정과목명                 , ISNULL(SUM(JAMT),0) AS IWOL --이월금액                 , ISNULL(SUM(ACAMT),0) AS ACAMT --차변금액                 , ISNULL(SUM(ADAMT),0) AS ADAMT --대변금액                 , (CASE WHEN Z2.ACRDR = '1' THEN ISNULL(SUM(JAMT),0)+ISNULL(SUM(ACAMT),0)-ISNULL(SUM(ADAMT),0)                       ELSE ISNULL(SUM(JAMT),0)-ISNULL(SUM(ACAMT),0)+ISNULL(SUM(ADAMT),0) END) AS JAN --잔액               FROM ( SELECT CVCOD                        , ACCOD                        , JAMT                        , 0 AS ACAMT                        , 0 AS ADAMT                      FROM TEMP1                     UNION ALL                    SELECT CVCOD                        , ACCOD                        , 0                        , SUM(ACAMT) AS ACAMT                        , SUM(ADAMT) AS ADAMT                      FROM TEMP2                     GROUP BY CVCOD, ACCOD )Z1               LEFT JOIN ACMSTF Z2                ON Z1.ACCOD = Z2.ACCOD              GROUP BY Z1.CVCOD, Z1.ACCOD, Z2.ACRDR, Z2.ACDSP           )           SELECT A1.CVCOD               , REPLACE(A1.ACCOD, ' ','') AS  ACCOD               , A1.ACDSP AS ACNAM               , A1.IWOL AS CARRY_OVER_AMT               , A1.ACAMT               , A1.ADAMT               , A1.JAN AS BAL_AMT               FROM TEMP3 A1                         WHERE A1.CVCOD = @CVCOD             AND (A1.IWOL != 0 OR A1.ACAMT != 0 OR A1.ADAMT != 0) AND ACCOD = 0251
+### Cause: com.microsoft.sqlserver.jdbc.SQLServerException: 'date' 열에 값을 추가하는 중 오버플로가 발생했습니다.] with root cause
+ com.microsoft.sqlserver.jdbc.SQLServerException: 'date' 열에 값을 추가하는 중 오버플로가 발생했습니다.
+	at com.microsoft.sqlserver.jdbc.SQLServerException.makeFromDatabaseError(SQLServerException.java:262)
+	at com.microsoft.sqlserver.jdbc.SQLServerResultSet$FetchBuffer.nextRow(SQLServerResultSet.java:5448)
+	at com.microsoft.sqlserver.jdbc.SQLServerResultSet.fetchBufferNext(SQLServerResultSet.java:1771)
+	at com.microsoft.sqlserver.jdbc.SQLServerResultSet.next(SQLServerResultSet.java:1029)
+	at org.apache.commons.dbcp.DelegatingResultSet.next(DelegatingResultSet.java:207)
+	at org.apache.commons.dbcp.DelegatingResultSet.next(DelegatingResultSet.java:207)
+	at org.apache.ibatis.executor.resultset.DefaultResultSetHandler.handleRowValuesForSimpleResultMap(DefaultResultSetHandler.java:352)
+	at org.apache.ibatis.executor.resultset.DefaultResultSetHandler.handleRowValues(DefaultResultSetHandler.java:328)
+	at org.apache.ibatis.executor.resultset.DefaultResultSetHandler.handleResultSet(DefaultResultSetHandler.java:301)
+	at org.apache.ibatis.executor.resultset.DefaultResultSetHandler.handleResultSets(DefaultResultSetHandler.java:194)
+	at org.apache.ibatis.executor.statement.PreparedStatementHandler.query(PreparedStatementHandler.java:65)
+	at org.apache.ibatis.executor.statement.RoutingStatementHandler.query(RoutingStatementHandler.java:79)
+	at org.apache.ibatis.executor.SimpleExecutor.doQuery(SimpleExecutor.java:63)
+	at org.apache.ibatis.executor.BaseExecutor.queryFromDatabase(BaseExecutor.java:324)
+	at org.apache.ibatis.executor.BaseExecutor.query(BaseExecutor.java:156)
+	at org.apache.ibatis.executor.CachingExecutor.query(CachingExecutor.java:109)
+	at org.apache.ibatis.executor.CachingExecutor.query(CachingExecutor.java:83)
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(DefaultSqlSession.java:147)
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(DefaultSqlSession.java:140)
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.selectOne(DefaultSqlSession.java:76)
+	at sun.reflect.GeneratedMethodAccessor358.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.mybatis.spring.SqlSessionTemplate$SqlSessionInterceptor.invoke(SqlSessionTemplate.java:433)
+	at com.sun.proxy.$Proxy38.selectOne(Unknown Source)
+	at org.mybatis.spring.SqlSessionTemplate.selectOne(SqlSessionTemplate.java:166)
+	at org.apache.ibatis.binding.MapperMethod.execute(MapperMethod.java:87)
+	at org.apache.ibatis.binding.MapperProxy.invoke(MapperProxy.java:93)
+	at com.sun.proxy.$Proxy41.getCarryOver(Unknown Source)
+	at com.daeji.scm.service.impl.HomeServiceImpl.getCarryOver(HomeServiceImpl.java:48)
+	at com.daeji.scm.controller.HomeController.getCarryOver(HomeController.java:207)
+	at sun.reflect.GeneratedMethodAccessor696.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:150)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:117)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:895)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:808)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1067)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:963)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:909)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:648)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:729)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:292)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:207)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:52)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:240)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:207)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:327)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:115)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:81)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:122)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:126)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:81)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:109)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:149)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.authentication.www.BasicAuthenticationFilter.doFilterInternal(BasicAuthenticationFilter.java:166)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:223)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:217)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:103)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:89)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.csrf.CsrfFilter.doFilterInternal(CsrfFilter.java:132)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:55)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.session.ConcurrentSessionFilter.doFilter(ConcurrentSessionFilter.java:147)
+	at org.springframework.security.web.session.ConcurrentSessionFilter.doFilter(ConcurrentSessionFilter.java:125)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:112)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:82)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:211)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:183)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:354)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:267)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:240)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:207)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:240)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:207)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:212)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:94)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:141)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:79)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:88)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:502)
+	at org.apache.coyote.http11.AbstractHttp11Processor.process(AbstractHttp11Processor.java:1132)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:684)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1539)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.run(NioEndpoint.java:1495)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:745)
+
+05-Dec-2024 15:33:56.137 정보 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.startup.HostConfig.reload Reloading context [/scm]
+05-Dec-2024 15:33:56.138 정보 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.core.StandardContext.reload Reloading Context with name [/scm] has started
+05-Dec-2024 15:33:56.138 정보 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.core.ApplicationContext.log Destroying Spring FrameworkServlet 'appServlet'
+05-Dec-2024 15:33:56.155 정보 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.core.ApplicationContext.log Closing Spring root WebApplicationContext
+05-Dec-2024 15:33:56.175 경고 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesJdbc The web application [scm] registered the JDBC driver [com.microsoft.sqlserver.jdbc.SQLServerDriver] but failed to unregister it when the web application was stopped. To prevent a memory leak, the JDBC Driver has been forcibly unregistered.
+05-Dec-2024 15:33:57.702 정보 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+05-Dec-2024 15:33:57.703 정보 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.core.ApplicationContext.log No Spring WebApplicationInitializer types detected on classpath
+05-Dec-2024 15:33:57.712 정보 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.core.ApplicationContext.log Initializing Spring root WebApplicationContext
+05-Dec-2024 15:33:58.462 심각 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.core.StandardContext.filterStart Exception starting filter AutoHttpFilter
+ java.lang.ClassNotFoundException: com.daeji.scm.filter.AutoHttpFilter
+	at org.apache.catalina.loader.WebappClassLoaderBase.loadClass(WebappClassLoaderBase.java:1335)
+	at org.apache.catalina.loader.WebappClassLoaderBase.loadClass(WebappClassLoaderBase.java:1163)
+	at org.apache.catalina.core.DefaultInstanceManager.loadClass(DefaultInstanceManager.java:542)
+	at org.apache.catalina.core.DefaultInstanceManager.loadClassMaybePrivileged(DefaultInstanceManager.java:523)
+	at org.apache.catalina.core.DefaultInstanceManager.newInstance(DefaultInstanceManager.java:150)
+	at org.apache.catalina.core.ApplicationFilterConfig.getFilter(ApplicationFilterConfig.java:264)
+	at org.apache.catalina.core.ApplicationFilterConfig.<init>(ApplicationFilterConfig.java:108)
+	at org.apache.catalina.core.StandardContext.filterStart(StandardContext.java:4708)
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:5348)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:145)
+	at org.apache.catalina.core.StandardContext.reload(StandardContext.java:3868)
+	at org.apache.catalina.startup.HostConfig.reload(HostConfig.java:1406)
+	at org.apache.catalina.startup.HostConfig.checkResources(HostConfig.java:1379)
+	at org.apache.catalina.startup.HostConfig.check(HostConfig.java:1615)
+	at org.apache.catalina.startup.HostConfig.lifecycleEvent(HostConfig.java:318)
+	at org.apache.catalina.util.LifecycleSupport.fireLifecycleEvent(LifecycleSupport.java:95)
+	at org.apache.catalina.util.LifecycleBase.fireLifecycleEvent(LifecycleBase.java:90)
+	at org.apache.catalina.core.ContainerBase.backgroundProcess(ContainerBase.java:1168)
+	at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.processChildren(ContainerBase.java:1377)
+	at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.processChildren(ContainerBase.java:1381)
+	at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.run(ContainerBase.java:1349)
+	at java.lang.Thread.run(Thread.java:745)
+
+05-Dec-2024 15:33:58.463 심각 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.core.StandardContext.startInternal One or more Filters failed to start. Full details will be found in the appropriate container log file
+05-Dec-2024 15:33:58.463 심각 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.core.StandardContext.startInternal Context [/scm] startup failed due to previous errors
+05-Dec-2024 15:33:58.466 정보 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.core.ApplicationContext.log Closing Spring root WebApplicationContext
+05-Dec-2024 15:33:58.478 경고 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesJdbc The web application [scm] registered the JDBC driver [com.microsoft.sqlserver.jdbc.SQLServerDriver] but failed to unregister it when the web application was stopped. To prevent a memory leak, the JDBC Driver has been forcibly unregistered.
+05-Dec-2024 15:33:58.479 정보 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.core.StandardContext.reload Reloading Context with name [/scm] is completed
+05-Dec-2024 15:34:48.484 정보 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.startup.HostConfig.undeploy Undeploying context [/scm]
+05-Dec-2024 15:34:48.495 정보 [daejist7.cafe24.com-startStop-17] org.apache.catalina.startup.HostConfig.deployWAR Deploying web application archive /daejist7/tomcat/webapps/scm.war
+05-Dec-2024 15:34:50.414 정보 [daejist7.cafe24.com-startStop-17] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+05-Dec-2024 15:34:50.415 정보 [daejist7.cafe24.com-startStop-17] org.apache.catalina.core.ApplicationContext.log No Spring WebApplicationInitializer types detected on classpath
+05-Dec-2024 15:34:50.420 정보 [daejist7.cafe24.com-startStop-17] org.apache.catalina.core.ApplicationContext.log Initializing Spring root WebApplicationContext
+05-Dec-2024 15:34:51.023 정보 [daejist7.cafe24.com-startStop-17] org.apache.catalina.core.ApplicationContext.log Initializing Spring DispatcherServlet 'appServlet'
+05-Dec-2024 15:34:51.317 정보 [daejist7.cafe24.com-startStop-17] org.apache.catalina.startup.HostConfig.deployWAR Deployment of web application archive /daejist7/tomcat/webapps/scm.war has finished in 2,821 ms
+05-Dec-2024 15:35:21.320 정보 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.startup.HostConfig.undeploy Undeploying context [/scm]
+05-Dec-2024 15:35:21.320 정보 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.core.ApplicationContext.log Destroying Spring FrameworkServlet 'appServlet'
+05-Dec-2024 15:35:21.323 정보 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.core.ApplicationContext.log Closing Spring root WebApplicationContext
+05-Dec-2024 15:35:21.336 경고 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesJdbc The web application [scm] registered the JDBC driver [com.microsoft.sqlserver.jdbc.SQLServerDriver] but failed to unregister it when the web application was stopped. To prevent a memory leak, the JDBC Driver has been forcibly unregistered.
+05-Dec-2024 15:35:21.349 정보 [daejist7.cafe24.com-startStop-18] org.apache.catalina.startup.HostConfig.deployWAR Deploying web application archive /daejist7/tomcat/webapps/scm.war
+05-Dec-2024 15:35:23.181 정보 [daejist7.cafe24.com-startStop-18] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+05-Dec-2024 15:35:23.182 정보 [daejist7.cafe24.com-startStop-18] org.apache.catalina.core.ApplicationContext.log No Spring WebApplicationInitializer types detected on classpath
+05-Dec-2024 15:35:23.187 정보 [daejist7.cafe24.com-startStop-18] org.apache.catalina.core.ApplicationContext.log Initializing Spring root WebApplicationContext
+05-Dec-2024 15:35:23.872 정보 [daejist7.cafe24.com-startStop-18] org.apache.catalina.core.ApplicationContext.log Initializing Spring DispatcherServlet 'appServlet'
+05-Dec-2024 15:35:24.169 정보 [daejist7.cafe24.com-startStop-18] org.apache.catalina.startup.HostConfig.deployWAR Deployment of web application archive /daejist7/tomcat/webapps/scm.war has finished in 2,820 ms
+05-Dec-2024 15:35:54.173 정보 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.startup.HostConfig.reload Reloading context [/scm]
+05-Dec-2024 15:35:54.173 정보 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.core.StandardContext.reload Reloading Context with name [/scm] has started
+05-Dec-2024 15:35:54.173 정보 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.core.ApplicationContext.log Destroying Spring FrameworkServlet 'appServlet'
+05-Dec-2024 15:35:54.175 정보 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.core.ApplicationContext.log Closing Spring root WebApplicationContext
+05-Dec-2024 15:35:54.190 경고 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesJdbc The web application [scm] registered the JDBC driver [com.microsoft.sqlserver.jdbc.SQLServerDriver] but failed to unregister it when the web application was stopped. To prevent a memory leak, the JDBC Driver has been forcibly unregistered.
+05-Dec-2024 15:35:55.364 정보 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+05-Dec-2024 15:35:55.364 정보 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.core.ApplicationContext.log No Spring WebApplicationInitializer types detected on classpath
+05-Dec-2024 15:35:55.369 정보 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.core.ApplicationContext.log Initializing Spring root WebApplicationContext
+05-Dec-2024 15:35:56.248 정보 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.core.ApplicationContext.log Initializing Spring DispatcherServlet 'appServlet'
+05-Dec-2024 15:35:56.553 정보 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.core.StandardContext.reload Reloading Context with name [/scm] is completed
+05-Dec-2024 15:38:46.568 정보 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.startup.HostConfig.undeploy Undeploying context [/scm]
+05-Dec-2024 15:38:46.569 정보 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.core.ApplicationContext.log Destroying Spring FrameworkServlet 'appServlet'
+05-Dec-2024 15:38:46.570 정보 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.core.ApplicationContext.log Closing Spring root WebApplicationContext
+05-Dec-2024 15:38:46.578 경고 [ContainerBackgroundProcessor[StandardEngine[daejist7]]] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesJdbc The web application [scm] registered the JDBC driver [com.microsoft.sqlserver.jdbc.SQLServerDriver] but failed to unregister it when the web application was stopped. To prevent a memory leak, the JDBC Driver has been forcibly unregistered.
+05-Dec-2024 15:38:46.589 정보 [daejist7.cafe24.com-startStop-19] org.apache.catalina.startup.HostConfig.deployWAR Deploying web application archive /daejist7/tomcat/webapps/scm.war
+05-Dec-2024 15:38:48.386 정보 [daejist7.cafe24.com-startStop-19] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+05-Dec-2024 15:38:48.387 정보 [daejist7.cafe24.com-startStop-19] org.apache.catalina.core.ApplicationContext.log No Spring WebApplicationInitializer types detected on classpath
+05-Dec-2024 15:38:48.392 정보 [daejist7.cafe24.com-startStop-19] org.apache.catalina.core.ApplicationContext.log Initializing Spring root WebApplicationContext
+05-Dec-2024 15:38:48.987 정보 [daejist7.cafe24.com-startStop-19] org.apache.catalina.core.ApplicationContext.log Initializing Spring DispatcherServlet 'appServlet'
+05-Dec-2024 15:38:49.298 정보 [daejist7.cafe24.com-startStop-19] org.apache.catalina.startup.HostConfig.deployWAR Deployment of web application archive /daejist7/tomcat/webapps/scm.war has finished in 2,709 ms

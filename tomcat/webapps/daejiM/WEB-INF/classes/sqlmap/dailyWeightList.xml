@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mobile.daeji.dao.DailyWeightDao">
+	<select id="getDailyWeightList" resultType="map">
+		WITH TEMP1 AS (
+		   	SELECT ROW_NUMBER() OVER(ORDER BY A.SUN) AS ROWNUM
+		         , A.SUN
+		         , A.JUNPYOID 
+		         , ISNULL(A.KERATYPE,'') AS KERATYPE
+		         , ISNULL(A.J_BNUM  ,'') AS J_BNUM
+		         , ISNULL(CASE WHEN A.KERATYPE = '입고' THEN A.MAIPCHER ELSE A.J_COMPANY END,'') AS J_COMPANY 
+		         , ISNULL(A.GUBUN1, '') AS GUBUN1
+		         , CASE WHEN A.OWEIGHT = 0 THEN A.IWEIGHT ELSE A.OWEIGHT END AS OWEIGHT 
+		    	 , A.WEIGHT AS WEIGHT    
+		    	 , CASE WHEN A.KERATYPE = '입고' THEN A.ICHAGAM ELSE A.OCHAGAM END AS OCHAGAM 
+		    	 , ISNULL(A.J_STATE    ,'') AS J_STATE
+		    	 , ISNULL(A.GUMSUBIGO,	'') AS GUMSUBIGO
+		         , ISNULL(B.EMP_NM     ,'') AS EMP_NM
+		         , ISNULL(C.WEB_FAX_YN ,'') AS WEB_FAX_YN
+		      FROM MESURING A 
+		      LEFT OUTER JOIN HR_EMP_BASIS B 
+		        ON A.GUMSU_SERIAL = B.EMP_ID 
+		      LEFT JOIN ACC_DEALER_CD C  
+		        ON C.DEALER_CD = CASE WHEN A.KERATYPE = '입고' THEN A.MAIPCHERID ELSE A.J_ASSIGNID END 
+		      LEFT JOIN JAJAE D 
+		        ON A.J_SERIAL = D.J_SERIAL 
+		     WHERE A.J_DATE = #{FDATE} 
+		       AND A.KERATYPE != '직송' 
+		       AND ((#{INOUT} = 'ALL' AND 1 = 1) 
+		            OR 
+		            (#{INOUT} = 'IN' AND A.KERATYPE = '입고' )
+		            OR 
+		            (#{INOUT} = 'OUT' AND A.KERATYPE = '출고' ))
+		       <if test='DAEGUBUN != null and DAEGUBUN.size != 0'>
+               AND D.DAEGUBUN IN 
+               <foreach collection="DAEGUBUN" item="item" open="(" close=")" separator=",">
+               	#{item}
+               </foreach>
+               </if>
+		)
+		SELECT (SELECT COUNT(*) FROM TEMP1) AS CNT
+		     , SUN
+	         , JUNPYOID 
+	         , KERATYPE 
+	         , J_BNUM 
+	         , J_COMPANY 
+	         , GUBUN1 
+	         , FORMAT(OWEIGHT, '#,0') AS OWEIGHT
+	 	     , FORMAT(WEIGHT , '#,0') AS WEIGHT   
+	 	     , FORMAT(OCHAGAM, '#,0') AS OCHAGAM 
+	 	     , J_STATE 
+	 	     , GUMSUBIGO	 
+	         , EMP_NM 
+	         , WEB_FAX_YN 
+		     , (SELECT FORMAT(SUM(OWEIGHT),'#,0') FROM TEMP1) AS TOTOWEIGHT
+		     , (SELECT FORMAT(SUM(WEIGHT),'#,0') FROM TEMP1) AS TOTWEIGHT
+		     , (SELECT FORMAT(SUM(OCHAGAM),'#,0') FROM TEMP1) AS TOTOCHAGAM
+		  FROM TEMP1
+		 ORDER BY ROWNUM OFFSET (#{pageNum}-1)*#{pageLength}
+	       ROW FETCH NEXT #{pageLength} ROW ONLY
+	</select>
+</mapper>

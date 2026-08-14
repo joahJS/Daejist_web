@@ -1,0 +1,160 @@
+/* 컬러 */
+
+$color__dark: rgb(51, 38, 38);
+$color__grey: rgb(114, 107, 107);
+$color__mid: rgb(196, 196, 197);
+$color__light: hsl(240, 46%, 44%);
+$color__subtle: rgb(249, 249, 249);
+$color__white: rgb(255, 255, 255);
+
+$color__dark_pm: rgb(37, 51, 29);
+$color__pm: rgb(66, 86, 47);
+$color__sub: rgb(58, 126, 142);
+$color__vo: rgb(240, 238, 247);
+$color__yy: rgb(255, 249, 233);
+$color__bp: rgb(255, 240, 246);
+
+[data-device-type="mobile"] {
+    /* Landscape 세로모드일 때 적용할 CSS */
+
+    @media screen and (max-width: 540px) {
+        .list_table {
+            width: auto;
+            overflow: auto;
+        }
+    }
+}
+
+[data-device-type="desktop"] {
+    /* Landscape 가로모드일 때 적용할 CSS */
+
+    #wrap {
+        width: 1900px;
+    }
+
+    #contentView {
+        width: 1900px;
+    }
+
+    .list_table {
+        height: 180vh;
+    }
+}
+
+.price_table {
+    background-color: rgba($color__pm, .3);
+    text-align: center;
+    padding: 1rem .7rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .7rem;
+    width: 100%;
+
+    input[type=date] {
+        width: max(115px, 10vmax);
+        height: max(31px, 1vmin);
+    }
+
+    .price_table_date {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+
+        > div {
+            display: flex;
+        }
+
+        p {
+            font-size: 1.1rem;
+
+            &:first-child {
+                color: red;
+            }
+
+            &:last-child {
+                color: $color__sub;
+            }
+        }
+    }
+}
+
+#contentView {
+    padding: .8rem;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.list_table {
+    height: calc(100vh - 12.5rem);
+    max-width: 1900px;
+    text-align: center;
+    margin: 0 auto;
+    overflow: auto;
+}
+
+.save {
+    padding: .3rem .5rem;
+    vertical-align: bottom;
+}
+
+table {
+    width: 100%;
+
+    th,
+    td {
+        border: .5px solid $color__mid;
+        padding: .5rem .2rem;
+        min-width: 60px;
+        max-width: 60px;
+        word-break: keep-all;
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    .table_mak {
+        tr {
+            &:nth-child(1) {
+                background-color: $color__vo;
+            }
+
+            &:nth-child(2),
+            &:nth-child(3) {
+                background-color: $color__yy;
+            }
+        }
+
+        th {
+            height: 40px;
+        }
+    }
+
+    &#jb-table {
+        thead {
+            &:nth-child(1) {
+                font-size: 1.5rem;
+
+                th {
+                    height: 50px;
+                }
+            }
+
+            &:nth-child(2) {
+                position: sticky;
+                top: 0px;
+                z-index: 1;
+                height: 50px;
+
+                th {
+                    height: 40px;
+                }
+            }
+        }
+
+        td {
+            &:first-child {
+                text-align: left;
+            }
+        }
+    }
+}
